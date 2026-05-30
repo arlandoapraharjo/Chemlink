@@ -40,3 +40,5 @@ namespace CHEMLINK.Models
         public decimal Total => Qty * Price;
     }
 }
+
+//test commit in products

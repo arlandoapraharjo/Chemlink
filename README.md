@@ -2,5 +2,5 @@
 
 early access build for our final's project
 
-# About
+# ABOUT
 store management app with integrated cashier system

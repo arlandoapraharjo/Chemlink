@@ -1,6 +1,6 @@
-# CHEMLINK
+# Chemlink
 
 early access build for our final's project
 
-# ABOUT
+# About
 store management app with integrated cashier system

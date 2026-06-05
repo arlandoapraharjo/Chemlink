@@ -85,7 +85,7 @@ namespace CHEMLINK.Views
             };
             this.Controls.Add(header);
 
-            Label lblInfo = new Label { Text = "Masukkan kredensial akun kasir atau pemilik.\n(Hint: admin/admin atau kasir/kasir)", Location = new Point(40, 120), AutoSize = true, ForeColor = Color.Gray };
+            Label lblInfo = new Label { Text = "Welcome to Chemlink!", Location = new Point(40, 120), AutoSize = true, ForeColor = Color.Gray };
 
             Label lblUser = new Label { Text = "Username", Location = new Point(40, 175), AutoSize = true, ForeColor = Color.FromArgb(100, 100, 100), Font = new Font("Segoe UI", 9.5F) };
             Panel pnlUser = new Panel { Location = new Point(40, 198), Width = 300, Height = 32, BackColor = Color.White };
@@ -123,9 +123,9 @@ namespace CHEMLINK.Views
 
             btnLogin = new Button 
             { 
-                Text = "LOGIN SYSTEM", 
-                Location = new Point(40, 330), 
-                Width = 300, 
+                Text = "LOGIN", 
+                Location = new Point(90, 330), 
+                Width = 200, 
                 Height = 45, 
                 BackColor = Color.FromArgb(46, 125, 50), 
                 ForeColor = Color.White, 
@@ -134,7 +134,7 @@ namespace CHEMLINK.Views
                 Cursor = Cursors.Hand 
             };
             btnLogin.FlatAppearance.BorderSize = 0;
-            btnLogin.Region = new Region(GetRoundedRectanglePath(new Rectangle(0, 0, btnLogin.Width, btnLogin.Height), 12));
+            btnLogin.Region = new Region(GetRoundedRectanglePath(new Rectangle(0, 0, btnLogin.Width, btnLogin.Height), 24));
 
             this.Controls.Add(lblInfo);
             this.Controls.Add(lblUser);

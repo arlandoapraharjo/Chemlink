@@ -79,6 +79,7 @@ namespace CHEMLINK
                 DialogResult dr = MessageBox.Show("Apakah Anda yakin ingin logout dari sistem?", "Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dr == DialogResult.Yes)
                 {
+                    LogoutEvent?.Invoke(this, EventArgs.Empty);
                     this.DialogResult = DialogResult.Retry;
                     this.Close();
                 }

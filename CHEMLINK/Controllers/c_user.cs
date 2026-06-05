@@ -160,10 +160,13 @@ namespace CHEMLINK.Controllers
                 {
                     if (_view.MainDataGrid.CurrentRow != null)
                     {
-                        int id = (int)_view.MainDataGrid.CurrentRow.Cells["Id"].Value;
-                        _products.RemoveAll(p => p.Id == id);
-                        RefreshProductGrid();
-                        _view.ShowMessage("Obat berhasil dihapus!");
+                        var cellValue = _view.MainDataGrid.CurrentRow.Cells["Id"].Value;
+                        if (cellValue is int id)
+                        {
+                            _products.RemoveAll(p => p.Id == id);
+                            RefreshProductGrid();
+                            _view.ShowMessage("Obat berhasil dihapus!");
+                        }
                     }
                 };
 

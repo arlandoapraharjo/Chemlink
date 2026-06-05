@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 
-namespace CHEMLINK.Views
+namespace CHEMLINK.Views.Interfaces
 {
     public interface IMainView
     {

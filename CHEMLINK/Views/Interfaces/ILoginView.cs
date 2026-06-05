@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace CHEMLINK.Views
+namespace CHEMLINK.Views.Interfaces
 {
     public interface ILoginView
     {

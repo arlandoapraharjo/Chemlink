@@ -1,5 +1,6 @@
-﻿using System;
-using CHEMLINK.Views;
+using System;
+using CHEMLINK.Views.Interfaces;
+
 // PERBAIKAN CS0104: Kita kunci kata "User" agar sistem HANYA membaca class User buatan kita.
 using User = CHEMLINK.Models.User;
 

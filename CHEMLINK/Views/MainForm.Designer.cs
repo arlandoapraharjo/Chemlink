@@ -1,6 +1,6 @@
-﻿namespace CHEMLINK
+namespace CHEMLINK
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.

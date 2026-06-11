@@ -19,15 +19,12 @@ namespace CHEMLINK.Controllers
 
         private void HandleLogin(object? sender, EventArgs e)
         {
-            // Logika Autentikasi Dummy
-            if (_view.Username == "admin" && _view.Password == "admin")
+            var userContext = new Contexts.UserContext();
+            var user = userContext.AuthenticateUser(_view.Username, _view.Password);
+
+            if (user != null)
             {
-                AuthenticatedUser = new User { Username = "Admin Utama", Role = "Admin" };
-                _view.CloseView(); // Tutup form login
-            }
-            else if (_view.Username == "kasir" && _view.Password == "kasir")
-            {
-                AuthenticatedUser = new User { Username = "Kasir Shift 1", Role = "Kasir" };
+                AuthenticatedUser = user;
                 _view.CloseView();
             }
             else

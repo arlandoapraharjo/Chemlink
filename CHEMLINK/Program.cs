@@ -41,8 +41,8 @@ namespace CHEMLINK
 
                 // 3. TAMPILKAN FORM DASHBOARD UTAMA
                 // Kita buat form utama dan memberikan data user yang login ke Controllernya
-                Form1 mainForm = new Form1();
-                MainController mainController = new MainController(mainForm, loggedInUser);
+                MainForm mainForm = new MainForm();
+                UserController mainController = new UserController(mainForm, loggedInUser);
 
                 // Tampilkan Dashboard. Kode akan berhenti di sini sampai Dashboard ditutup/logout.
                 DialogResult mainResult = mainForm.ShowDialog();

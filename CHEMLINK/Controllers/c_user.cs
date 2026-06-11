@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using CHEMLINK.Models;
 using CHEMLINK.Views.Interfaces;
+using CHEMLINK.Contexts;
+using Npgsql;
 
 namespace CHEMLINK.Controllers
 {
@@ -24,29 +26,17 @@ namespace CHEMLINK.Controllers
             _view = view;
             _currentUser = user;
 
-            // Inisialisasi Data Default
-            _products = new List<Product>
-            {
-                new Product { Id = 1, Name = "Gramoxone 276SL 1L", Category = "Herbisida", Stock = 25, Price = 85000 },
-                new Product { Id = 2, Name = "Antracol 70WP 500gr", Category = "Fungisida", Stock = 5, Price = 95000 }, // Stok sedikit (kritis)
-                new Product { Id = 3, Name = "Furadan 3GR 2kg", Category = "Insektisida", Stock = 40, Price = 45000 },
-                new Product { Id = 4, Name = "Roundup 486SL 1L", Category = "Herbisida", Stock = 2, Price = 105000 }  // Stok kritis
-            };
+            // Setup Contexts dan Baca Data
+            ProductContext productContext = new ProductContext();
+            _products = productContext.Read();
 
-            _suppliers = new List<Supplier>
-            {
-                new Supplier { Id = 1, Name = "PT Agro Sentosa", Phone = "08123456789", Address = "Surabaya" },
-                new Supplier { Id = 2, Name = "CV Tani Makmur", Phone = "08987654321", Address = "Malang" }
-            };
+            SupplierContext supplierContext = new SupplierContext();
+            _suppliers = supplierContext.Read();
 
-            _users = new List<User>
-            {
-                new User { Username = "admin", FullName = "H. Mansur (Owner)", Role = "Admin" },
-                new User { Username = "kasir", FullName = "Siti Aminah", Role = "Kasir" }
-            };
+            UserContext userContext = new UserContext();
+            _users = userContext.Read();
 
             _cart = new List<CartItem>();
-
             // Setup Profile Pengguna
             _view.SetActiveUser(_currentUser.Username, _currentUser.Role);
             _view.ApplyRoleRestrictions(_currentUser.Role == "Admin");
@@ -334,11 +324,6 @@ namespace CHEMLINK.Controllers
             dtLaporan.Columns.Add("Total Transaksi", typeof(string));
             dtLaporan.Columns.Add("Kategori Terlaris", typeof(string));
             dtLaporan.Columns.Add("Omzet Bersih", typeof(string));
-
-            dtLaporan.Rows.Add("Januari", "120 Kali", "Fungisida (Musim Hujan)", "Rp14.500.000");
-            dtLaporan.Rows.Add("Februari", "95 Kali", "Fungisida (Musim Hujan)", "Rp11.200.000");
-            dtLaporan.Rows.Add("Maret", "140 Kali", "Insektisida (Ulat Grayak)", "Rp18.900.000");
-            dtLaporan.Rows.Add("April", "80 Kali", "Herbisida (Pratanam)", "Rp9.000.000");
 
             _view.MainDataGrid.DataSource = dtLaporan;
         }

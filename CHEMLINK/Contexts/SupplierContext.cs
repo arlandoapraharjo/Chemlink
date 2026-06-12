@@ -16,7 +16,7 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "SELECT id_supplier, nama_perusahaan, no_telp, kota_supplier FROM Supplier ORDER BY id_supplier ASC";
+                    string sql = "SELECT * FROM v_show_supplier";
 
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn)) //objek untuk syntax query
                     {
@@ -46,12 +46,15 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "CALL sp_tambah_supplier(@nama, '', @telp, '', @alamat, '')";
+                    string sql = "CALL sp_tambah_supplier(@nama, @kontak, @telp, @email, @alamat, @kota)";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@nama", supplier.Name ?? "");
-                        cmd.Parameters.AddWithValue("@telp", supplier.Phone ?? "");
-                        cmd.Parameters.AddWithValue("@alamat", supplier.Address ?? "");
+                        cmd.Parameters.AddWithValue("@kontak", DBNull.Value);
+                        cmd.Parameters.AddWithValue("@telp", string.IsNullOrWhiteSpace(supplier.Phone) ? DBNull.Value : supplier.Phone);
+                        cmd.Parameters.AddWithValue("@email", DBNull.Value);
+                        cmd.Parameters.AddWithValue("@alamat", string.IsNullOrWhiteSpace(supplier.Address) ? DBNull.Value : supplier.Address);
+                        cmd.Parameters.AddWithValue("@kota", DBNull.Value);
                         cmd.ExecuteNonQuery();
                     }
                 }

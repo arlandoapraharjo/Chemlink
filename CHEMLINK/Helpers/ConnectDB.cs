@@ -13,7 +13,7 @@ namespace CHEMLINK.Helpers
             "Host=localhost;" +
             "Port=5432;" +
             "Username=postgres;" +
-            "Password=manchmall123;" + //pw kalian
+            "Password=adminadmin;" + //pw kalian
             "Database=ChemlinkDB;"; //nama db kalian
             
         public static NpgsqlConnection GetConn() 
@@ -36,7 +36,8 @@ namespace CHEMLINK.Helpers
         {
             try
             {
-                string sqlFile = @"c:\Users\user\source\repos\Chemlink\Database\Chemlink_Advanced_Objects.sql";
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string sqlFile = Path.GetFullPath(Path.Combine(baseDir, @"..\..\..\..\Database\Chemlink_Advanced_Objects.sql"));
                 if (File.Exists(sqlFile))
                 {
                     string sql = File.ReadAllText(sqlFile);

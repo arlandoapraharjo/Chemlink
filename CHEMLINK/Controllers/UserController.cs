@@ -4,14 +4,14 @@ using System.Data;
 using System.Linq;
 using Npgsql;
 using CHEMLINK.Models;
-using CHEMLINK.Views.Interfaces;
+using CHEMLINK.Views;
 using CHEMLINK.Contexts;
 
 namespace CHEMLINK.Controllers
 {
     public class UserController
     {
-        private readonly IMainView _view;
+        private readonly MainForm _view;
         private readonly User _currentUser;
 
         // Contexts
@@ -26,7 +26,7 @@ namespace CHEMLINK.Controllers
         private List<User> _users;
         private readonly List<CartItem> _cart;
 
-        public UserController(IMainView view, User user)
+        public UserController(MainForm view, User user)
         {
             _view = view;
             _currentUser = user;

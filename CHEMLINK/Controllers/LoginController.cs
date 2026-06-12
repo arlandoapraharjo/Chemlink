@@ -1,5 +1,5 @@
 using System;
-using CHEMLINK.Views.Interfaces;
+using CHEMLINK.Views;
 
 // PERBAIKAN CS0104: Kita kunci kata "User" agar sistem HANYA membaca class User buatan kita.
 using User = CHEMLINK.Models.User;
@@ -8,10 +8,10 @@ namespace CHEMLINK.Controllers
 {
     public class LoginController
     {
-        private readonly ILoginView _view;
+        private readonly LoginForm _view;
         public User? AuthenticatedUser { get; private set; }
 
-        public LoginController(ILoginView view)
+        public LoginController(LoginForm view)
         {
             _view = view;
             _view.LoginAttemptEvent += HandleLogin;

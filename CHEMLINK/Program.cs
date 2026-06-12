@@ -16,6 +16,7 @@ namespace CHEMLINK
         [STAThread]
         static void Main()
         {
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => Console.WriteLine($"Crash: {e.ExceptionObject}");
             CHEMLINK.Helpers.ConnectDB.UpdateDatabaseObjects();
             ApplicationConfiguration.Initialize();
 

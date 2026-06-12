@@ -16,7 +16,7 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "SELECT * FROM v_show_supplier";
+                    string sql = "SELECT id_supplier, nama_perusahaan, no_telp, kota_supplier FROM Supplier";
 
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn)) //objek untuk syntax query
                     {

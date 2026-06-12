@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Npgsql;
 using CHEMLINK.Models;
 using CHEMLINK.Views.Interfaces;
 using CHEMLINK.Contexts;
@@ -218,10 +219,23 @@ namespace CHEMLINK.Controllers
 
         private void HandleAddSupplier(object? sender, SupplierEventArgs e)
         {
-            var supplier = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address };
-            _supplierContext.Create(supplier);
-            _view.ShowMessage("Supplier baru berhasil dicatat!");
-            ShowSupplierManagement();
+            try
+            {
+                var supplier = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address };
+                _supplierContext.Create(supplier);
+                _view.ShowMessage("Supplier baru berhasil dicatat!");
+                ShowSupplierManagement();
+            }
+            catch (PostgresException ex) when (ex.SqlState == "23505")
+            {
+                string message = ex.ConstraintName switch
+                {
+                    "supplier_email_key" => "Email supplier sudah terdaftar.",
+                    "supplier_no_telp_key" => "Nomor telepon supplier sudah terdaftar.",
+                    _ => "Data supplier sudah ada di sistem."
+                };
+                _view.ShowMessage(message);
+            }
         }
 
         private void ShowFinancialReport()

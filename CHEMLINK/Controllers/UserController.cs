@@ -17,6 +17,7 @@ namespace CHEMLINK.Controllers
         private readonly ProductContext _productContext;
         private readonly SupplierContext _supplierContext;
         private readonly UserContext _userContext;
+        private readonly OrderContext _orderContext;
 
         // In-Memory state for the active session (still useful for cart)
         private List<Product> _products;
@@ -32,6 +33,7 @@ namespace CHEMLINK.Controllers
             _productContext = new ProductContext();
             _supplierContext = new SupplierContext();
             _userContext = new UserContext();
+            _orderContext = new OrderContext();
 
             _products = _productContext.Read();
             _suppliers = _supplierContext.Read();
@@ -98,10 +100,8 @@ namespace CHEMLINK.Controllers
 
         private void HandleAddProduct(object? sender, ProductEventArgs e)
         {
-            // In a real app, we would insert into DB via ProductContext here
-            // _productContext.Create(e.Name, e.Category, e.Stock, e.Price);
-            // Since we don't have Create implemented in Context, we simulate or you can implement it.
-            _view.ShowMessage("Obat pertanian berhasil ditambahkan (simulasi).");
+            _productContext.Create(e.Name, e.Category, e.Stock, e.Price);
+            _view.ShowMessage("Obat pertanian berhasil ditambahkan!");
             ShowProductCatalog();
         }
 
@@ -181,6 +181,16 @@ namespace CHEMLINK.Controllers
                 return;
             }
 
+            try
+            {
+                _orderContext.Checkout(_cart, _currentUser.Id, "Penjualan Kasir");
+            }
+            catch (Exception ex)
+            {
+                _view.ShowMessage("Gagal memproses transaksi: " + ex.Message);
+                return;
+            }
+
             decimal total = _cart.Sum(c => c.Total);
             string struk = "============== STRUK CHEMLINK ==============\n";
             struk += $"Kasir: {_currentUser.FullName}\n";
@@ -208,18 +218,15 @@ namespace CHEMLINK.Controllers
 
         private void HandleAddSupplier(object? sender, SupplierEventArgs e)
         {
-            _view.ShowMessage("Supplier baru berhasil dicatat (simulasi).");
+            var supplier = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address };
+            _supplierContext.Create(supplier);
+            _view.ShowMessage("Supplier baru berhasil dicatat!");
             ShowSupplierManagement();
         }
 
         private void ShowFinancialReport()
         {
-            DataTable dtLaporan = new DataTable();
-            dtLaporan.Columns.Add("Bulan", typeof(string));
-            dtLaporan.Columns.Add("Total Transaksi", typeof(string));
-            dtLaporan.Columns.Add("Kategori Terlaris", typeof(string));
-            dtLaporan.Columns.Add("Omzet Bersih", typeof(string));
-
+            DataTable dtLaporan = _orderContext.GetFinancialReport();
             _view.ShowFinancialReport(dtLaporan);
         }
 

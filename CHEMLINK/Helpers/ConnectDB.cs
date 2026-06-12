@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Windows.Forms;
 using Npgsql;
 
 namespace CHEMLINK.Helpers
@@ -11,8 +13,9 @@ namespace CHEMLINK.Helpers
             "Host=localhost;" +
             "Port=5432;" +
             "Username=postgres;" +
-            "Password=adminadmin;" + //pw kalian
+            "Password=manchmall123;" + //pw kalian
             "Database=ChemlinkDB;"; //nama db kalian
+            
         public static NpgsqlConnection GetConn() 
         {
             NpgsqlConnection conn = new NpgsqlConnection(connString);
@@ -27,6 +30,36 @@ namespace CHEMLINK.Helpers
             }
 
             return conn;
+        }
+
+        public static void UpdateDatabaseObjects()
+        {
+            try
+            {
+                string sqlFile = @"c:\Users\user\source\repos\Chemlink\Database\Chemlink_Advanced_Objects.sql";
+                if (File.Exists(sqlFile))
+                {
+                    string sql = File.ReadAllText(sqlFile);
+                    using (var conn = GetConn())
+                    {
+                        if (conn != null && conn.State == System.Data.ConnectionState.Open)
+                        {
+                            using (var cmd = new NpgsqlCommand(sql, conn))
+                            {
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Script SQL lanjutan tidak ditemukan: " + sqlFile);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal update objek database: " + ex.Message);
+            }
         }
     }
 }

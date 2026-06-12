@@ -16,6 +16,7 @@ namespace CHEMLINK
         [STAThread]
         static void Main()
         {
+            CHEMLINK.Helpers.ConnectDB.UpdateDatabaseObjects();
             ApplicationConfiguration.Initialize();
 
             bool appIsRunning = true;

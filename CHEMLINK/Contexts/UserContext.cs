@@ -28,6 +28,7 @@ namespace CHEMLINK.Contexts
                                 {
                                     return new User
                                     {
+                                        Id = Convert.ToInt32(dr["id_user"]),
                                         Username = dr["username"].ToString() ?? "",
                                         FullName = dr["username"].ToString() ?? "",
                                         Role = dr["Role"] != DBNull.Value ? dr["Role"].ToString() ?? "" : ""
@@ -79,7 +80,7 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "INSERT INTO \"User\" (username, password, Role, status) VALUES (@user, @pass, @role, 'Active')";
+                    string sql = "CALL sp_tambah_user(@user, @pass, @role)";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@user", user.Username);
@@ -130,7 +131,8 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "DELETE FROM \"User\" WHERE id_user = @id";
+                    // Menggunakan Stored Procedure untuk Soft Delete
+                    string sql = "CALL sp_update_status_user(@id, 'Inactive')";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@id", id);

@@ -39,5 +39,23 @@ namespace CHEMLINK.Contexts
 
             return listsupplier;
         }
+
+        public void Create(Supplier supplier)
+        {
+            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            {
+                if (conn != null && conn.State == System.Data.ConnectionState.Open)
+                {
+                    string sql = "CALL sp_tambah_supplier(@nama, '', @telp, '', @alamat, '')";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@nama", supplier.Name ?? "");
+                        cmd.Parameters.AddWithValue("@telp", supplier.Phone ?? "");
+                        cmd.Parameters.AddWithValue("@alamat", supplier.Address ?? "");
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
     }
 }

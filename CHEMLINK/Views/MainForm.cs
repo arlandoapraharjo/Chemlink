@@ -305,8 +305,8 @@ namespace CHEMLINK
                 };
                 
                 TextBox txtQty = new TextBox { PlaceholderText = "Jumlah", Width = 80 };
-                Button btnAddCart = new Button { Text = "Tambah ke Keranjang", BackColor = Color.FromArgb(46, 125, 50), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Height = 30, Width = 150 };
-                Button btnCheckout = new Button { Text = "Bayar & Cetak", BackColor = Color.FromArgb(255, 152, 0), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Height = 30, Width = 120 };
+                Button btnAddCart = new Button { Text = "Tambahkan", BackColor = Color.FromArgb(46, 125, 50), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Height = 33, Width = 150 };
+                Button btnCheckout = new Button { Text = "Bayar & Cetak", BackColor = Color.FromArgb(255, 152, 0), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Height = 33, Width = 120 };
 
                 btnAddCart.Click += (s, e) =>
                 {
@@ -372,7 +372,7 @@ namespace CHEMLINK
             TextBox txtNamaSup = new TextBox { PlaceholderText = "Nama Supplier", Width = 150 };
             TextBox txtTelp = new TextBox { PlaceholderText = "No Telepon", Width = 120 };
             TextBox txtAlamat = new TextBox { PlaceholderText = "Alamat", Width = 150 };
-            Button btnAddSup = new Button { Text = "Tambah Supplier", BackColor = Color.FromArgb(46, 125, 50), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Width = 130 };
+            Button btnAddSup = new Button { Text = "Tambahkan Supplier", BackColor = Color.FromArgb(46, 125, 50), ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Width = 200, Height = 35 };
 
             btnAddSup.Click += (s, e) =>
             {

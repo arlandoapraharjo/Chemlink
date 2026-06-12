@@ -42,6 +42,9 @@ namespace CHEMLINK.Views
             // 
             // dgvMain
             // 
+            this.dgvMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvMain.AllowUserToAddRows = false;
             this.dgvMain.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvMain.BackgroundColor = System.Drawing.Color.White;
@@ -57,6 +60,8 @@ namespace CHEMLINK.Views
             // 
             // pnlCrud
             // 
+            this.pnlCrud.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlCrud.BackColor = System.Drawing.Color.White;
             this.pnlCrud.Controls.Add(this.lblKategori);
             this.pnlCrud.Controls.Add(this.cbCategoryFilter);
@@ -143,6 +148,9 @@ namespace CHEMLINK.Views
             // 
             // dgvCart
             // 
+            this.dgvCart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvCart.AllowUserToAddRows = false;
             this.dgvCart.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvCart.BackgroundColor = System.Drawing.Color.WhiteSmoke;

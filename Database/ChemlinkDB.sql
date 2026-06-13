@@ -4,7 +4,7 @@ CREATE TABLE Kategori (
     nama_kategori VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE "User" (
+CREATE TABLE Users (
     id_user SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE Produk (
     keterangan TEXT,
     id_kategori INTEGER REFERENCES Kategori(id_kategori),
     id_supplier INTEGER REFERENCES Supplier(id_supplier),
-    id_user INTEGER REFERENCES "User"(id_user)
+    id_user INTEGER REFERENCES Users(id_user)
 );
 
 CREATE TABLE Stocks (
@@ -55,7 +55,7 @@ CREATE TABLE orders (
     tanggal DATE,
     jumlah INTEGER,
     keterangan_order TEXT,
-    input_by INTEGER REFERENCES "User"(id_user)
+    input_by INTEGER REFERENCES Users(id_user)
 );
 
 CREATE TABLE order_details (
@@ -76,7 +76,7 @@ INSERT INTO Kategori (nama_kategori) VALUES
 ('Insektisida'),
 ('Pupuk');
 
-INSERT INTO "User" (username, password, Role, status) VALUES 
+INSERT INTO Users (username, password, Role, status) VALUES 
 ('admin', 'admin123', 'Admin', 'Active'),
 ('kasir', 'kasir123', 'Kasir', 'Active');
 

@@ -1,7 +1,3 @@
--- =========================================================================
--- 1. VIEWS
--- =========================================================================
-
 CREATE OR REPLACE VIEW v_detail_produk AS
 SELECT 
     p.id_produk, 
@@ -27,7 +23,7 @@ SELECT
     o.keterangan_order,
     u.username AS diinput_oleh
 FROM orders o
-JOIN "User" u ON o.input_by = u.id_user;
+JOIN Users u ON o.input_by = u.id_user;
 
 CREATE OR REPLACE VIEW v_stok_kritis AS
 SELECT 
@@ -173,7 +169,7 @@ CREATE OR REPLACE PROCEDURE sp_tambah_user(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    INSERT INTO "User" (username, password, Role, status)
+    INSERT INTO Users (username, password, Role, status)
     VALUES (p_username, p_password, p_role, 'Active');
     COMMIT;
 END;
@@ -186,7 +182,7 @@ CREATE OR REPLACE PROCEDURE sp_update_status_user(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    UPDATE "User"
+    UPDATE Users
     SET status = p_status
     WHERE id_user = p_id_user;
     

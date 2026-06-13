@@ -64,6 +64,8 @@ namespace CHEMLINK.Controllers
             _view.AddCartEvent += HandleAddCart;
             _view.CheckoutEvent += HandleCheckout;
             _view.AddSupplierEvent += HandleAddSupplier;
+            _view.UpdateSupplierEvent += HandleUpdateSupplier;
+            _view.DeleteSupplierEvent += HandleDeleteSupplier;
             _view.SearchProductEvent += HandleSearchProduct;
             _view.FilterCategoryEvent += HandleFilterCategory;
 
@@ -78,6 +80,35 @@ namespace CHEMLINK.Controllers
             _view.DeleteUserEvent += HandleDeleteUser;
 
             ShowDashboard();
+        }
+
+        private void HandleUpdateSupplier(object? sender, SupplierEventArgs e)
+        {
+            try
+            {
+                var updated = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address };
+                _supplierContext.Update(e.Id, updated);
+                _view.ShowMessage("Data supplier berhasil diupdate!");
+                ShowSupplierManagement();
+            }
+            catch (Exception ex)
+            {
+                _view.ShowMessage("Gagal mengupdate supplier: " + ex.Message);
+            }
+        }
+
+        private void HandleDeleteSupplier(object? sender, int id)
+        {
+            try
+            {
+                _supplierContext.Delete(id);
+                _view.ShowMessage("Supplier berhasil dihapus.");
+                ShowSupplierManagement();
+            }
+            catch (Exception ex)
+            {
+                _view.ShowMessage("Gagal menghapus supplier: " + ex.Message);
+            }
         }
 
         private void ShowDashboard()

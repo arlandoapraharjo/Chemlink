@@ -14,7 +14,7 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "SELECT id_user, username, password, Role FROM \"User\" WHERE username = @user";
+                    string sql = "SELECT id_user, username, password, Role FROM \"User\" WHERE username = @user AND status = 'Active'";
 
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
@@ -50,7 +50,7 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "SELECT id_user, username, password, Role FROM \"User\" ORDER BY id_user ASC";
+                    string sql = "SELECT id_user, username, password, Role FROM \"User\" WHERE status = 'Active' ORDER BY id_user ASC";
 
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
@@ -80,7 +80,30 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "CALL sp_tambah_user(@user, @pass, @role)";
+                    // Check if an inactive user with the same username exists
+                    string checkSql = "SELECT id_user FROM \"User\" WHERE username = @user AND status = 'Inactive'";
+                    using (NpgsqlCommand checkCmd = new NpgsqlCommand(checkSql, conn))
+                    {
+                        checkCmd.Parameters.AddWithValue("@user", user.Username);
+                        var existingId = checkCmd.ExecuteScalar();
+
+                        if (existingId != null)
+                        {
+                            // Reactivate the soft-deleted user with new data
+                            string reactivateSql = "UPDATE \"User\" SET password = @pass, Role = @role, status = 'Active' WHERE id_user = @id";
+                            using (NpgsqlCommand updateCmd = new NpgsqlCommand(reactivateSql, conn))
+                            {
+                                updateCmd.Parameters.AddWithValue("@id", Convert.ToInt32(existingId));
+                                updateCmd.Parameters.AddWithValue("@pass", user.Password);
+                                updateCmd.Parameters.AddWithValue("@role", user.Role);
+                                updateCmd.ExecuteNonQuery();
+                            }
+                            return;
+                        }
+                    }
+
+                    // No inactive duplicate — insert as new user
+                    string sql = "INSERT INTO \"User\" (username, password, Role, status) VALUES (@user, @pass, @role, 'Active')";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@user", user.Username);
@@ -131,8 +154,7 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    // Menggunakan Stored Procedure untuk Soft Delete
-                    string sql = "CALL sp_update_status_user(@id, 'Inactive')";
+                    string sql = "UPDATE \"User\" SET status = 'Inactive' WHERE id_user = @id";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@id", id);

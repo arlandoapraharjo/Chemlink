@@ -44,23 +44,94 @@ namespace CHEMLINK.Contexts
             return listproduct;
         }
 
-        public void Create(string nama, string kategori, int stok, decimal harga)
+        public void Create(string nama, int idKategori, int stok, decimal harga)
         {
-            // Dummy id mapping for simplicity (in real app, we'd look up category id)
-            int idKategori = kategori == "Herbisida" ? 1 : kategori == "Fungisida" ? 2 : kategori == "Insektisida" ? 3 : 4;
-            
             using (NpgsqlConnection conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
+                    // Step 1: Insert product via stored procedure (creates Stocks row with 0)
                     string sql = "CALL sp_tambah_produk_baru(@nama, '', 'pcs', @harga, CURRENT_DATE, '', @idKat, 1, 1)";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@nama", nama);
                         cmd.Parameters.AddWithValue("@harga", (int)harga);
                         cmd.Parameters.AddWithValue("@idKat", idKategori);
-                        // In `sp_tambah_produk_baru`, it also initializes stock, but let's say we update stock afterwards
                         cmd.ExecuteNonQuery();
+                    }
+
+                    // Step 2: Update the stock to the actual value for the newly created product
+                    string sqlUpdateStock = @"
+                        UPDATE Stocks 
+                        SET jumlah_stock = @stok 
+                        WHERE id_produk = (
+                            SELECT id_produk FROM Produk 
+                            WHERE nama_produk = @nama 
+                            ORDER BY id_produk DESC LIMIT 1
+                        )";
+                    using (NpgsqlCommand cmd2 = new NpgsqlCommand(sqlUpdateStock, conn))
+                    {
+                        cmd2.Parameters.AddWithValue("@nama", nama);
+                        cmd2.Parameters.AddWithValue("@stok", stok);
+                        cmd2.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+        public void Update(int id, string nama, int idKategori, int stok, decimal harga)
+        {
+            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            {
+                if (conn != null && conn.State == System.Data.ConnectionState.Open)
+                {
+                    // Step 1: Update Produk table (no jumlah_stock column here)
+                    string sqlProduk = @"UPDATE Produk 
+                        SET nama_produk = @nama, id_kategori = @idKat, harga = @harga
+                        WHERE id_produk = @id";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sqlProduk, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@nama", nama);
+                        cmd.Parameters.AddWithValue("@idKat", idKategori);
+                        cmd.Parameters.AddWithValue("@harga", (int)harga);
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Step 2: Update stock in Stocks table
+                    string sqlStock = @"UPDATE Stocks 
+                        SET jumlah_stock = @stok, timestamp = CURRENT_TIMESTAMP
+                        WHERE id_produk = @id";
+                    using (NpgsqlCommand cmd2 = new NpgsqlCommand(sqlStock, conn))
+                    {
+                        cmd2.Parameters.AddWithValue("@stok", stok);
+                        cmd2.Parameters.AddWithValue("@id", id);
+                        cmd2.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+        public void Delete(int id)
+        {
+            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            {
+                if (conn != null && conn.State == System.Data.ConnectionState.Open)
+                {
+                    // Step 1: Delete from Stocks first (FK constraint)
+                    string sqlStock = "DELETE FROM Stocks WHERE id_produk = @id";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sqlStock, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Step 2: Delete from Produk
+                    string sqlProduk = "DELETE FROM Produk WHERE id_produk = @id";
+                    using (NpgsqlCommand cmd2 = new NpgsqlCommand(sqlProduk, conn))
+                    {
+                        cmd2.Parameters.AddWithValue("@id", id);
+                        cmd2.ExecuteNonQuery();
                     }
                 }
             }

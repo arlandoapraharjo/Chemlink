@@ -34,7 +34,9 @@ namespace CHEMLINK
         public event EventHandler? LogoutEvent;
 
         public event EventHandler<ProductEventArgs>? AddProductEvent;
+        public event EventHandler<ProductEventArgs>? EditProductEvent;
         public event EventHandler<int>? DeleteProductEvent;
+        public event EventHandler? ManageCategoryEvent;
         public event EventHandler<CartItemEventArgs>? AddCartEvent;
         public event EventHandler? CheckoutEvent;
         public event EventHandler<SupplierEventArgs>? AddSupplierEvent;
@@ -45,6 +47,12 @@ namespace CHEMLINK
         public event EventHandler<UserEventArgs>? AddUserEvent;
         public event EventHandler<UserEventArgs>? UpdateUserEvent;
         public event EventHandler<int>? DeleteUserEvent;
+
+#pragma warning disable CS0067
+        public event EventHandler<CategoryEventArgs>? AddCategoryEvent;
+        public event EventHandler<CategoryEventArgs>? UpdateCategoryEvent;
+        public event EventHandler<int>? DeleteCategoryEvent;
+#pragma warning restore CS0067
 
         public MainForm()
         {
@@ -74,7 +82,9 @@ namespace CHEMLINK
         private void WireUserControlEvents()
         {
             _productCatalogControl.AddProductEvent += (s, e) => AddProductEvent?.Invoke(this, e);
+            _productCatalogControl.EditProductEvent += (s, e) => EditProductEvent?.Invoke(this, e);
             _productCatalogControl.DeleteProductEvent += (s, e) => DeleteProductEvent?.Invoke(this, e);
+            _productCatalogControl.ManageCategoryEvent += (s, e) => ManageCategoryEvent?.Invoke(this, EventArgs.Empty);
 
             _posControl.AddCartEvent += (s, e) => AddCartEvent?.Invoke(this, e);
             _posControl.CheckoutEvent += (s, e) => CheckoutEvent?.Invoke(this, e);
@@ -146,9 +156,11 @@ namespace CHEMLINK
             HighlightSidebarButton(btnDashboard);
         }
 
-        public void ShowProductCatalog(List<Product> products, bool isAdmin)
+        public void ShowProductCatalog(List<Product> products, bool isAdmin, List<Category>? categories = null)
         {
             _productCatalogControl.SetData(products, isAdmin);
+            if (categories != null)
+                _productCatalogControl.SetCategories(categories);
             SwitchControl(_productCatalogControl, "📦 Katalog Obat Pertanian");
             HighlightSidebarButton(btnProduk);
         }

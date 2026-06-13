@@ -4,14 +4,12 @@ namespace CHEMLINK.Views
     {
         private System.ComponentModel.IContainer components = null;
         public System.Windows.Forms.DataGridView dgvMain;
-        private System.Windows.Forms.Panel pnlCrud;
-        public System.Windows.Forms.TextBox txtNama;
-        public System.Windows.Forms.TextBox txtKategori;
-        public System.Windows.Forms.TextBox txtStok;
-        public System.Windows.Forms.TextBox txtHarga;
+        private System.Windows.Forms.Panel pnlToolbar;
         public System.Windows.Forms.Button btnTambah;
+        public System.Windows.Forms.Button btnEdit;
         public System.Windows.Forms.Button btnHapus;
-        private System.Windows.Forms.Label lblKelola;
+        public System.Windows.Forms.Button btnKategori;
+        private System.Windows.Forms.Label lblToolbar;
 
         protected override void Dispose(bool disposing)
         {
@@ -25,16 +23,14 @@ namespace CHEMLINK.Views
         private void InitializeComponent()
         {
             this.dgvMain = new System.Windows.Forms.DataGridView();
-            this.pnlCrud = new System.Windows.Forms.Panel();
-            this.lblKelola = new System.Windows.Forms.Label();
-            this.txtNama = new System.Windows.Forms.TextBox();
-            this.txtKategori = new System.Windows.Forms.TextBox();
-            this.txtStok = new System.Windows.Forms.TextBox();
-            this.txtHarga = new System.Windows.Forms.TextBox();
+            this.pnlToolbar = new System.Windows.Forms.Panel();
+            this.lblToolbar = new System.Windows.Forms.Label();
             this.btnTambah = new System.Windows.Forms.Button();
+            this.btnEdit = new System.Windows.Forms.Button();
             this.btnHapus = new System.Windows.Forms.Button();
+            this.btnKategori = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
-            this.pnlCrud.SuspendLayout();
+            this.pnlToolbar.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgvMain
@@ -57,101 +53,91 @@ namespace CHEMLINK.Views
             this.dgvMain.Size = new System.Drawing.Size(1070, 520);
             this.dgvMain.TabIndex = 0;
             // 
-            // pnlCrud
+            // pnlToolbar
             // 
-            this.pnlCrud.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.pnlToolbar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlCrud.BackColor = System.Drawing.Color.White;
-            this.pnlCrud.Controls.Add(this.lblKelola);
-            this.pnlCrud.Controls.Add(this.txtNama);
-            this.pnlCrud.Controls.Add(this.txtKategori);
-            this.pnlCrud.Controls.Add(this.txtStok);
-            this.pnlCrud.Controls.Add(this.txtHarga);
-            this.pnlCrud.Controls.Add(this.btnTambah);
-            this.pnlCrud.Controls.Add(this.btnHapus);
-            this.pnlCrud.Location = new System.Drawing.Point(20, 560);
-            this.pnlCrud.Name = "pnlCrud";
-            this.pnlCrud.Size = new System.Drawing.Size(1070, 60);
-            this.pnlCrud.TabIndex = 1;
+            this.pnlToolbar.BackColor = System.Drawing.Color.White;
+            this.pnlToolbar.Controls.Add(this.lblToolbar);
+            this.pnlToolbar.Controls.Add(this.btnTambah);
+            this.pnlToolbar.Controls.Add(this.btnEdit);
+            this.pnlToolbar.Controls.Add(this.btnHapus);
+            this.pnlToolbar.Controls.Add(this.btnKategori);
+            this.pnlToolbar.Location = new System.Drawing.Point(20, 560);
+            this.pnlToolbar.Name = "pnlToolbar";
+            this.pnlToolbar.Size = new System.Drawing.Size(1070, 60);
+            this.pnlToolbar.TabIndex = 1;
             // 
-            // lblKelola
+            // lblToolbar
             // 
-            this.lblKelola.AutoSize = true;
-            this.lblKelola.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblKelola.Location = new System.Drawing.Point(15, 20);
-            this.lblKelola.Name = "lblKelola";
-            this.lblKelola.Size = new System.Drawing.Size(91, 19);
-            this.lblKelola.TabIndex = 0;
-            this.lblKelola.Text = "Kelola Obat:";
-            // 
-            // txtNama
-            // 
-            this.txtNama.Location = new System.Drawing.Point(115, 17);
-            this.txtNama.Name = "txtNama";
-            this.txtNama.PlaceholderText = "Nama Obat";
-            this.txtNama.Size = new System.Drawing.Size(150, 25);
-            this.txtNama.TabIndex = 1;
-            // 
-            // txtKategori
-            // 
-            this.txtKategori.Location = new System.Drawing.Point(275, 17);
-            this.txtKategori.Name = "txtKategori";
-            this.txtKategori.PlaceholderText = "Kategori (Custom)";
-            this.txtKategori.Size = new System.Drawing.Size(150, 25);
-            this.txtKategori.TabIndex = 2;
-            // 
-            // txtStok
-            // 
-            this.txtStok.Location = new System.Drawing.Point(435, 17);
-            this.txtStok.Name = "txtStok";
-            this.txtStok.PlaceholderText = "Stok";
-            this.txtStok.Size = new System.Drawing.Size(80, 25);
-            this.txtStok.TabIndex = 3;
-            // 
-            // txtHarga
-            // 
-            this.txtHarga.Location = new System.Drawing.Point(525, 17);
-            this.txtHarga.Name = "txtHarga";
-            this.txtHarga.PlaceholderText = "Harga";
-            this.txtHarga.Size = new System.Drawing.Size(100, 25);
-            this.txtHarga.TabIndex = 4;
+            this.lblToolbar.AutoSize = true;
+            this.lblToolbar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblToolbar.Location = new System.Drawing.Point(15, 20);
+            this.lblToolbar.Name = "lblToolbar";
+            this.lblToolbar.Size = new System.Drawing.Size(91, 19);
+            this.lblToolbar.TabIndex = 0;
+            this.lblToolbar.Text = "Kelola Obat:";
             // 
             // btnTambah
             // 
             this.btnTambah.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(161)))), ((int)(((byte)(17)))));
             this.btnTambah.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTambah.ForeColor = System.Drawing.Color.White;
-            this.btnTambah.Location = new System.Drawing.Point(635, 14);
+            this.btnTambah.Location = new System.Drawing.Point(120, 14);
             this.btnTambah.Name = "btnTambah";
-            this.btnTambah.Size = new System.Drawing.Size(110, 30);
-            this.btnTambah.TabIndex = 5;
-            this.btnTambah.Text = "Tambah Obat";
+            this.btnTambah.Size = new System.Drawing.Size(130, 30);
+            this.btnTambah.TabIndex = 1;
+            this.btnTambah.Text = "+ Tambah Obat";
             this.btnTambah.UseVisualStyleBackColor = false;
+            // 
+            // btnEdit
+            // 
+            this.btnEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(118)))), ((int)(((byte)(210)))));
+            this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEdit.ForeColor = System.Drawing.Color.White;
+            this.btnEdit.Location = new System.Drawing.Point(260, 14);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(130, 30);
+            this.btnEdit.TabIndex = 2;
+            this.btnEdit.Text = "✏ Edit Obat";
+            this.btnEdit.UseVisualStyleBackColor = false;
             // 
             // btnHapus
             // 
             this.btnHapus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(67)))), ((int)(((byte)(54)))));
             this.btnHapus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHapus.ForeColor = System.Drawing.Color.White;
-            this.btnHapus.Location = new System.Drawing.Point(755, 14);
+            this.btnHapus.Location = new System.Drawing.Point(400, 14);
             this.btnHapus.Name = "btnHapus";
-            this.btnHapus.Size = new System.Drawing.Size(110, 30);
-            this.btnHapus.TabIndex = 6;
-            this.btnHapus.Text = "Hapus Obat";
+            this.btnHapus.Size = new System.Drawing.Size(130, 30);
+            this.btnHapus.TabIndex = 3;
+            this.btnHapus.Text = "🗑 Hapus Obat";
             this.btnHapus.UseVisualStyleBackColor = false;
+            // 
+            // btnKategori
+            // 
+            this.btnKategori.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(80)))), ((int)(((byte)(180)))));
+            this.btnKategori.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnKategori.ForeColor = System.Drawing.Color.White;
+            this.btnKategori.Location = new System.Drawing.Point(540, 14);
+            this.btnKategori.Name = "btnKategori";
+            this.btnKategori.Size = new System.Drawing.Size(140, 30);
+            this.btnKategori.TabIndex = 4;
+            this.btnKategori.Text = "📋 Kelola Kategori";
+            this.btnKategori.UseVisualStyleBackColor = false;
             // 
             // ProductCatalogControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(243)))), ((int)(((byte)(246)))));
-            this.Controls.Add(this.pnlCrud);
+            this.Controls.Add(this.pnlToolbar);
             this.Controls.Add(this.dgvMain);
             this.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Name = "ProductCatalogControl";
             this.Size = new System.Drawing.Size(1110, 670);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).EndInit();
-            this.pnlCrud.ResumeLayout(false);
-            this.pnlCrud.PerformLayout();
+            this.pnlToolbar.ResumeLayout(false);
+            this.pnlToolbar.PerformLayout();
             this.ResumeLayout(false);
 
         }

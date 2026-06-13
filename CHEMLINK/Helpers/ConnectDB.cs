@@ -14,7 +14,7 @@ namespace CHEMLINK.Helpers
             "Port=5432;" +
             "Username=postgres;" +
             "Password=manchmall123;" + //pw kalian
-            "Database=ChemlinkDB;"; //nama db kalian
+            "Database=Chemlink_DB;"; //nama db kalian
             
         public static NpgsqlConnection GetConn() 
         {

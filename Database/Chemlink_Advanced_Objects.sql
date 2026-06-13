@@ -182,7 +182,7 @@ CREATE OR REPLACE PROCEDURE sp_update_status_user(
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    UPDATE User
+    UPDATE Users
     SET status = p_status
     WHERE id_user = p_id_user;
     

@@ -5,7 +5,6 @@ namespace CHEMLINK.Views
         private System.ComponentModel.IContainer components = null;
         private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Button btnClose;
         public System.Windows.Forms.DataGridView dgvCategories;
         public System.Windows.Forms.TextBox txtNama;
         public System.Windows.Forms.Button btnTambah;
@@ -24,7 +23,6 @@ namespace CHEMLINK.Views
         {
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.btnClose = new System.Windows.Forms.Button();
             this.dgvCategories = new System.Windows.Forms.DataGridView();
             this.txtNama = new System.Windows.Forms.TextBox();
             this.btnTambah = new System.Windows.Forms.Button();
@@ -39,14 +37,14 @@ namespace CHEMLINK.Views
             // 
             // pnlHeader
             // 
-            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
+            this.pnlHeader.BackColor = System.Drawing.Color.Transparent;
             this.pnlHeader.Controls.Add(this.lblTitle);
-            this.pnlHeader.Controls.Add(this.btnClose);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(500, 50);
+            this.pnlHeader.Size = new System.Drawing.Size(500, 70);
             this.pnlHeader.TabIndex = 0;
+            this.pnlHeader.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlHeader_Paint);
             // 
             // lblTitle
             // 
@@ -56,24 +54,10 @@ namespace CHEMLINK.Views
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
-            this.lblTitle.Size = new System.Drawing.Size(300, 50);
+            this.lblTitle.Size = new System.Drawing.Size(300, 70);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Kelola Kategori";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // btnClose
-            // 
-            this.btnClose.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnClose.FlatAppearance.BorderSize = 0;
-            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnClose.ForeColor = System.Drawing.Color.White;
-            this.btnClose.Location = new System.Drawing.Point(450, 0);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(50, 50);
-            this.btnClose.TabIndex = 1;
-            this.btnClose.Text = "X";
-            this.btnClose.UseVisualStyleBackColor = true;
             // 
             // pnlInput
             // 
@@ -83,7 +67,7 @@ namespace CHEMLINK.Views
             this.pnlInput.Controls.Add(this.btnUbah);
             this.pnlInput.Controls.Add(this.btnHapus);
             this.pnlInput.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlInput.Location = new System.Drawing.Point(0, 50);
+            this.pnlInput.Location = new System.Drawing.Point(0, 70);
             this.pnlInput.Name = "pnlInput";
             this.pnlInput.Padding = new System.Windows.Forms.Padding(20, 10, 20, 10);
             this.pnlInput.Size = new System.Drawing.Size(500, 90);
@@ -156,7 +140,7 @@ namespace CHEMLINK.Views
             this.dgvCategories.BackgroundColor = System.Drawing.Color.White;
             this.dgvCategories.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvCategories.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvCategories.Location = new System.Drawing.Point(20, 150);
+            this.dgvCategories.Location = new System.Drawing.Point(20, 170);
             this.dgvCategories.MultiSelect = false;
             this.dgvCategories.Name = "dgvCategories";
             this.dgvCategories.ReadOnly = true;
@@ -173,7 +157,9 @@ namespace CHEMLINK.Views
             this.Controls.Add(this.pnlInput);
             this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ManageCategoryForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Kelola Kategori";

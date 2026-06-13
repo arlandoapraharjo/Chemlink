@@ -114,8 +114,6 @@ namespace CHEMLINK.Controllers
         private void ShowDashboard()
         {
             _products = _productContext.Read(); // Refresh
-            int totalProduk = _products.Count;
-            int stokKritis = _products.Count(p => p.Stock <= 5);
 
             DataTable dtNotif = new DataTable();
             dtNotif.Columns.Add("Jenis Peringatan", typeof(string));
@@ -132,7 +130,7 @@ namespace CHEMLINK.Controllers
                 dtNotif.Rows.Add("Sistem Aman", "Seluruh pasokan stok obat pertanian dalam keadaan aman.", "Normal");
             }
 
-            _view.ShowDashboardData(totalProduk, stokKritis, dtNotif);
+            _view.ShowDashboardData(_products, dtNotif);
         }
 
         private void ShowProductCatalog()

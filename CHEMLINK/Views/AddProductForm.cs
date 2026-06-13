@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using CHEMLINK.Models;
 
@@ -23,9 +25,7 @@ namespace CHEMLINK.Views
             dgvReference.Columns.Clear();
             dgvReference.DataSource = existingProducts;
 
-            btnClose.Click += (s, e) => { this.DialogResult = DialogResult.Cancel; this.Close(); };
             btnTambah.Click += BtnTambah_Click;
-            pnlHeader.MouseDown += PnlHeader_MouseDown;
         }
 
         private void BtnTambah_Click(object? sender, EventArgs e)
@@ -40,17 +40,16 @@ namespace CHEMLINK.Views
             this.Close();
         }
 
-        // Drag support
-        private System.Drawing.Point _dragStart;
-        private void PnlHeader_MouseDown(object? sender, MouseEventArgs e)
+        private void pnlHeader_Paint(object? sender, PaintEventArgs e)
         {
-            _dragStart = e.Location;
-        }
-
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
-            // only drag from header
+            using (var brush = new LinearGradientBrush(
+                pnlHeader.ClientRectangle,
+                Color.FromArgb(37, 103, 30),   // #25671E
+                Color.FromArgb(72, 161, 17),   // #48A111
+                LinearGradientMode.Horizontal))
+            {
+                e.Graphics.FillRectangle(brush, pnlHeader.ClientRectangle);
+            }
         }
     }
 }

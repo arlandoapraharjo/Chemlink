@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using CHEMLINK.Models;
 
@@ -11,7 +12,7 @@ namespace CHEMLINK.Views
         public event EventHandler<UserEventArgs>? UpdateUserEvent;
         public event EventHandler<int>? DeleteUserEvent;
 
-        private bool _isPasswordMaskVisible = false;
+        private List<User> _users = new();
 
         public UserManagementControl()
         {
@@ -19,27 +20,31 @@ namespace CHEMLINK.Views
             btnTambah.Click += BtnTambah_Click;
             btnUbah.Click += BtnUbah_Click;
             btnHapus.Click += BtnHapus_Click;
-            btnTogglePass.Click += BtnTogglePass_Click;
-            dgvMain.CellFormatting += DgvMain_CellFormatting_PasswordMask;
         }
 
         public void SetData(List<User> users, bool isAdmin)
         {
+            _users = users;
             dgvMain.DataSource = null;
             dgvMain.Columns.Clear();
             dgvMain.DataSource = users;
-            pnlCrud.Visible = isAdmin;
-            cbRole.SelectedIndex = 1;
+            pnlActions.Visible = isAdmin;
         }
 
         private void BtnTambah_Click(object? sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtUser.Text) || string.IsNullOrWhiteSpace(txtPass.Text))
+            using (var form = new AddUserForm(_users))
             {
-                MessageBox.Show("Username dan Password wajib diisi untuk user baru.", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
+                {
+                    AddUserEvent?.Invoke(this, new UserEventArgs
+                    {
+                        Username = form.NewUsername,
+                        Password = form.NewPassword,
+                        Role = form.NewRole
+                    });
+                }
             }
-            AddUserEvent?.Invoke(this, new UserEventArgs { Username = txtUser.Text, Password = txtPass.Text, Role = cbRole.SelectedItem?.ToString() ?? "Kasir" });
         }
 
         private void BtnUbah_Click(object? sender, EventArgs e)
@@ -50,15 +55,13 @@ namespace CHEMLINK.Views
                 return;
             }
 
-            // Read current data from the selected row
             string currentUsername = dgvMain.CurrentRow.Cells["Username"].Value?.ToString() ?? "";
             string currentRole = dgvMain.CurrentRow.Cells["Role"].Value?.ToString() ?? "Kasir";
 
-            // Open the dedicated edit dialog pre-filled with current data
             using (var dialog = new EditUserDialog())
             {
                 dialog.EditUsername = currentUsername;
-                dialog.EditPassword = "";  // empty by default; user fills only if changing
+                dialog.EditPassword = "";
                 dialog.EditRole = currentRole;
 
                 if (dialog.ShowDialog(this.FindForm()) == DialogResult.OK)
@@ -76,26 +79,25 @@ namespace CHEMLINK.Views
 
         private void BtnHapus_Click(object? sender, EventArgs e)
         {
-            if (dgvMain.CurrentRow != null && dgvMain.CurrentRow.Cells["Id"].Value is int id)
+            if (dgvMain.CurrentRow == null || dgvMain.CurrentRow.Cells["Id"].Value is not int id)
             {
-                DeleteUserEvent?.Invoke(this, id);
+                MessageBox.Show("Pilih baris user yang ingin dihapus terlebih dahulu.", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
-        }
 
-        private void BtnTogglePass_Click(object? sender, EventArgs e)
-        {
-            _isPasswordMaskVisible = !_isPasswordMaskVisible;
-            dgvMain.Refresh();
-        }
-
-        private void DgvMain_CellFormatting_PasswordMask(object? sender, DataGridViewCellFormattingEventArgs e)
-        {
-            if (dgvMain.Columns[e.ColumnIndex].Name == "Password" && e.Value != null)
+            // Find the user object
+            var userToDelete = _users.FirstOrDefault(u => u.Id == id);
+            if (userToDelete == null)
             {
-                if (!_isPasswordMaskVisible)
+                MessageBox.Show("Data user tidak ditemukan.", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using (var form = new DeleteUserForm(userToDelete, _users))
+            {
+                if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
-                    e.Value = new string('*', 8);
-                    e.FormattingApplied = true;
+                    DeleteUserEvent?.Invoke(this, id);
                 }
             }
         }

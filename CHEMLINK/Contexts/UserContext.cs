@@ -14,7 +14,7 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "SELECT id_user, username, password, Role FROM \"User\" WHERE username = @user AND status = 'Active'";
+                    string sql = "SELECT id_user, username, password, Role FROM \"Users\" WHERE username = @user AND status = 'Active'";
 
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
@@ -50,7 +50,7 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "SELECT id_user, username, password, Role FROM \"User\" WHERE status = 'Active' ORDER BY id_user ASC";
+                    string sql = "SELECT id_user, username, password, Role FROM \"Users\" WHERE status = 'Active' ORDER BY id_user ASC";
 
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
@@ -81,7 +81,7 @@ namespace CHEMLINK.Contexts
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
                     // Check if an inactive user with the same username exists
-                    string checkSql = "SELECT id_user FROM \"User\" WHERE username = @user AND status = 'Inactive'";
+                    string checkSql = "SELECT id_user FROM \"Users\" WHERE username = @user AND status = 'Inactive'";
                     using (NpgsqlCommand checkCmd = new NpgsqlCommand(checkSql, conn))
                     {
                         checkCmd.Parameters.AddWithValue("@user", user.Username);
@@ -90,7 +90,7 @@ namespace CHEMLINK.Contexts
                         if (existingId != null)
                         {
                             // Reactivate the soft-deleted user with new data
-                            string reactivateSql = "UPDATE \"User\" SET password = @pass, Role = @role, status = 'Active' WHERE id_user = @id";
+                            string reactivateSql = "UPDATE \"Users\" SET password = @pass, Role = @role, status = 'Active' WHERE id_user = @id";
                             using (NpgsqlCommand updateCmd = new NpgsqlCommand(reactivateSql, conn))
                             {
                                 updateCmd.Parameters.AddWithValue("@id", Convert.ToInt32(existingId));
@@ -103,7 +103,7 @@ namespace CHEMLINK.Contexts
                     }
 
                     // No inactive duplicate — insert as new user
-                    string sql = "INSERT INTO \"User\" (username, password, Role, status) VALUES (@user, @pass, @role, 'Active')";
+                    string sql = "INSERT INTO \"Users\" (username, password, Role, status) VALUES (@user, @pass, @role, 'Active')";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@user", user.Username);
@@ -124,11 +124,11 @@ namespace CHEMLINK.Contexts
                     string sql;
                     if (!string.IsNullOrWhiteSpace(user.Password))
                     {
-                        sql = "UPDATE \"User\" SET username = @user, password = @pass, Role = @role WHERE id_user = @id";
+                        sql = "UPDATE \"Users\" SET username = @user, password = @pass, Role = @role WHERE id_user = @id";
                     }
                     else
                     {
-                        sql = "UPDATE \"User\" SET username = @user, Role = @role WHERE id_user = @id";
+                        sql = "UPDATE \"Users\" SET username = @user, Role = @role WHERE id_user = @id";
                     }
 
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
@@ -154,7 +154,7 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "UPDATE \"User\" SET status = 'Inactive' WHERE id_user = @id";
+                    string sql = "UPDATE \"Users\" SET status = 'Inactive' WHERE id_user = @id";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@id", id);

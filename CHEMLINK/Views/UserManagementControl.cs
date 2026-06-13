@@ -44,14 +44,33 @@ namespace CHEMLINK.Views
 
         private void BtnUbah_Click(object? sender, EventArgs e)
         {
-            if (dgvMain.CurrentRow != null && dgvMain.CurrentRow.Cells["Id"].Value is int id)
+            if (dgvMain.CurrentRow == null || dgvMain.CurrentRow.Cells["Id"].Value is not int id)
             {
-                if (string.IsNullOrWhiteSpace(txtUser.Text))
+                MessageBox.Show("Pilih baris user yang ingin diedit terlebih dahulu.", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Read current data from the selected row
+            string currentUsername = dgvMain.CurrentRow.Cells["Username"].Value?.ToString() ?? "";
+            string currentRole = dgvMain.CurrentRow.Cells["Role"].Value?.ToString() ?? "Kasir";
+
+            // Open the dedicated edit dialog pre-filled with current data
+            using (var dialog = new EditUserDialog())
+            {
+                dialog.EditUsername = currentUsername;
+                dialog.EditPassword = "";  // empty by default; user fills only if changing
+                dialog.EditRole = currentRole;
+
+                if (dialog.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
-                    MessageBox.Show("Username wajib diisi saat edit.", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
+                    UpdateUserEvent?.Invoke(this, new UserEventArgs
+                    {
+                        Id = id,
+                        Username = dialog.EditUsername,
+                        Password = dialog.EditPassword,
+                        Role = dialog.EditRole
+                    });
                 }
-                UpdateUserEvent?.Invoke(this, new UserEventArgs { Id = id, Username = txtUser.Text, Password = txtPass.Text, Role = cbRole.SelectedItem?.ToString() ?? "Kasir" });
             }
         }
 

@@ -17,7 +17,7 @@ namespace CHEMLINK
         private System.Windows.Forms.Button btnLaporan;
         private System.Windows.Forms.Button btnUser;
         private System.Windows.Forms.Button btnLogout;
-        private System.Windows.Forms.Label lblLogo;
+        private System.Windows.Forms.PictureBox picLogo;
 
         protected override void Dispose(bool disposing)
         {
@@ -31,7 +31,7 @@ namespace CHEMLINK
         private void InitializeComponent()
         {
             this.sidebarPanel = new System.Windows.Forms.Panel();
-            this.lblLogo = new System.Windows.Forms.Label();
+            this.picLogo = new System.Windows.Forms.PictureBox();
             this.btnDashboard = new System.Windows.Forms.Button();
             this.btnProduk = new System.Windows.Forms.Button();
             this.btnTransaksi = new System.Windows.Forms.Button();
@@ -43,6 +43,7 @@ namespace CHEMLINK
             this.lblUser = new System.Windows.Forms.Label();
             this.mainContentPanel = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             this.sidebarPanel.SuspendLayout();
             this.headerPanel.SuspendLayout();
             this.mainContentPanel.SuspendLayout();
@@ -50,7 +51,7 @@ namespace CHEMLINK
             // 
             // sidebarPanel
             // 
-            this.sidebarPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
+            this.sidebarPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(103)))), ((int)(((byte)(30)))));
             this.sidebarPanel.Controls.Add(this.btnDashboard);
             this.sidebarPanel.Controls.Add(this.btnProduk);
             this.sidebarPanel.Controls.Add(this.btnTransaksi);
@@ -58,24 +59,24 @@ namespace CHEMLINK
             this.sidebarPanel.Controls.Add(this.btnLaporan);
             this.sidebarPanel.Controls.Add(this.btnUser);
             this.sidebarPanel.Controls.Add(this.btnLogout);
-            this.sidebarPanel.Controls.Add(this.lblLogo);
+            this.sidebarPanel.Controls.Add(this.picLogo);
             this.sidebarPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.sidebarPanel.Location = new System.Drawing.Point(0, 0);
             this.sidebarPanel.Name = "sidebarPanel";
             this.sidebarPanel.Size = new System.Drawing.Size(230, 750);
             this.sidebarPanel.TabIndex = 0;
+            this.sidebarPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.sidebarPanel_Paint);
             // 
-            // lblLogo
+            // picLogo
             // 
-            this.lblLogo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblLogo.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblLogo.ForeColor = System.Drawing.Color.White;
-            this.lblLogo.Location = new System.Drawing.Point(0, 0);
-            this.lblLogo.Name = "lblLogo";
-            this.lblLogo.Size = new System.Drawing.Size(230, 70);
-            this.lblLogo.TabIndex = 0;
-            this.lblLogo.Text = "🌿 ChemLink";
-            this.lblLogo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.picLogo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.picLogo.BackColor = System.Drawing.Color.Transparent;
+            this.picLogo.Location = new System.Drawing.Point(0, 0);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new System.Drawing.Size(230, 80);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picLogo.TabIndex = 0;
+            this.picLogo.TabStop = false;
             // 
             // btnDashboard
             // 
@@ -226,7 +227,7 @@ namespace CHEMLINK
             // 
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(103)))), ((int)(((byte)(30)))));
             this.lblTitle.Location = new System.Drawing.Point(20, 20);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(880, 40);
@@ -246,6 +247,7 @@ namespace CHEMLINK
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ChemLink - Manajemen Kios Pertanian v2.0";
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             this.sidebarPanel.ResumeLayout(false);
             this.headerPanel.ResumeLayout(false);
             this.mainContentPanel.ResumeLayout(false);

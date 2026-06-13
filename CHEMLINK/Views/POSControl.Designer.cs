@@ -48,6 +48,8 @@ namespace CHEMLINK.Views
             this.dgvMain.AllowUserToAddRows = false;
             this.dgvMain.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvMain.BackgroundColor = System.Drawing.Color.White;
+            this.dgvMain.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(161)))), ((int)(((byte)(17)))));
+            this.dgvMain.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
             this.dgvMain.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMain.Location = new System.Drawing.Point(20, 280);
@@ -124,7 +126,7 @@ namespace CHEMLINK.Views
             // 
             // btnAddCart
             // 
-            this.btnAddCart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
+            this.btnAddCart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(161)))), ((int)(((byte)(17)))));
             this.btnAddCart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddCart.ForeColor = System.Drawing.Color.White;
             this.btnAddCart.Location = new System.Drawing.Point(605, 14);
@@ -154,6 +156,8 @@ namespace CHEMLINK.Views
             this.dgvCart.AllowUserToAddRows = false;
             this.dgvCart.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvCart.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.dgvCart.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(161)))), ((int)(((byte)(17)))));
+            this.dgvCart.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
             this.dgvCart.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCart.Location = new System.Drawing.Point(15, 60);
             this.dgvCart.Name = "dgvCart";

@@ -238,6 +238,7 @@ namespace CHEMLINK
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(243)))), ((int)(((byte)(246)))));
             this.ClientSize = new System.Drawing.Size(1150, 750);
+            this.MinimumSize = new System.Drawing.Size(1000, 650);
             this.Controls.Add(this.mainContentPanel);
             this.Controls.Add(this.headerPanel);
             this.Controls.Add(this.sidebarPanel);

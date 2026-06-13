@@ -19,11 +19,13 @@ namespace CHEMLINK.Controllers
         private readonly SupplierContext _supplierContext;
         private readonly UserContext _userContext;
         private readonly OrderContext _orderContext;
+        private readonly CategoryContext _categoryContext;
 
         // In-Memory state for the active session (still useful for cart)
         private List<Product> _products;
         private List<Supplier> _suppliers;
         private List<User> _users;
+        private List<Category> _categories;
         private readonly List<CartItem> _cart;
 
         public UserController(MainForm view, User user)
@@ -35,10 +37,12 @@ namespace CHEMLINK.Controllers
             _supplierContext = new SupplierContext();
             _userContext = new UserContext();
             _orderContext = new OrderContext();
+            _categoryContext = new CategoryContext();
 
             _products = _productContext.Read();
             _suppliers = _supplierContext.Read();
             _users = _userContext.Read();
+            _categories = _categoryContext.Read();
             _cart = new List<CartItem>();
 
             _view.SetActiveUser(_currentUser.Username, _currentUser.Role);
@@ -54,12 +58,19 @@ namespace CHEMLINK.Controllers
 
             // Wire Actions
             _view.AddProductEvent += HandleAddProduct;
+            _view.EditProductEvent += HandleEditProduct;
             _view.DeleteProductEvent += HandleDeleteProduct;
+            _view.ManageCategoryEvent += HandleManageCategory;
             _view.AddCartEvent += HandleAddCart;
             _view.CheckoutEvent += HandleCheckout;
             _view.AddSupplierEvent += HandleAddSupplier;
             _view.SearchProductEvent += HandleSearchProduct;
             _view.FilterCategoryEvent += HandleFilterCategory;
+
+            // Category CRUD
+            _view.AddCategoryEvent += HandleAddCategory;
+            _view.UpdateCategoryEvent += HandleUpdateCategory;
+            _view.DeleteCategoryEvent += HandleDeleteCategory;
 
             // User CRUD
             _view.AddUserEvent += HandleAddUser;
@@ -96,20 +107,75 @@ namespace CHEMLINK.Controllers
         private void ShowProductCatalog()
         {
             _products = _productContext.Read();
-            _view.ShowProductCatalog(_products, _currentUser.Role == "Admin");
+            _categories = _categoryContext.Read();
+            _view.ShowProductCatalog(_products, _currentUser.Role == "Admin", _categories);
         }
 
         private void HandleAddProduct(object? sender, ProductEventArgs e)
         {
-            _productContext.Create(e.Name, e.Category, e.Stock, e.Price);
+            int idKategori = 0;
+            foreach (var cat in _categories)
+            {
+                if (cat.Name == e.Category)
+                {
+                    idKategori = cat.Id;
+                    break;
+                }
+            }
+            _productContext.Create(e.Name, idKategori, e.Stock, e.Price);
             _view.ShowMessage("Obat pertanian berhasil ditambahkan!");
+            ShowProductCatalog();
+        }
+
+        private void HandleEditProduct(object? sender, ProductEventArgs e)
+        {
+            int idKategori = 0;
+            foreach (var cat in _categories)
+            {
+                if (cat.Name == e.Category)
+                {
+                    idKategori = cat.Id;
+                    break;
+                }
+            }
+            _productContext.Update(e.Id, e.Name, idKategori, e.Stock, e.Price);
+            _view.ShowMessage("Data obat berhasil diupdate!");
             ShowProductCatalog();
         }
 
         private void HandleDeleteProduct(object? sender, int id)
         {
-            _view.ShowMessage("Obat berhasil dihapus (simulasi).");
+            _productContext.Delete(id);
+            _view.ShowMessage("Obat berhasil dihapus.");
             ShowProductCatalog();
+        }
+
+        private void HandleManageCategory(object? sender, EventArgs e)
+        {
+            _categories = _categoryContext.Read();
+            using (var form = new ManageCategoryForm(_categories))
+            {
+                form.AddCategoryEvent += (s, args) =>
+                {
+                    _categoryContext.Create(args.Name);
+                    _categories = _categoryContext.Read();
+                    form.LoadCategories(_categories);
+                };
+                form.UpdateCategoryEvent += (s, args) =>
+                {
+                    _categoryContext.Update(args.Id, args.Name);
+                    _categories = _categoryContext.Read();
+                    form.LoadCategories(_categories);
+                };
+                form.DeleteCategoryEvent += (s, id) =>
+                {
+                    _categoryContext.Delete(id);
+                    _categories = _categoryContext.Read();
+                    form.LoadCategories(_categories);
+                };
+                form.ShowDialog(_view);
+            }
+            ShowProductCatalog(); // Refresh categories in product catalog
         }
 
         private string _currentCategoryFilter = "";
@@ -282,6 +348,24 @@ namespace CHEMLINK.Controllers
             _userContext.Delete(id);
             _view.ShowMessage("User berhasil dihapus!");
             ShowUserManagement();
+        }
+
+        private void HandleAddCategory(object? sender, CategoryEventArgs e)
+        {
+            _categoryContext.Create(e.Name);
+            _categories = _categoryContext.Read();
+        }
+
+        private void HandleUpdateCategory(object? sender, CategoryEventArgs e)
+        {
+            _categoryContext.Update(e.Id, e.Name);
+            _categories = _categoryContext.Read();
+        }
+
+        private void HandleDeleteCategory(object? sender, int id)
+        {
+            _categoryContext.Delete(id);
+            _categories = _categoryContext.Read();
         }
     }
 }

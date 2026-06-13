@@ -9,6 +9,9 @@ namespace CHEMLINK.Views
         public System.Windows.Forms.TextBox txtTelp;
         public System.Windows.Forms.TextBox txtAlamat;
         public System.Windows.Forms.Button btnAddSup;
+        public System.Windows.Forms.Button btnEditSup;
+        public System.Windows.Forms.Button btnDeleteSup;
+        public System.Windows.Forms.Button btnToggleEdit;
 
         protected override void Dispose(bool disposing)
         {
@@ -21,100 +24,187 @@ namespace CHEMLINK.Views
 
         private void InitializeComponent()
         {
-            this.dgvMain = new System.Windows.Forms.DataGridView();
-            this.pnlCrud = new System.Windows.Forms.Panel();
-            this.txtNamaSup = new System.Windows.Forms.TextBox();
-            this.txtTelp = new System.Windows.Forms.TextBox();
-            this.txtAlamat = new System.Windows.Forms.TextBox();
-            this.btnAddSup = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
-            this.pnlCrud.SuspendLayout();
-            this.SuspendLayout();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            dgvMain = new DataGridView();
+            pnlCrud = new Panel();
+            lblKelola = new Label();
+            btnDelSup1 = new Button();
+            btnEditSup1 = new Button();
+            txtNamaSup = new TextBox();
+            txtTelp = new TextBox();
+            txtAlamat = new TextBox();
+            btnAddSup = new Button();
+            btnEditSup = new Button();
+            btnDeleteSup = new Button();
+            btnToggleEdit = new Button();
+            ((System.ComponentModel.ISupportInitialize)dgvMain).BeginInit();
+            pnlCrud.SuspendLayout();
+            SuspendLayout();
             // 
             // dgvMain
             // 
-            this.dgvMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvMain.AllowUserToAddRows = false;
-            this.dgvMain.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvMain.BackgroundColor = System.Drawing.Color.White;
-            this.dgvMain.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(161)))), ((int)(((byte)(17)))));
-            this.dgvMain.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
-            this.dgvMain.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMain.Location = new System.Drawing.Point(20, 20);
-            this.dgvMain.MultiSelect = false;
-            this.dgvMain.Name = "dgvMain";
-            this.dgvMain.ReadOnly = true;
-            this.dgvMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMain.Size = new System.Drawing.Size(1070, 520);
-            this.dgvMain.TabIndex = 0;
+            dgvMain.AllowUserToAddRows = false;
+            dgvMain.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvMain.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvMain.BackgroundColor = Color.White;
+            dgvMain.BorderStyle = BorderStyle.None;
+            dgvMain.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(72, 161, 17);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            dgvMain.DefaultCellStyle = dataGridViewCellStyle1;
+            dgvMain.Location = new Point(20, 20);
+            dgvMain.MultiSelect = false;
+            dgvMain.Name = "dgvMain";
+            dgvMain.ReadOnly = true;
+            dgvMain.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvMain.Size = new Size(1070, 520);
+            dgvMain.TabIndex = 0;
             // 
             // pnlCrud
             // 
-            this.pnlCrud.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlCrud.BackColor = System.Drawing.Color.White;
-            this.pnlCrud.Controls.Add(this.txtNamaSup);
-            this.pnlCrud.Controls.Add(this.txtTelp);
-            this.pnlCrud.Controls.Add(this.txtAlamat);
-            this.pnlCrud.Controls.Add(this.btnAddSup);
-            this.pnlCrud.Location = new System.Drawing.Point(20, 560);
-            this.pnlCrud.Name = "pnlCrud";
-            this.pnlCrud.Size = new System.Drawing.Size(1070, 60);
-            this.pnlCrud.TabIndex = 1;
+            pnlCrud.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pnlCrud.BackColor = Color.White;
+            pnlCrud.Controls.Add(lblKelola);
+            pnlCrud.Controls.Add(btnDelSup1);
+            pnlCrud.Controls.Add(btnEditSup1);
+            pnlCrud.Controls.Add(txtNamaSup);
+            pnlCrud.Controls.Add(txtTelp);
+            pnlCrud.Controls.Add(txtAlamat);
+            pnlCrud.Controls.Add(btnAddSup);
+            pnlCrud.Location = new Point(20, 560);
+            pnlCrud.Name = "pnlCrud";
+            pnlCrud.Size = new Size(1070, 88);
+            pnlCrud.TabIndex = 1;
+            // 
+            // lblKelola
+            // 
+            lblKelola.AutoSize = true;
+            lblKelola.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblKelola.Location = new Point(13, 21);
+            lblKelola.Name = "lblKelola";
+            lblKelola.Size = new Size(116, 19);
+            lblKelola.TabIndex = 6;
+            lblKelola.Text = "Kelola Supplier:";
+            // 
+            // btnDelSup1
+            // 
+            btnDelSup1.BackColor = Color.FromArgb(244, 67, 54);
+            btnDelSup1.FlatStyle = FlatStyle.Flat;
+            btnDelSup1.ForeColor = Color.White;
+            btnDelSup1.Location = new Point(905, 12);
+            btnDelSup1.Name = "btnDelSup1";
+            btnDelSup1.Size = new Size(142, 35);
+            btnDelSup1.TabIndex = 5;
+            btnDelSup1.Text = "Hapus Supplier";
+            btnDelSup1.UseVisualStyleBackColor = false;
+            // 
+            // btnEditSup1
+            // 
+            btnEditSup1.BackColor = Color.FromArgb(33, 150, 243);
+            btnEditSup1.FlatStyle = FlatStyle.Flat;
+            btnEditSup1.ForeColor = Color.White;
+            btnEditSup1.Location = new Point(752, 12);
+            btnEditSup1.Name = "btnEditSup1";
+            btnEditSup1.Size = new Size(142, 35);
+            btnEditSup1.TabIndex = 4;
+            btnEditSup1.Text = "Edit Supplier";
+            btnEditSup1.UseVisualStyleBackColor = false;
             // 
             // txtNamaSup
             // 
-            this.txtNamaSup.Location = new System.Drawing.Point(15, 17);
-            this.txtNamaSup.Name = "txtNamaSup";
-            this.txtNamaSup.PlaceholderText = "Nama Supplier";
-            this.txtNamaSup.Size = new System.Drawing.Size(150, 25);
-            this.txtNamaSup.TabIndex = 0;
+            txtNamaSup.Location = new Point(136, 17);
+            txtNamaSup.Name = "txtNamaSup";
+            txtNamaSup.PlaceholderText = "Nama Supplier";
+            txtNamaSup.Size = new Size(150, 25);
+            txtNamaSup.TabIndex = 0;
             // 
             // txtTelp
             // 
-            this.txtTelp.Location = new System.Drawing.Point(180, 17);
-            this.txtTelp.Name = "txtTelp";
-            this.txtTelp.PlaceholderText = "No Telepon";
-            this.txtTelp.Size = new System.Drawing.Size(120, 25);
-            this.txtTelp.TabIndex = 1;
+            txtTelp.Location = new Point(301, 17);
+            txtTelp.Name = "txtTelp";
+            txtTelp.PlaceholderText = "No Telepon";
+            txtTelp.Size = new Size(120, 25);
+            txtTelp.TabIndex = 1;
             // 
             // txtAlamat
             // 
-            this.txtAlamat.Location = new System.Drawing.Point(315, 17);
-            this.txtAlamat.Name = "txtAlamat";
-            this.txtAlamat.PlaceholderText = "Alamat";
-            this.txtAlamat.Size = new System.Drawing.Size(150, 25);
-            this.txtAlamat.TabIndex = 2;
+            txtAlamat.Location = new Point(436, 17);
+            txtAlamat.Name = "txtAlamat";
+            txtAlamat.PlaceholderText = "Alamat";
+            txtAlamat.Size = new Size(150, 25);
+            txtAlamat.TabIndex = 2;
             // 
             // btnAddSup
             // 
-            this.btnAddSup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(161)))), ((int)(((byte)(17)))));
-            this.btnAddSup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddSup.ForeColor = System.Drawing.Color.White;
-            this.btnAddSup.Location = new System.Drawing.Point(480, 12);
-            this.btnAddSup.Name = "btnAddSup";
-            this.btnAddSup.Size = new System.Drawing.Size(200, 35);
-            this.btnAddSup.TabIndex = 3;
-            this.btnAddSup.Text = "Tambahkan Supplier";
-            this.btnAddSup.UseVisualStyleBackColor = false;
+            btnAddSup.BackColor = Color.FromArgb(72, 161, 17);
+            btnAddSup.FlatStyle = FlatStyle.Flat;
+            btnAddSup.ForeColor = Color.White;
+            btnAddSup.Location = new Point(599, 12);
+            btnAddSup.Name = "btnAddSup";
+            btnAddSup.Size = new Size(142, 35);
+            btnAddSup.TabIndex = 3;
+            btnAddSup.Text = "Tambahkan Supplier";
+            btnAddSup.UseVisualStyleBackColor = false;
+            // 
+            // btnEditSup
+            // 
+            btnEditSup.BackColor = Color.FromArgb(33, 150, 243);
+            btnEditSup.FlatStyle = FlatStyle.Flat;
+            btnEditSup.ForeColor = Color.White;
+            btnEditSup.Location = new Point(690, 12);
+            btnEditSup.Name = "btnEditSup";
+            btnEditSup.Size = new Size(110, 35);
+            btnEditSup.TabIndex = 4;
+            btnEditSup.Text = "Edit Supplier";
+            btnEditSup.UseVisualStyleBackColor = false;
+            // 
+            // btnDeleteSup
+            // 
+            btnDeleteSup.BackColor = Color.FromArgb(244, 67, 54);
+            btnDeleteSup.FlatStyle = FlatStyle.Flat;
+            btnDeleteSup.ForeColor = Color.White;
+            btnDeleteSup.Location = new Point(810, 12);
+            btnDeleteSup.Name = "btnDeleteSup";
+            btnDeleteSup.Size = new Size(110, 35);
+            btnDeleteSup.TabIndex = 5;
+            btnDeleteSup.Text = "Hapus Supplier";
+            btnDeleteSup.UseVisualStyleBackColor = false;
+            // 
+            // btnToggleEdit
+            // 
+            btnToggleEdit.BackColor = Color.Gray;
+            btnToggleEdit.FlatStyle = FlatStyle.Flat;
+            btnToggleEdit.ForeColor = Color.White;
+            btnToggleEdit.Location = new Point(930, 12);
+            btnToggleEdit.Name = "btnToggleEdit";
+            btnToggleEdit.Size = new Size(120, 35);
+            btnToggleEdit.TabIndex = 6;
+            btnToggleEdit.Text = "Toggle Edit/Delete";
+            btnToggleEdit.UseVisualStyleBackColor = false;
             // 
             // SupplierManagementControl
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(243)))), ((int)(((byte)(246)))));
-            this.Controls.Add(this.pnlCrud);
-            this.Controls.Add(this.dgvMain);
-            this.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.Name = "SupplierManagementControl";
-            this.Size = new System.Drawing.Size(1110, 670);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).EndInit();
-            this.pnlCrud.ResumeLayout(false);
-            this.pnlCrud.PerformLayout();
-            this.ResumeLayout(false);
+            AutoScaleMode = AutoScaleMode.None;
+            BackColor = Color.FromArgb(240, 243, 246);
+            Controls.Add(pnlCrud);
+            Controls.Add(dgvMain);
+            Font = new Font("Segoe UI", 10F);
+            Name = "SupplierManagementControl";
+            Size = new Size(1110, 670);
+            ((System.ComponentModel.ISupportInitialize)dgvMain).EndInit();
+            pnlCrud.ResumeLayout(false);
+            pnlCrud.PerformLayout();
+            ResumeLayout(false);
 
         }
+
+        public Button btnEditSup1;
+        public Button btnDelSup1;
+        private Label lblKelola;
     }
 }

@@ -40,6 +40,8 @@ namespace CHEMLINK
         public event EventHandler<CartItemEventArgs>? AddCartEvent;
         public event EventHandler? CheckoutEvent;
         public event EventHandler<SupplierEventArgs>? AddSupplierEvent;
+        public event EventHandler<SupplierEventArgs>? UpdateSupplierEvent;
+        public event EventHandler<int>? DeleteSupplierEvent;
         public event EventHandler<string>? SearchProductEvent;
         public event EventHandler<string>? FilterCategoryEvent;
 
@@ -92,6 +94,8 @@ namespace CHEMLINK
             _posControl.FilterCategoryEvent += (s, e) => FilterCategoryEvent?.Invoke(this, e);
 
             _supplierManagementControl.AddSupplierEvent += (s, e) => AddSupplierEvent?.Invoke(this, e);
+            _supplierManagementControl.UpdateSupplierEvent += (s, e) => UpdateSupplierEvent?.Invoke(this, e);
+            _supplierManagementControl.DeleteSupplierEvent += (s, e) => DeleteSupplierEvent?.Invoke(this, e);
 
             _userManagementControl.AddUserEvent += (s, e) => AddUserEvent?.Invoke(this, e);
             _userManagementControl.UpdateUserEvent += (s, e) => UpdateUserEvent?.Invoke(this, e);

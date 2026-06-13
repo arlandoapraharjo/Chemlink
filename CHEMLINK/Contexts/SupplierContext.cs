@@ -26,7 +26,7 @@ namespace CHEMLINK.Contexts
                             {
                                 Supplier supplier = new Supplier();
                                 supplier.Id = Convert.ToInt32(dr["id_supplier"]);
-                                 supplier.Name = dr["nama_perusahaan"].ToString() ?? "";
+                                supplier.Name = dr["nama_perusahaan"].ToString() ?? "";
                                 supplier.Phone = dr["no_telp"] != DBNull.Value ? dr["no_telp"].ToString() ?? "" : "";
                                 supplier.Address = dr["kota_supplier"] != DBNull.Value ? dr["kota_supplier"].ToString() ?? "" : "";
 
@@ -54,7 +54,43 @@ namespace CHEMLINK.Contexts
                         cmd.Parameters.AddWithValue("@telp", string.IsNullOrWhiteSpace(supplier.Phone) ? DBNull.Value : supplier.Phone);
                         cmd.Parameters.AddWithValue("@email", DBNull.Value);
                         cmd.Parameters.AddWithValue("@alamat", string.IsNullOrWhiteSpace(supplier.Address) ? DBNull.Value : supplier.Address);
-                        cmd.Parameters.AddWithValue("@kota", DBNull.Value);
+                        // ensure city/kota parameter is also populated from Address so kota_supplier is set by the procedure
+                        cmd.Parameters.AddWithValue("@kota", string.IsNullOrWhiteSpace(supplier.Address) ? DBNull.Value : supplier.Address);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+        public void Update(int id, Supplier supplier)
+        {
+            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            {
+                if (conn != null && conn.State == System.Data.ConnectionState.Open)
+                {
+                    string sql = @"UPDATE Supplier SET nama_perusahaan = @nama, no_telp = @telp, kota_supplier = @alamat WHERE id_supplier = @id";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@nama", supplier.Name ?? "");
+                        cmd.Parameters.AddWithValue("@telp", string.IsNullOrWhiteSpace(supplier.Phone) ? DBNull.Value : supplier.Phone);
+                        cmd.Parameters.AddWithValue("@alamat", string.IsNullOrWhiteSpace(supplier.Address) ? DBNull.Value : supplier.Address);
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+        public void Delete(int id)
+        {
+            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            {
+                if (conn != null && conn.State == System.Data.ConnectionState.Open)
+                {
+                    string sql = "DELETE FROM Supplier WHERE id_supplier = @id";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
                         cmd.ExecuteNonQuery();
                     }
                 }

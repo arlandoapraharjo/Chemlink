@@ -6,34 +6,30 @@ using System.Windows.Forms;
 
 namespace CHEMLINK.Views
 {
-    public partial class EditUserDialog : Form
+    public partial class EditSupplierDialog : Form
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string EditUsername
+        public string EditName
         {
             get => txtEditUsername.Text;
             set => txtEditUsername.Text = value;
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string EditPassword
+        public string EditPhone
         {
             get => txtEditPassword.Text;
             set => txtEditPassword.Text = value;
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string EditRole
+        public string EditAddress
         {
-            get => cbEditRole.SelectedItem?.ToString() ?? "Kasir";
-            set
-            {
-                int idx = cbEditRole.Items.IndexOf(value);
-                cbEditRole.SelectedIndex = idx >= 0 ? idx : 1;
-            }
+            get => txtEditAddress.Text;
+            set => txtEditAddress.Text = value;
         }
 
-        public EditUserDialog()
+        public EditSupplierDialog()
         {
             InitializeComponent();
             btnSave.Click += BtnSave_Click;
@@ -44,7 +40,7 @@ namespace CHEMLINK.Views
         {
             if (string.IsNullOrWhiteSpace(txtEditUsername.Text))
             {
-                MessageBox.Show("Username tidak boleh kosong.", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Nama supplier tidak boleh kosong.", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             this.DialogResult = DialogResult.OK;
@@ -73,9 +69,9 @@ namespace CHEMLINK.Views
             using (var iconFont = new Font("Segoe UI", 18F, FontStyle.Bold))
             using (var textFont = new Font("Segoe UI", 13F, FontStyle.Bold))
             {
-                TextRenderer.DrawText(e.Graphics, "✏️", iconFont,
+                TextRenderer.DrawText(e.Graphics, "🏷️", iconFont,
                     new Point(20, 18), Color.White);
-                TextRenderer.DrawText(e.Graphics, "Edit Akun Operator", textFont,
+                TextRenderer.DrawText(e.Graphics, "Edit Data Supplier", textFont,
                     new Point(62, 24), Color.White);
             }
         }
@@ -111,7 +107,5 @@ namespace CHEMLINK.Views
         private void txtEditPassword_GotFocus(object? sender, EventArgs e) => pnlPassword.Invalidate();
         private void txtEditPassword_LostFocus(object? sender, EventArgs e) => pnlPassword.Invalidate();
         private void pnlPassword_Click(object? sender, EventArgs e) => txtEditPassword.Focus();
-
-
     }
 }

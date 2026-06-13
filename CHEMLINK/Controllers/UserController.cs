@@ -252,10 +252,21 @@ namespace CHEMLINK.Controllers
 
         private void HandleAddUser(object? sender, UserEventArgs e)
         {
-            var newUser = new User { Username = e.Username, Password = e.Password, Role = e.Role };
-            _userContext.Create(newUser);
-            _view.ShowMessage("User berhasil ditambahkan!");
-            ShowUserManagement();
+            try
+            {
+                var newUser = new User { Username = e.Username, Password = e.Password, Role = e.Role };
+                _userContext.Create(newUser);
+                _view.ShowMessage("User berhasil ditambahkan!");
+                ShowUserManagement();
+            }
+            catch (PostgresException ex) when (ex.SqlState == "23505")
+            {
+                _view.ShowMessage("Username sudah terdaftar. Gunakan username lain.");
+            }
+            catch (Exception ex)
+            {
+                _view.ShowMessage("Gagal menambahkan user: " + ex.Message);
+            }
         }
 
         private void HandleUpdateUser(object? sender, UserEventArgs e)

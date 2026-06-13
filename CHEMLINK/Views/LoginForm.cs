@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace CHEMLINK.Views
@@ -8,6 +9,8 @@ namespace CHEMLINK.Views
     public partial class LoginForm : Form
     {
         public event EventHandler? LoginAttemptEvent;
+
+        private Image? _logoImage;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string Username
@@ -27,6 +30,13 @@ namespace CHEMLINK.Views
         {
             InitializeComponent();
             btnLogin.Click += delegate { LoginAttemptEvent?.Invoke(this, EventArgs.Empty); };
+
+            // Load logo from Assets folder
+            string logoPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "logo.png");
+            if (File.Exists(logoPath))
+            {
+                _logoImage = Image.FromFile(logoPath);
+            }
         }
 
         public void ShowError(string message)
@@ -49,28 +59,48 @@ namespace CHEMLINK.Views
         {
             using (var brush = new System.Drawing.Drawing2D.LinearGradientBrush(
                 header.ClientRectangle,
-                Color.FromArgb(46, 125, 50),
-                Color.FromArgb(0, 150, 136),
+                Color.FromArgb(37, 103, 30),   // #25671E
+                Color.FromArgb(72, 161, 17),   // #48A111
                 System.Drawing.Drawing2D.LinearGradientMode.Horizontal))
             {
                 e.Graphics.FillRectangle(brush, header.ClientRectangle);
             }
 
-            using (var font = new Font("Segoe UI", 24F, FontStyle.Bold))
+            // Draw logo + "ChemLink" text centered together in header
+            if (_logoImage != null)
             {
-                TextRenderer.DrawText(
-                    e.Graphics,
-                    "🌿 ChemLink",
-                    font,
-                    header.ClientRectangle,
-                    Color.White,
-                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                int logoSize = 44;
+                int gap = 10;
+                using (var font = new Font("Segoe UI", 18F, FontStyle.Bold))
+                {
+                    int textWidth = TextRenderer.MeasureText("ChemLink", font).Width;
+                    int totalWidth = logoSize + gap + textWidth;
+                    int startX = (header.Width - totalWidth) / 2;
+                    int logoY = (header.Height - logoSize) / 2;
+
+                    e.Graphics.DrawImage(_logoImage, new Rectangle(startX, logoY, logoSize, logoSize));
+
+                    TextRenderer.DrawText(e.Graphics, "ChemLink", font,
+                        new Rectangle(startX + logoSize + gap, 0, textWidth + 4, header.Height),
+                        Color.White,
+                        TextFormatFlags.VerticalCenter | TextFormatFlags.Left);
+                }
+            }
+            else
+            {
+                // Fallback: text only if image not loaded
+                using (var font = new Font("Segoe UI", 24F, FontStyle.Bold))
+                {
+                    TextRenderer.DrawText(e.Graphics, "ChemLink", font,
+                        header.ClientRectangle, Color.White,
+                        TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                }
             }
         }
 
         private void pnlUser_Paint(object sender, PaintEventArgs e)
         {
-            Color lineColor = txtUser.Focused ? Color.FromArgb(46, 125, 50) : Color.FromArgb(210, 210, 210);
+            Color lineColor = txtUser.Focused ? Color.FromArgb(72, 161, 17) : Color.FromArgb(210, 210, 210);
             int lineWidth = txtUser.Focused ? 2 : 1;
             using (var pen = new Pen(lineColor, lineWidth))
             {
@@ -84,7 +114,7 @@ namespace CHEMLINK.Views
 
         private void pnlPass_Paint(object sender, PaintEventArgs e)
         {
-            Color lineColor = txtPass.Focused ? Color.FromArgb(46, 125, 50) : Color.FromArgb(210, 210, 210);
+            Color lineColor = txtPass.Focused ? Color.FromArgb(72, 161, 17) : Color.FromArgb(210, 210, 210);
             int lineWidth = txtPass.Focused ? 2 : 1;
             using (var pen = new Pen(lineColor, lineWidth))
             {

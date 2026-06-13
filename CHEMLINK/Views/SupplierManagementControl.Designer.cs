@@ -39,6 +39,8 @@ namespace CHEMLINK.Views
             this.dgvMain.AllowUserToAddRows = false;
             this.dgvMain.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvMain.BackgroundColor = System.Drawing.Color.White;
+            this.dgvMain.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(161)))), ((int)(((byte)(17)))));
+            this.dgvMain.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
             this.dgvMain.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMain.Location = new System.Drawing.Point(20, 20);
@@ -89,7 +91,7 @@ namespace CHEMLINK.Views
             // 
             // btnAddSup
             // 
-            this.btnAddSup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
+            this.btnAddSup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(161)))), ((int)(((byte)(17)))));
             this.btnAddSup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddSup.ForeColor = System.Drawing.Color.White;
             this.btnAddSup.Location = new System.Drawing.Point(480, 12);

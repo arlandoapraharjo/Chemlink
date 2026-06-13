@@ -59,5 +59,33 @@ namespace CHEMLINK.Contexts
             }
             return dt;
         }
+
+        public DataTable GetCategoryBreakdown()
+        {
+            DataTable dt = new DataTable();
+            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            {
+                if (conn != null && conn.State == ConnectionState.Open)
+                {
+                    string sql = @"SELECT 
+                        k.nama_kategori AS ""Kategori"",
+                        SUM(od.jumlah_masuk)::int AS ""Qty Terjual"",
+                        (SUM(od.jumlah_masuk * p.harga))::int AS ""Total Pendapatan""
+                    FROM order_details od
+                    JOIN Produk p ON od.id_produk = p.id_produk
+                    JOIN Kategori k ON p.id_kategori = k.id_kategori
+                    GROUP BY k.nama_kategori
+                    ORDER BY SUM(od.jumlah_masuk * p.harga) DESC";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        using (NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd))
+                        {
+                            da.Fill(dt);
+                        }
+                    }
+                }
+            }
+            return dt;
+        }
     }
 }

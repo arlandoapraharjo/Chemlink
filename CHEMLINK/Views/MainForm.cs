@@ -1,4 +1,4 @@
-using System;
+    using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -21,6 +21,7 @@ namespace CHEMLINK
 
         // Track active nav button
         private Button? _activeNavButton;
+        private UserControl? _currentControl;
         private readonly Color _activeNavColor = Color.FromArgb(74, 222, 128);   // Agro400
         private readonly Color _inactiveNavColor = Color.FromArgb(148, 163, 184); // TextMuted
         private readonly Color _activeNavBg = Color.FromArgb(16, 255, 255, 255);  // 10% white
@@ -61,6 +62,10 @@ namespace CHEMLINK
         {
             InitializeComponent();
 
+            // Enable double buffering to reduce flicker
+            EnableDoubleBuffering(this);
+            EnableDoubleBuffering(mainContentPanel);
+
             // Load logo
             LoadLogoImage();
 
@@ -71,6 +76,17 @@ namespace CHEMLINK
             _supplierManagementControl = new SupplierManagementControl { Dock = DockStyle.Fill };
             _financialReportControl = new FinancialReportControl { Dock = DockStyle.Fill };
             _userManagementControl = new UserManagementControl { Dock = DockStyle.Fill };
+
+            // Pre-add all controls once (hidden), switch via Visible
+            mainContentPanel.Controls.Add(_dashboardControl);
+            mainContentPanel.Controls.Add(_productCatalogControl);
+            mainContentPanel.Controls.Add(_posControl);
+            mainContentPanel.Controls.Add(_supplierManagementControl);
+            mainContentPanel.Controls.Add(_financialReportControl);
+            mainContentPanel.Controls.Add(_userManagementControl);
+
+            _dashboardControl.BringToFront();
+            _currentControl = _dashboardControl;
 
             WireUserControlEvents();
             AssociateViewEvents();
@@ -144,13 +160,28 @@ namespace CHEMLINK
             };
         }
 
+        // Fast tab switch: hide previous control, show new one
+        // Avoids Controls.Clear() which destroys/recreates the control hierarchy
         private void SwitchControl(UserControl control, string title)
         {
-            mainContentPanel.Controls.Clear();
-            mainContentPanel.Controls.Add(lblTitle);
-            mainContentPanel.Controls.Add(control);
-            control.BringToFront();
-            lblTitle.Text = title;
+            if (_currentControl == control) return;
+
+            mainContentPanel.SuspendLayout();
+            try
+            {
+                if (_currentControl != null)
+                {
+                    _currentControl.Visible = false;
+                }
+                control.Visible = true;
+                control.BringToFront();
+                _currentControl = control;
+                lblTitle.Text = title;
+            }
+            finally
+            {
+                mainContentPanel.ResumeLayout(true);
+            }
         }
 
         // --- IMainView UI Implementations ---
@@ -185,9 +216,9 @@ namespace CHEMLINK
             HighlightNavButton(btnSupplier);
         }
 
-        public void ShowFinancialReport(DataTable report)
+        public void ShowFinancialReport(DataTable report, DataTable categoryBreakdown)
         {
-            _financialReportControl.SetData(report);
+            _financialReportControl.SetData(report, categoryBreakdown);
             SwitchControl(_financialReportControl, "Laporan Keuangan");
             HighlightNavButton(btnLaporan);
         }
@@ -228,6 +259,26 @@ namespace CHEMLINK
             activeBtn.ForeColor = _activeNavColor;
             activeBtn.BackColor = _activeNavBg;
             _activeNavButton = activeBtn;
+        }
+
+        // Enable double buffering on a control to reduce flicker
+        private static void EnableDoubleBuffering(Control control)
+        {
+            typeof(Control).InvokeMember(
+                "DoubleBuffered",
+                System.Reflection.BindingFlags.NonPublic |
+                System.Reflection.BindingFlags.Instance |
+                System.Reflection.BindingFlags.SetProperty,
+                null, control, new object[] { true });
+            typeof(Control).InvokeMember(
+                "SetStyle",
+                System.Reflection.BindingFlags.NonPublic |
+                System.Reflection.BindingFlags.Instance |
+                System.Reflection.BindingFlags.InvokeMethod,
+                null, control, new object[] {
+                    ControlStyles.OptimizedDoubleBuffer |
+                    ControlStyles.AllPaintingInWmPaint |
+                    ControlStyles.UserPaint, true });
         }
     }
 }

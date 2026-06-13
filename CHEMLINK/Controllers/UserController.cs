@@ -336,7 +336,8 @@ namespace CHEMLINK.Controllers
         private void ShowFinancialReport()
         {
             DataTable dtLaporan = _orderContext.GetFinancialReport();
-            _view.ShowFinancialReport(dtLaporan);
+            DataTable dtKategori = _orderContext.GetCategoryBreakdown();
+            _view.ShowFinancialReport(dtLaporan, dtKategori);
         }
 
         private void ShowUserManagement()

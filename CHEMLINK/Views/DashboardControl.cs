@@ -21,11 +21,43 @@ namespace CHEMLINK.Views
         private static readonly Color TextDark = Color.FromArgb(30, 41, 59);
         private static readonly Color TextMuted = Color.FromArgb(148, 163, 184);
 
+        // Cached background image (loaded once)
+        private Image? _bgImage;
+
         public DashboardControl()
         {
             InitializeComponent();
+
+            // Enable double buffering
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+                          ControlStyles.AllPaintingInWmPaint |
+                          ControlStyles.UserPaint, true);
+
+            // Cache the background image once
+            string imgPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "kebun.png");
+            if (File.Exists(imgPath))
+            {
+                _bgImage = Image.FromFile(imgPath);
+            }
+
             // Custom paint handler for gradient banner
             pnlBanner.Paint += PnlBanner_Paint;
+
+            // Responsive: reflow banner description width on resize
+            this.Resize += (s, e) =>
+            {
+                int descWidth = Math.Max(300, pnlBanner.Width - 64);
+                lblBannerDesc.Size = new Size(descWidth, 36);
+            };
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+                components.Dispose();
+            _bgImage?.Dispose();
+            base.Dispose(disposing);
         }
 
         public void SetData(int totalProduk, int stokKritis, DataTable dtNotif)
@@ -81,32 +113,25 @@ namespace CHEMLINK.Views
             // Skip painting when minimized or zero-sized (prevents LinearGradientBrush crash)
             if (rect.Width <= 0 || rect.Height <= 0) return;
 
-            // 1. Draw background image (kebun.png) stretched to fill
-            string imgPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "kebun.png");
-            if (File.Exists(imgPath))
+            // 1. Draw background image (cached, no disk I/O)
+            if (_bgImage != null)
             {
-                using (var bgImage = Image.FromFile(imgPath))
+                float imgRatio = (float)_bgImage.Width / _bgImage.Height;
+                float panelRatio = (float)rect.Width / rect.Height;
+                Rectangle destRect;
+                if (panelRatio > imgRatio)
                 {
-                    // Scale to fill (UniformToFill)
-                    float imgRatio = (float)bgImage.Width / bgImage.Height;
-                    float panelRatio = (float)rect.Width / rect.Height;
-                    Rectangle destRect;
-                    if (panelRatio > imgRatio)
-                    {
-                        // Panel is wider: fit width, crop height
-                        int drawH = (int)(rect.Width / imgRatio);
-                        int cropY = (drawH - rect.Height) / 2;
-                        destRect = new Rectangle(0, -cropY, rect.Width, drawH);
-                    }
-                    else
-                    {
-                        // Panel is taller: fit height, crop width
-                        int drawW = (int)(rect.Height * imgRatio);
-                        int cropX = (drawW - rect.Width) / 2;
-                        destRect = new Rectangle(-cropX, 0, drawW, rect.Height);
-                    }
-                    g.DrawImage(bgImage, destRect);
+                    int drawH = (int)(rect.Width / imgRatio);
+                    int cropY = (drawH - rect.Height) / 2;
+                    destRect = new Rectangle(0, -cropY, rect.Width, drawH);
                 }
+                else
+                {
+                    int drawW = (int)(rect.Height * imgRatio);
+                    int cropX = (drawW - rect.Width) / 2;
+                    destRect = new Rectangle(-cropX, 0, drawW, rect.Height);
+                }
+                g.DrawImage(_bgImage, destRect);
             }
 
             // 2. Draw overlay gradient (dark green left → transparent right)
@@ -115,9 +140,9 @@ namespace CHEMLINK.Views
                 var blend = new ColorBlend(3);
                 blend.Colors = new[]
                 {
-                    Color.FromArgb(252, 2, 44, 34),  // #FC022C22 - near opaque dark green
-                    Color.FromArgb(192, 2, 44, 34),  // #C0022C22 - 75% dark green
-                    Color.FromArgb(32, 0, 0, 0)      // #20000000 - 12.5% black
+                    Color.FromArgb(252, 2, 44, 34),
+                    Color.FromArgb(192, 2, 44, 34),
+                    Color.FromArgb(32, 0, 0, 0)
                 };
                 blend.Positions = new[] { 0f, 0.4f, 1f };
                 brush.InterpolationColors = blend;

@@ -182,6 +182,7 @@ namespace CHEMLINK
 
             // ===================== MAIN CONTENT =====================
             this.mainContentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainContentPanel.AutoScroll = true;
             this.mainContentPanel.BackColor = System.Drawing.Color.FromArgb(248, 250, 252); // #F8FAFC
             this.mainContentPanel.Padding = new System.Windows.Forms.Padding(0);
             this.mainContentPanel.Controls.Add(this.lblTitle);
@@ -195,7 +196,8 @@ namespace CHEMLINK
             this.lblTitle.Text = "Dashboard";
 
             // ===================== MAIN FORM =====================
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(248, 250, 252); // #F8FAFC
             this.ClientSize = new System.Drawing.Size(1200, 750);
             this.MinimumSize = new System.Drawing.Size(1000, 650);

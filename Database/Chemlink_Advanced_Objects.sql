@@ -217,3 +217,6 @@ BEGIN
     WHERE id_produk = p_id_produk;
 END;
 $$;
+
+CREATE OR REPLACE VIEW v_show_supplier AS
+SELECT id_supplier, nama_perusahaan, no_telp, kota_supplier FROM Supplier ORDER BY id_supplier ASC;

@@ -19,10 +19,11 @@ namespace CHEMLINK
         private FinancialReportControl _financialReportControl;
         private UserManagementControl _userManagementControl;
 
-        // Track active sidebar button for highlighting
-        private Button? _activeSidebarButton;
-        private readonly Color _activeBtnColor = Color.FromArgb(123, 201, 80);  // Bright lime green highlight
-        private static readonly Color _inactiveBtnColor = Color.Transparent;
+        // Track active nav button
+        private Button? _activeNavButton;
+        private readonly Color _activeNavColor = Color.FromArgb(74, 222, 128);   // Agro400
+        private readonly Color _inactiveNavColor = Color.FromArgb(148, 163, 184); // TextMuted
+        private readonly Color _activeNavBg = Color.FromArgb(16, 255, 255, 255);  // 10% white
 
         // IMainView Events
         public event EventHandler? ShowDashboardEvent;
@@ -60,11 +61,8 @@ namespace CHEMLINK
         {
             InitializeComponent();
 
-            // Load embedded logo image into sidebar PictureBox
+            // Load logo
             LoadLogoImage();
-
-            // Fix sidebar gradient: paint once as background image (avoids repeated gradient per visible strip)
-            UpdateSidebarGradient();
 
             // Initialize User Controls
             _dashboardControl = new DashboardControl { Dock = DockStyle.Fill };
@@ -77,8 +75,8 @@ namespace CHEMLINK
             WireUserControlEvents();
             AssociateViewEvents();
 
-            // Set initial active button
-            HighlightSidebarButton(btnDashboard);
+            // Set initial active nav button
+            HighlightNavButton(btnDashboard);
         }
 
         private void WireUserControlEvents()
@@ -104,7 +102,11 @@ namespace CHEMLINK
 
         public void SetActiveUser(string username, string role)
         {
-            lblUser.Text = $"👤 Operator: {username} ({role})";
+            lblUsername.Text = username;
+            lblGreeting.Text = "Selamat Bekerja,";
+            // Set avatar initials
+            string initials = username.Length >= 3 ? username.Substring(0, 3).ToUpper() : username.ToUpper();
+            lblAvatar.Text = initials;
         }
 
         public void ApplyRoleRestrictions(bool isAdmin)
@@ -153,11 +155,11 @@ namespace CHEMLINK
 
         // --- IMainView UI Implementations ---
 
-        public void ShowDashboardData(int totalProduk, int stokKritis, DataTable dtNotif)
+        public void ShowDashboardData(List<Product> products, DataTable dtNotif)
         {
-            _dashboardControl.SetData(totalProduk, stokKritis, dtNotif);
-            SwitchControl(_dashboardControl, "🌿 Ringkasan Dashboard & Notifikasi");
-            HighlightSidebarButton(btnDashboard);
+            _dashboardControl.SetData(products, dtNotif);
+            SwitchControl(_dashboardControl, "Dashboard");
+            HighlightNavButton(btnDashboard);
         }
 
         public void ShowProductCatalog(List<Product> products, bool isAdmin, List<Category>? categories = null)
@@ -165,36 +167,36 @@ namespace CHEMLINK
             _productCatalogControl.SetData(products, isAdmin);
             if (categories != null)
                 _productCatalogControl.SetCategories(categories);
-            SwitchControl(_productCatalogControl, "📦 Katalog Obat Pertanian");
-            HighlightSidebarButton(btnProduk);
+            SwitchControl(_productCatalogControl, "Katalog Produk");
+            HighlightNavButton(btnProduk);
         }
 
         public void ShowPOS(List<Product> searchResults, List<CartItem> cart)
         {
             _posControl.SetData(searchResults, cart);
-            SwitchControl(_posControl, "🛒 Point of Sales (Transaksi Kasir)");
-            HighlightSidebarButton(btnTransaksi);
+            SwitchControl(_posControl, "Point of Sales (Transaksi Kasir)");
+            HighlightNavButton(btnTransaksi);
         }
 
         public void ShowSupplierManagement(List<Supplier> suppliers)
         {
             _supplierManagementControl.SetData(suppliers);
-            SwitchControl(_supplierManagementControl, "🚛 Manajemen Mitra Supplier");
-            HighlightSidebarButton(btnSupplier);
+            SwitchControl(_supplierManagementControl, "Manajemen Supplier");
+            HighlightNavButton(btnSupplier);
         }
 
         public void ShowFinancialReport(DataTable report)
         {
             _financialReportControl.SetData(report);
-            SwitchControl(_financialReportControl, "📊 Laporan Analitik Keuangan Kios");
-            HighlightSidebarButton(btnLaporan);
+            SwitchControl(_financialReportControl, "Laporan Keuangan");
+            HighlightNavButton(btnLaporan);
         }
 
         public void ShowUserManagement(List<User> users, bool isAdmin)
         {
             _userManagementControl.SetData(users, isAdmin);
-            SwitchControl(_userManagementControl, "👥 Pengaturan Akun Operator & Karyawan");
-            HighlightSidebarButton(btnUser);
+            SwitchControl(_userManagementControl, "Manajemen User");
+            HighlightNavButton(btnUser);
         }
 
         public void PrintReceipt(string receiptContent)
@@ -212,53 +214,20 @@ namespace CHEMLINK
             }
         }
 
-        // --- Sidebar active button highlighting ---
-        private void HighlightSidebarButton(Button activeBtn)
+        // --- Topbar nav button highlighting ---
+        private void HighlightNavButton(Button activeBtn)
         {
-            // Reset all navigation buttons
-            foreach (Control ctrl in sidebarPanel.Controls)
+            foreach (Control ctrl in navPanel.Controls)
             {
-                if (ctrl is Button btn && btn != btnLogout)
+                if (ctrl is Button btn)
                 {
-                    btn.BackColor = _inactiveBtnColor;
+                    btn.ForeColor = _inactiveNavColor;
+                    btn.BackColor = Color.Transparent;
                 }
             }
-            // Highlight the active button
-            activeBtn.BackColor = _activeBtnColor;
-            _activeSidebarButton = activeBtn;
-        }
-
-        // --- Sidebar gradient paint (palette: #25671E → #48A111 → #F2B50B) ---
-        private void UpdateSidebarGradient()
-        {
-            var bmp = new Bitmap(sidebarPanel.Width, sidebarPanel.Height);
-            using (var g = Graphics.FromImage(bmp))
-            {
-                using (var brush = new LinearGradientBrush(
-                    new Rectangle(0, 0, bmp.Width, bmp.Height),
-                    Color.FromArgb(37, 103, 30),   // #25671E
-                    Color.FromArgb(242, 181, 11),  // #F2B50B
-                    LinearGradientMode.Vertical))
-                {
-                    var blend = new ColorBlend(3);
-                    blend.Colors = new[]
-                    {
-                        Color.FromArgb(37, 103, 30),  // #25671E
-                        Color.FromArgb(72, 161, 17),  // #48A111
-                        Color.FromArgb(242, 181, 11)  // #F2B50B
-                    };
-                    blend.Positions = new[] { 0f, 0.5f, 1f };
-                    brush.InterpolationColors = blend;
-                    g.FillRectangle(brush, new Rectangle(0, 0, bmp.Width, bmp.Height));
-                }
-            }
-            sidebarPanel.BackgroundImage = bmp;
-            sidebarPanel.BackgroundImageLayout = ImageLayout.Stretch;
-        }
-
-        private void sidebarPanel_Paint(object? sender, PaintEventArgs e)
-        {
-            // Gradient is handled by BackgroundImage; nothing to paint here
+            activeBtn.ForeColor = _activeNavColor;
+            activeBtn.BackColor = _activeNavBg;
+            _activeNavButton = activeBtn;
         }
     }
 }

@@ -57,6 +57,8 @@ namespace CHEMLINK.Views
 
         private void header_Paint(object sender, PaintEventArgs e)
         {
+            if (header.ClientRectangle.Width <= 0 || header.ClientRectangle.Height <= 0) return;
+
             using (var brush = new System.Drawing.Drawing2D.LinearGradientBrush(
                 header.ClientRectangle,
                 Color.FromArgb(37, 103, 30),   // #25671E

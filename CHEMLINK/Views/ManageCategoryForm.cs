@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using CHEMLINK.Models;
 
@@ -16,7 +18,6 @@ namespace CHEMLINK.Views
             InitializeComponent();
             LoadCategories(categories);
 
-            btnClose.Click += (s, e) => { this.DialogResult = DialogResult.Cancel; this.Close(); };
             btnTambah.Click += BtnTambah_Click;
             btnUbah.Click += BtnUbah_Click;
             btnHapus.Click += BtnHapus_Click;
@@ -83,6 +84,18 @@ namespace CHEMLINK.Views
             else
             {
                 MessageBox.Show("Pilih kategori yang akan dihapus.", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void pnlHeader_Paint(object? sender, PaintEventArgs e)
+        {
+            using (var brush = new LinearGradientBrush(
+                pnlHeader.ClientRectangle,
+                Color.FromArgb(37, 103, 30),   // #25671E
+                Color.FromArgb(72, 161, 17),   // #48A111
+                LinearGradientMode.Horizontal))
+            {
+                e.Graphics.FillRectangle(brush, pnlHeader.ClientRectangle);
             }
         }
     }

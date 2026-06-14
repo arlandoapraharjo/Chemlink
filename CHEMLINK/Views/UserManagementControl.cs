@@ -103,6 +103,19 @@ namespace CHEMLINK.Views
                 return;
             }
 
+            // Cegah penghapusan admin terakhir
+            if (userToDelete.Role == "Admin")
+            {
+                int adminCount = _users.Count(u => u.Role == "Admin");
+                if (adminCount <= 1)
+                {
+                    MessageBox.Show(
+                        "Akun admin ini tidak dapat dihapus karena merupakan satu-satunya admin yang terdaftar.\nMinimal harus ada 1 akun admin di dalam sistem.",
+                        "ChemLink Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
             var confirm = MessageBox.Show(
                 $"Apakah Anda yakin ingin menghapus user \"{userToDelete.Username}\"?\nTindakan ini tidak dapat dibatalkan.",
                 "Konfirmasi Hapus User", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);

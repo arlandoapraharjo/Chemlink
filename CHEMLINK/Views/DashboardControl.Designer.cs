@@ -38,7 +38,6 @@ namespace CHEMLINK.Views
         // Notification
         private System.Windows.Forms.Label lblNotifTitle;
         public System.Windows.Forms.DataGridView dgvMain;
-        private System.Windows.Forms.Panel pnlGrid;
 
         private void InitializeComponent()
         {
@@ -67,14 +66,12 @@ namespace CHEMLINK.Views
             this.lblStatusKategori = new System.Windows.Forms.Label();
             this.lblNotifTitle = new System.Windows.Forms.Label();
             this.dgvMain = new System.Windows.Forms.DataGridView();
-            this.pnlGrid = new System.Windows.Forms.Panel();
             this.tblMaster.SuspendLayout();
             this.tblKPI.SuspendLayout();
             this.cardTotalProduk.SuspendLayout();
             this.cardTotalStok.SuspendLayout();
             this.cardStokKritis.SuspendLayout();
             this.cardKategori.SuspendLayout();
-            this.pnlGrid.SuspendLayout();
             this.pnlBanner.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
             this.SuspendLayout();
@@ -85,14 +82,14 @@ namespace CHEMLINK.Views
             this.tblMaster.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tblMaster.AutoScroll = true;
             this.tblMaster.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));   // banner
-            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 105F));   // KPI cards
+            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 155F));   // banner
+            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));   // KPI cards
             this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));          // notif title
             this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));    // grid fills rest
             this.tblMaster.Controls.Add(this.pnlBanner, 0, 0);
             this.tblMaster.Controls.Add(this.tblKPI, 0, 1);
             this.tblMaster.Controls.Add(this.lblNotifTitle, 0, 2);
-            this.tblMaster.Controls.Add(this.pnlGrid, 0, 3);
+            this.tblMaster.Controls.Add(this.dgvMain, 0, 3);
 
             // ===================== BANNER =====================
             this.pnlBanner.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -171,7 +168,7 @@ namespace CHEMLINK.Views
             this.lblTotalProdukVal.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
             this.lblTotalProdukVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblTotalProdukVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblTotalProdukVal.Location = new System.Drawing.Point(12, 28);
+            this.lblTotalProdukVal.Location = new System.Drawing.Point(12, 36);
             this.lblTotalProdukVal.Text = "0";
 
             this.lblStatusProduk.AutoSize = true;
@@ -204,7 +201,7 @@ namespace CHEMLINK.Views
             this.lblTotalStokVal.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
             this.lblTotalStokVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblTotalStokVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblTotalStokVal.Location = new System.Drawing.Point(12, 28);
+            this.lblTotalStokVal.Location = new System.Drawing.Point(12, 36);
             this.lblTotalStokVal.Text = "0";
 
             this.lblStatusStok.AutoSize = true;
@@ -237,7 +234,7 @@ namespace CHEMLINK.Views
             this.lblStokKritisVal.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
             this.lblStokKritisVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblStokKritisVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStokKritisVal.Location = new System.Drawing.Point(12, 28);
+            this.lblStokKritisVal.Location = new System.Drawing.Point(12, 36);
             this.lblStokKritisVal.Text = "0";
 
             this.lblStatusKritis.AutoSize = true;
@@ -270,7 +267,7 @@ namespace CHEMLINK.Views
             this.lblKategoriVal.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
             this.lblKategoriVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblKategoriVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblKategoriVal.Location = new System.Drawing.Point(12, 28);
+            this.lblKategoriVal.Location = new System.Drawing.Point(12, 36);
             this.lblKategoriVal.Text = "0";
 
             this.lblStatusKategori.AutoSize = true;
@@ -280,12 +277,6 @@ namespace CHEMLINK.Views
             this.lblStatusKategori.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
             this.lblStatusKategori.Location = new System.Drawing.Point(12, 64);
             this.lblStatusKategori.Text = "\u25CF  Jenis produk aktif";
-
-            // ===================== NOTIFICATION GRID WRAPPER =====================
-            this.pnlGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlGrid.BackColor = System.Drawing.Color.White;
-            this.pnlGrid.Padding = new System.Windows.Forms.Padding(0);
-            this.pnlGrid.Controls.Add(this.dgvMain);
 
             // ===================== NOTIFICATION TITLE =====================
             this.lblNotifTitle.AutoSize = true;
@@ -327,7 +318,6 @@ namespace CHEMLINK.Views
             this.cardStokKritis.PerformLayout();
             this.cardKategori.ResumeLayout(false);
             this.cardKategori.PerformLayout();
-            this.pnlGrid.ResumeLayout(false);
             this.pnlBanner.ResumeLayout(false);
             this.pnlBanner.PerformLayout();
             this.pnlBadge.ResumeLayout(false);

@@ -45,8 +45,11 @@ namespace CHEMLINK.Views
             this.Resize += (s, e) =>
             {
                 int descWidth = Math.Max(300, pnlBanner.Width - 48);
-                lblBannerDesc.Size = new Size(descWidth, 30);
+                lblBannerDesc.Size = new Size(descWidth, 80);
             };
+
+            // Set initial description width
+            lblBannerDesc.Size = new Size(Math.Max(300, pnlBanner.Width - 48), 80);
         }
 
         protected override void Dispose(bool disposing)

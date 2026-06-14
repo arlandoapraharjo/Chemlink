@@ -67,9 +67,6 @@ CREATE TABLE order_details (
     id_order INTEGER REFERENCES orders(id_order),
     id_produk INTEGER REFERENCES Produk(id_produk)
 );
-
--- DUMMY DATA INSERTION
-
 INSERT INTO Kategori (nama_kategori) VALUES 
 ('Herbisida'),
 ('Fungisida'),

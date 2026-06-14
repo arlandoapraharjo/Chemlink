@@ -115,21 +115,8 @@ namespace CHEMLINK.Controllers
         {
             _products = _productContext.Read(); // Refresh
 
-            DataTable dtNotif = new DataTable();
-            dtNotif.Columns.Add("Jenis Peringatan", typeof(string));
-            dtNotif.Columns.Add("Informasi Kritis", typeof(string));
-            dtNotif.Columns.Add("Status Tindakan", typeof(string));
-
-            foreach (var p in _products.Where(p => p.Stock <= 5))
-            {
-                dtNotif.Rows.Add("STOK MENIPIS!", $"Segera lakukan pemesanan ulang untuk {p.Name} (Sisa: {p.Stock})", "Butuh Reorder");
-            }
-
-            if (dtNotif.Rows.Count == 0)
-            {
-                dtNotif.Rows.Add("Sistem Aman", "Seluruh pasokan stok obat pertanian dalam keadaan aman.", "Normal");
-            }
-
+            // Use DB view for critical stock to include id and name
+            var dtNotif = _productContext.GetCriticalStockTable();
             _view.ShowDashboardData(_products, dtNotif);
         }
 

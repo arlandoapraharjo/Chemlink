@@ -5,9 +5,7 @@ namespace CHEMLINK.Views
         private System.ComponentModel.IContainer components = null;
         public System.Windows.Forms.DataGridView dgvMain;
         private System.Windows.Forms.Panel pnlCrud;
-        public System.Windows.Forms.TextBox txtNamaSup;
-        public System.Windows.Forms.TextBox txtTelp;
-        public System.Windows.Forms.TextBox txtAlamat;
+        // input moved to dialog; inline textboxes removed
         public System.Windows.Forms.Button btnAddSup;
         public System.Windows.Forms.Button btnEditSup;
         public System.Windows.Forms.Button btnDeleteSup;
@@ -30,9 +28,6 @@ namespace CHEMLINK.Views
             lblKelola = new Label();
             btnDelSup1 = new Button();
             btnEditSup1 = new Button();
-            txtNamaSup = new TextBox();
-            txtTelp = new TextBox();
-            txtAlamat = new TextBox();
             btnAddSup = new Button();
             btnEditSup = new Button();
             btnDeleteSup = new Button();
@@ -72,9 +67,6 @@ namespace CHEMLINK.Views
             pnlCrud.Controls.Add(lblKelola);
             pnlCrud.Controls.Add(btnDelSup1);
             pnlCrud.Controls.Add(btnEditSup1);
-            pnlCrud.Controls.Add(txtNamaSup);
-            pnlCrud.Controls.Add(txtTelp);
-            pnlCrud.Controls.Add(txtAlamat);
             pnlCrud.Controls.Add(btnAddSup);
             pnlCrud.Location = new Point(20, 560);
             pnlCrud.Name = "pnlCrud";
@@ -115,29 +107,7 @@ namespace CHEMLINK.Views
             btnEditSup1.Text = "Edit Supplier";
             btnEditSup1.UseVisualStyleBackColor = false;
             // 
-            // txtNamaSup
-            // 
-            txtNamaSup.Location = new Point(136, 17);
-            txtNamaSup.Name = "txtNamaSup";
-            txtNamaSup.PlaceholderText = "Nama Supplier";
-            txtNamaSup.Size = new Size(150, 25);
-            txtNamaSup.TabIndex = 0;
-            // 
-            // txtTelp
-            // 
-            txtTelp.Location = new Point(301, 17);
-            txtTelp.Name = "txtTelp";
-            txtTelp.PlaceholderText = "No Telepon";
-            txtTelp.Size = new Size(120, 25);
-            txtTelp.TabIndex = 1;
-            // 
-            // txtAlamat
-            // 
-            txtAlamat.Location = new Point(436, 17);
-            txtAlamat.Name = "txtAlamat";
-            txtAlamat.PlaceholderText = "Alamat";
-            txtAlamat.Size = new Size(150, 25);
-            txtAlamat.TabIndex = 2;
+            // inline inputs removed; use dialog for add/edit
             // 
             // btnAddSup
             // 

@@ -117,6 +117,14 @@ namespace CHEMLINK.Controllers
 
             // Use DB view for critical stock to include id and name
             var dtNotif = _productContext.GetCriticalStockTable();
+            // Rename columns for user-friendly headers
+            if (dtNotif != null)
+            {
+                if (dtNotif.Columns.Contains("id_produk")) dtNotif.Columns["id_produk"].ColumnName = "ID";
+                if (dtNotif.Columns.Contains("nama_produk")) dtNotif.Columns["nama_produk"].ColumnName = "Nama Produk";
+                if (dtNotif.Columns.Contains("jumlah_stock")) dtNotif.Columns["jumlah_stock"].ColumnName = "Jumlah Stock";
+            }
+
             _view.ShowDashboardData(_products, dtNotif);
         }
 

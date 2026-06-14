@@ -28,22 +28,31 @@ namespace CHEMLINK.Views
 
         private void BtnAddSup_Click(object? sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtNamaSup.Text)) return;
-            // Validate phone contains only digits (if provided)
-            if (!string.IsNullOrWhiteSpace(txtTelp.Text))
+            using (var dialog = new EditSupplierDialog())
             {
-                foreach (char c in txtTelp.Text)
+                // empty by default for new supplier
+                dialog.EditName = "";
+                dialog.EditPhone = "";
+                dialog.EditAddress = "";
+
+                if (dialog.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
-                    if (!char.IsDigit(c))
+                    // Validate phone contains only digits (if provided)
+                    if (!string.IsNullOrWhiteSpace(dialog.EditPhone))
                     {
-                        MessageBox.Show("Nomor telepon harus berupa angka dan tanpa simbol!", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
+                        foreach (char c in dialog.EditPhone)
+                        {
+                            if (!char.IsDigit(c))
+                            {
+                                MessageBox.Show("Nomor telepon harus berupa angka dan tanpa simbol!", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+                        }
                     }
+
+                    AddSupplierEvent?.Invoke(this, new SupplierEventArgs { Name = dialog.EditName, Phone = dialog.EditPhone, Address = dialog.EditAddress });
                 }
             }
-
-            AddSupplierEvent?.Invoke(this, new SupplierEventArgs { Name = txtNamaSup.Text, Phone = txtTelp.Text, Address = txtAlamat.Text });
-            txtNamaSup.Clear(); txtTelp.Clear(); txtAlamat.Clear();
         }
 
         private void BtnEditSup1_Click(object? sender, EventArgs e)

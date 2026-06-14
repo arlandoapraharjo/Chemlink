@@ -136,5 +136,23 @@ namespace CHEMLINK.Contexts
                 }
             }
         }
+
+        public System.Data.DataTable GetCriticalStockTable()
+        {
+            var dt = new System.Data.DataTable();
+            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            {
+                if (conn != null && conn.State == System.Data.ConnectionState.Open)
+                {
+                    string sql = "SELECT id_produk, nama_produk, jumlah_stock FROM v_stok_kritis ORDER BY id_produk ASC";
+                    using (var cmd = new NpgsqlCommand(sql, conn))
+                    using (var da = new NpgsqlDataAdapter(cmd))
+                    {
+                        da.Fill(dt);
+                    }
+                }
+            }
+            return dt;
+        }
     }
 }

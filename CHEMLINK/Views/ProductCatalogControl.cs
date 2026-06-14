@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using CHEMLINK.Models;
 
@@ -21,6 +22,16 @@ namespace CHEMLINK.Views
             btnEdit.Click += BtnEdit_Click;
             btnHapus.Click += BtnHapus_Click;
             btnKategori.Click += BtnKategori_Click;
+            this.Paint += Control_Paint;
+        }
+
+        private void Control_Paint(object? sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            using var pen = new Pen(Color.FromArgb(2, 44, 34), 2f);
+            g.DrawRectangle(pen, dgvMain.Bounds);
+            if (pnlToolbar.Visible)
+                g.DrawRectangle(pen, pnlToolbar.Bounds);
         }
 
         public void SetData(List<Product> products, bool isAdmin)

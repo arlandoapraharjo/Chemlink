@@ -38,6 +38,7 @@ namespace CHEMLINK.Views
         // Notification
         private System.Windows.Forms.Label lblNotifTitle;
         public System.Windows.Forms.DataGridView dgvMain;
+        private System.Windows.Forms.Panel pnlGrid;
 
         private void InitializeComponent()
         {
@@ -66,12 +67,14 @@ namespace CHEMLINK.Views
             this.lblStatusKategori = new System.Windows.Forms.Label();
             this.lblNotifTitle = new System.Windows.Forms.Label();
             this.dgvMain = new System.Windows.Forms.DataGridView();
+            this.pnlGrid = new System.Windows.Forms.Panel();
             this.tblMaster.SuspendLayout();
             this.tblKPI.SuspendLayout();
             this.cardTotalProduk.SuspendLayout();
             this.cardTotalStok.SuspendLayout();
             this.cardStokKritis.SuspendLayout();
             this.cardKategori.SuspendLayout();
+            this.pnlGrid.SuspendLayout();
             this.pnlBanner.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
             this.SuspendLayout();
@@ -89,7 +92,7 @@ namespace CHEMLINK.Views
             this.tblMaster.Controls.Add(this.pnlBanner, 0, 0);
             this.tblMaster.Controls.Add(this.tblKPI, 0, 1);
             this.tblMaster.Controls.Add(this.lblNotifTitle, 0, 2);
-            this.tblMaster.Controls.Add(this.dgvMain, 0, 3);
+            this.tblMaster.Controls.Add(this.pnlGrid, 0, 3);
 
             // ===================== BANNER =====================
             this.pnlBanner.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -278,6 +281,12 @@ namespace CHEMLINK.Views
             this.lblStatusKategori.Location = new System.Drawing.Point(12, 64);
             this.lblStatusKategori.Text = "\u25CF  Jenis produk aktif";
 
+            // ===================== NOTIFICATION GRID WRAPPER =====================
+            this.pnlGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlGrid.BackColor = System.Drawing.Color.White;
+            this.pnlGrid.Padding = new System.Windows.Forms.Padding(0);
+            this.pnlGrid.Controls.Add(this.dgvMain);
+
             // ===================== NOTIFICATION TITLE =====================
             this.lblNotifTitle.AutoSize = true;
             this.lblNotifTitle.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -318,6 +327,7 @@ namespace CHEMLINK.Views
             this.cardStokKritis.PerformLayout();
             this.cardKategori.ResumeLayout(false);
             this.cardKategori.PerformLayout();
+            this.pnlGrid.ResumeLayout(false);
             this.pnlBanner.ResumeLayout(false);
             this.pnlBanner.PerformLayout();
             this.pnlBadge.ResumeLayout(false);

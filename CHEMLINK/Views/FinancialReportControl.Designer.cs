@@ -37,8 +37,10 @@ namespace CHEMLINK.Views
         private System.Windows.Forms.TableLayoutPanel tblGrids;
         private System.Windows.Forms.Label lblMonthlyTitle;
         public System.Windows.Forms.DataGridView dgvMonthly;
+        private System.Windows.Forms.Panel pnlMonthlyGrid;
         private System.Windows.Forms.Label lblCategoryTitle;
         public System.Windows.Forms.DataGridView dgvCategory;
+        private System.Windows.Forms.Panel pnlCategoryGrid;
 
         private void InitializeComponent()
         {
@@ -68,8 +70,10 @@ namespace CHEMLINK.Views
             this.tblGrids = new System.Windows.Forms.TableLayoutPanel();
             this.lblMonthlyTitle = new System.Windows.Forms.Label();
             this.dgvMonthly = new System.Windows.Forms.DataGridView();
+            this.pnlMonthlyGrid = new System.Windows.Forms.Panel();
             this.lblCategoryTitle = new System.Windows.Forms.Label();
             this.dgvCategory = new System.Windows.Forms.DataGridView();
+            this.pnlCategoryGrid = new System.Windows.Forms.Panel();
             this.tblMaster.SuspendLayout();
             this.tblKPI.SuspendLayout();
             this.cardOmzet.SuspendLayout();
@@ -78,7 +82,9 @@ namespace CHEMLINK.Views
             this.cardBestMonth.SuspendLayout();
             this.pnlBanner.SuspendLayout();
             this.tblGrids.SuspendLayout();
+            this.pnlMonthlyGrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMonthly)).BeginInit();
+            this.pnlCategoryGrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCategory)).BeginInit();
             this.SuspendLayout();
 
@@ -284,17 +290,18 @@ namespace CHEMLINK.Views
 
             // ===================== SIDE-BY-SIDE GRID TABLE =====================
             this.tblGrids.ColumnCount = 2;
-            this.tblGrids.RowCount = 2;
+            this.tblGrids.RowCount = 3;
             this.tblGrids.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tblGrids.Padding = new System.Windows.Forms.Padding(0, 8, 0, 0);
             this.tblGrids.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tblGrids.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tblGrids.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
-            this.tblGrids.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblGrids.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblGrids.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tblGrids.Controls.Add(this.lblMonthlyTitle, 0, 0);
-            this.tblGrids.Controls.Add(this.dgvMonthly, 0, 1);
+            this.tblGrids.Controls.Add(this.pnlMonthlyGrid, 0, 1);
             this.tblGrids.Controls.Add(this.lblCategoryTitle, 1, 0);
-            this.tblGrids.Controls.Add(this.dgvCategory, 1, 1);
+            this.tblGrids.Controls.Add(this.pnlCategoryGrid, 1, 1);
 
             // ===================== MONTHLY TITLE =====================
             this.lblMonthlyTitle.AutoSize = true;
@@ -302,6 +309,12 @@ namespace CHEMLINK.Views
             this.lblMonthlyTitle.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblMonthlyTitle.Padding = new System.Windows.Forms.Padding(0, 8, 0, 4);
             this.lblMonthlyTitle.Text = "  Ringkasan Penjualan Bulanan";
+
+            // ===================== MONTHLY GRID WRAPPER =====================
+            this.pnlMonthlyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMonthlyGrid.BackColor = System.Drawing.Color.White;
+            this.pnlMonthlyGrid.Margin = new System.Windows.Forms.Padding(0, 0, 8, 0);
+            this.pnlMonthlyGrid.Controls.Add(this.dgvMonthly);
 
             // ===================== DATAGRIDVIEW MONTHLY =====================
             this.dgvMonthly.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -323,6 +336,12 @@ namespace CHEMLINK.Views
             this.lblCategoryTitle.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblCategoryTitle.Padding = new System.Windows.Forms.Padding(0, 8, 0, 4);
             this.lblCategoryTitle.Text = "  Performa Kategori Produk";
+
+            // ===================== CATEGORY GRID WRAPPER =====================
+            this.pnlCategoryGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlCategoryGrid.BackColor = System.Drawing.Color.White;
+            this.pnlCategoryGrid.Margin = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.pnlCategoryGrid.Controls.Add(this.dgvCategory);
 
             // ===================== DATAGRIDVIEW CATEGORY =====================
             this.dgvCategory.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -364,7 +383,9 @@ namespace CHEMLINK.Views
             this.tblGrids.ResumeLayout(false);
             this.tblGrids.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMonthly)).EndInit();
+            this.pnlMonthlyGrid.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvCategory)).EndInit();
+            this.pnlCategoryGrid.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
         }

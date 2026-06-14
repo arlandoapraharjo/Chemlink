@@ -37,6 +37,10 @@ namespace CHEMLINK.Views
 
             pnlBanner.Paint += PnlBanner_Paint;
 
+            // Dark green border paint handlers
+            pnlMonthlyGrid.Paint += DrawPanelBorder;
+            pnlCategoryGrid.Paint += DrawPanelBorder;
+
             // Responsive: reflow banner description width on resize
             this.Resize += (s, e) =>
             {
@@ -201,6 +205,15 @@ namespace CHEMLINK.Views
                 brush.InterpolationColors = blend;
                 g.FillRectangle(brush, rect);
             }
+        }
+
+        private void DrawPanelBorder(object? sender, PaintEventArgs e)
+        {
+            if (sender is not Panel pnl) return;
+            var r = pnl.ClientRectangle;
+            if (r.Width <= 0 || r.Height <= 0) return;
+            using var pen = new Pen(Agro950, 2f);
+            e.Graphics.DrawRectangle(pen, 0, 0, r.Width - 1, r.Height - 1);
         }
     }
 }

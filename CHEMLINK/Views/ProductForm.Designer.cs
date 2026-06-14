@@ -1,6 +1,6 @@
 namespace CHEMLINK.Views
 {
-    partial class EditProductForm
+    partial class ProductForm
     {
         private System.ComponentModel.IContainer components = null;
         private System.Windows.Forms.Panel pnlHeader;
@@ -16,7 +16,7 @@ namespace CHEMLINK.Views
         private System.Windows.Forms.Label lblHarga;
         public System.Windows.Forms.TextBox txtHarga;
         public System.Windows.Forms.DataGridView dgvReference;
-        public System.Windows.Forms.Button btnSimpan;
+        public System.Windows.Forms.Button btnSubmit;
         public System.Windows.Forms.Button btnBatal;
         private System.Windows.Forms.Panel pnlBottom;
 
@@ -41,7 +41,7 @@ namespace CHEMLINK.Views
             this.lblHarga = new System.Windows.Forms.Label();
             this.txtHarga = new System.Windows.Forms.TextBox();
             this.dgvReference = new System.Windows.Forms.DataGridView();
-            this.btnSimpan = new System.Windows.Forms.Button();
+            this.btnSubmit = new System.Windows.Forms.Button();
             this.btnBatal = new System.Windows.Forms.Button();
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.pnlHeader.SuspendLayout();
@@ -72,7 +72,7 @@ namespace CHEMLINK.Views
             this.lblTitle.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
             this.lblTitle.Size = new System.Drawing.Size(300, 70);
             this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Edit Data Obat";
+            this.lblTitle.Text = "Tambah Obat Baru";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlLeft
@@ -193,7 +193,7 @@ namespace CHEMLINK.Views
             // pnlBottom
             // 
             this.pnlBottom.BackColor = System.Drawing.Color.White;
-            this.pnlBottom.Controls.Add(this.btnSimpan);
+            this.pnlBottom.Controls.Add(this.btnSubmit);
             this.pnlBottom.Controls.Add(this.btnBatal);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlBottom.Location = new System.Drawing.Point(0, 420);
@@ -202,18 +202,18 @@ namespace CHEMLINK.Views
             this.pnlBottom.Size = new System.Drawing.Size(800, 60);
             this.pnlBottom.TabIndex = 3;
             // 
-            // btnSimpan
+            // btnSubmit
             // 
-            this.btnSimpan.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
-            this.btnSimpan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSimpan.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnSimpan.ForeColor = System.Drawing.Color.White;
-            this.btnSimpan.Location = new System.Drawing.Point(560, 13);
-            this.btnSimpan.Name = "btnSimpan";
-            this.btnSimpan.Size = new System.Drawing.Size(110, 35);
-            this.btnSimpan.TabIndex = 0;
-            this.btnSimpan.Text = "Simpan";
-            this.btnSimpan.UseVisualStyleBackColor = false;
+            this.btnSubmit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
+            this.btnSubmit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSubmit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnSubmit.ForeColor = System.Drawing.Color.White;
+            this.btnSubmit.Location = new System.Drawing.Point(560, 13);
+            this.btnSubmit.Name = "btnSubmit";
+            this.btnSubmit.Size = new System.Drawing.Size(110, 35);
+            this.btnSubmit.TabIndex = 0;
+            this.btnSubmit.Text = "Tambah";
+            this.btnSubmit.UseVisualStyleBackColor = false;
             // 
             // btnBatal
             // 
@@ -229,7 +229,7 @@ namespace CHEMLINK.Views
             this.btnBatal.UseVisualStyleBackColor = false;
             this.btnBatal.Click += new System.EventHandler((s, e) => { this.DialogResult = System.Windows.Forms.DialogResult.Cancel; this.Close(); });
             // 
-            // EditProductForm
+            // ProductForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(243)))), ((int)(((byte)(246)))));
@@ -242,9 +242,9 @@ namespace CHEMLINK.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "EditProductForm";
+            this.Name = "ProductForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Edit Obat";
+            this.Text = "Produk";
             this.pnlHeader.ResumeLayout(false);
             this.pnlLeft.ResumeLayout(false);
             this.pnlLeft.PerformLayout();

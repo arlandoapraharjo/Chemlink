@@ -50,7 +50,7 @@ namespace CHEMLINK.Views
 
         private void BtnTambah_Click(object? sender, EventArgs e)
         {
-            using (var form = new AddProductForm(_products, _categories))
+            using (var form = new ProductForm(_products, _categories, null))
             {
                 if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
@@ -68,7 +68,7 @@ namespace CHEMLINK.Views
         private void BtnEdit_Click(object? sender, EventArgs e)
         {
             Product? selected = dgvMain.CurrentRow?.DataBoundItem as Product;
-            using (var form = new EditProductForm(_products, _categories, selected))
+            using (var form = new ProductForm(_products, _categories, selected))
             {
                 if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
@@ -86,13 +86,17 @@ namespace CHEMLINK.Views
 
         private void BtnHapus_Click(object? sender, EventArgs e)
         {
-            using (var form = new DeleteProductForm(_products))
+            if (dgvMain.CurrentRow?.DataBoundItem is not Product p)
             {
-                if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
-                {
-                    DeleteProductEvent?.Invoke(this, form.SelectedProductId);
-                }
+                MessageBox.Show("Pilih produk yang akan dihapus dari tabel.", "ChemLink Info",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
+            var confirm = MessageBox.Show(
+                $"Apakah Anda yakin ingin menghapus produk '{p.Name}'?",
+                "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (confirm == DialogResult.Yes)
+                DeleteProductEvent?.Invoke(this, p.Id);
         }
 
         private void BtnKategori_Click(object? sender, EventArgs e)

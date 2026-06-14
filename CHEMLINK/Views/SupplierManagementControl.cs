@@ -102,7 +102,7 @@ namespace CHEMLINK.Views
             }
         }
 
-        private void BtnDelSup1_Click(object sender, EventArgs e)
+        private void BtnDelSup1_Click(object? sender, EventArgs e)
         {
             if (dgvMain.CurrentRow == null || dgvMain.CurrentRow.Cells["Id"].Value is not int id)
             {

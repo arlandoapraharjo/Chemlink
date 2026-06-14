@@ -44,15 +44,15 @@ namespace CHEMLINK.Views
 
         private void BtnTambah_Click(object? sender, EventArgs e)
         {
-            using (var form = new AddUserForm(_users))
+            using (var form = new UserForm(_users))
             {
                 if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
                     AddUserEvent?.Invoke(this, new UserEventArgs
                     {
-                        Username = form.NewUsername,
-                        Password = form.NewPassword,
-                        Role = form.NewRole
+                        Username = form.Username,
+                        Password = form.Password,
+                        Role = form.Role
                     });
                 }
             }
@@ -69,20 +69,20 @@ namespace CHEMLINK.Views
             string currentUsername = dgvMain.CurrentRow.Cells["Username"].Value?.ToString() ?? "";
             string currentRole = dgvMain.CurrentRow.Cells["Role"].Value?.ToString() ?? "Kasir";
 
-            using (var dialog = new EditUserDialog())
+            using (var dialog = new UserForm())
             {
-                dialog.EditUsername = currentUsername;
-                dialog.EditPassword = "";
-                dialog.EditRole = currentRole;
+                dialog.Username = currentUsername;
+                dialog.Password = "";
+                dialog.Role = currentRole;
 
                 if (dialog.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
                     UpdateUserEvent?.Invoke(this, new UserEventArgs
                     {
                         Id = id,
-                        Username = dialog.EditUsername,
-                        Password = dialog.EditPassword,
-                        Role = dialog.EditRole
+                        Username = dialog.Username,
+                        Password = dialog.Password,
+                        Role = dialog.Role
                     });
                 }
             }
@@ -96,7 +96,6 @@ namespace CHEMLINK.Views
                 return;
             }
 
-            // Find the user object
             var userToDelete = _users.FirstOrDefault(u => u.Id == id);
             if (userToDelete == null)
             {
@@ -104,13 +103,11 @@ namespace CHEMLINK.Views
                 return;
             }
 
-            using (var form = new DeleteUserForm(userToDelete, _users))
-            {
-                if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
-                {
-                    DeleteUserEvent?.Invoke(this, id);
-                }
-            }
+            var confirm = MessageBox.Show(
+                $"Apakah Anda yakin ingin menghapus user \"{userToDelete.Username}\"?\nTindakan ini tidak dapat dibatalkan.",
+                "Konfirmasi Hapus User", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (confirm == DialogResult.Yes)
+                DeleteUserEvent?.Invoke(this, id);
         }
     }
 }

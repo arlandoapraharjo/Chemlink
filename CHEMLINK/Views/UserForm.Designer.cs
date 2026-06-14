@@ -305,18 +305,6 @@ namespace CHEMLINK.Views
             // 
             // btnSubmit
             // 
-<<<<<<< HEAD:CHEMLINK/Views/AddUserForm.Designer.cs
-            this.btnTambah.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
-            this.btnTambah.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTambah.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnTambah.ForeColor = System.Drawing.Color.White;
-            this.btnTambah.Location = new System.Drawing.Point(610, 13);
-            this.btnTambah.Name = "btnTambah";
-            this.btnTambah.Size = new System.Drawing.Size(110, 35);
-            this.btnTambah.TabIndex = 0;
-            this.btnTambah.Text = "Tambah";
-            this.btnTambah.UseVisualStyleBackColor = false;
-=======
             this.btnSubmit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
             this.btnSubmit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSubmit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
@@ -327,7 +315,6 @@ namespace CHEMLINK.Views
             this.btnSubmit.TabIndex = 0;
             this.btnSubmit.Text = "Tambah";
             this.btnSubmit.UseVisualStyleBackColor = false;
->>>>>>> 9508ab673f34c86fdb33f989d99a4ce6b1efef2f:CHEMLINK/Views/UserForm.Designer.cs
             // 
             // btnBatal
             // 

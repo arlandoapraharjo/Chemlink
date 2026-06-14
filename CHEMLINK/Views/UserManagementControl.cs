@@ -50,20 +50,9 @@ namespace CHEMLINK.Views
                 {
                     AddUserEvent?.Invoke(this, new UserEventArgs
                     {
-<<<<<<< HEAD
-                        Username = form.NewUsername,
-                        Password = form.NewPassword,
-                        Role = form.NewRole,
-                        Alamat = form.NewAlamat,
-                        NoTelp = form.NewNoTelp,
-                        Email = form.NewEmail,
-                        Kota = form.NewKota,
-                        Kecamatan = form.NewKecamatan
-=======
                         Username = form.Username,
                         Password = form.Password,
                         Role = form.Role
->>>>>>> 9508ab673f34c86fdb33f989d99a4ce6b1efef2f
                     });
                 }
             }
@@ -80,47 +69,20 @@ namespace CHEMLINK.Views
             string currentUsername = dgvMain.CurrentRow.Cells["Username"].Value?.ToString() ?? "";
             string currentRole = dgvMain.CurrentRow.Cells["Role"].Value?.ToString() ?? "Kasir";
 
-<<<<<<< HEAD
-            // Get existing detail fields
-            var currentUser = _users.FirstOrDefault(u => u.Id == id);
-
-            using (var dialog = new EditUserDialog())
-            {
-                dialog.EditUsername = currentUsername;
-                dialog.EditPassword = "";
-                dialog.EditRole = currentRole;
-                dialog.EditAlamat = currentUser?.Alamat ?? "";
-                dialog.EditNoTelp = currentUser?.NoTelp ?? "";
-                dialog.EditEmail = currentUser?.Email ?? "";
-                dialog.EditKota = currentUser?.Kota ?? "";
-                dialog.EditKecamatan = currentUser?.Kecamatan ?? "";
-=======
             using (var dialog = new UserForm())
             {
                 dialog.Username = currentUsername;
                 dialog.Password = "";
                 dialog.Role = currentRole;
->>>>>>> 9508ab673f34c86fdb33f989d99a4ce6b1efef2f
 
                 if (dialog.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
                     UpdateUserEvent?.Invoke(this, new UserEventArgs
                     {
                         Id = id,
-<<<<<<< HEAD
-                        Username = dialog.EditUsername,
-                        Password = dialog.EditPassword,
-                        Role = dialog.EditRole,
-                        Alamat = dialog.EditAlamat,
-                        NoTelp = dialog.EditNoTelp,
-                        Email = dialog.EditEmail,
-                        Kota = dialog.EditKota,
-                        Kecamatan = dialog.EditKecamatan
-=======
                         Username = dialog.Username,
                         Password = dialog.Password,
                         Role = dialog.Role
->>>>>>> 9508ab673f34c86fdb33f989d99a4ce6b1efef2f
                     });
                 }
             }
@@ -141,7 +103,6 @@ namespace CHEMLINK.Views
                 return;
             }
 
-<<<<<<< HEAD
             // Admin protection: prevent deletion if this is the last admin
             if (string.Equals(userToDelete.Role, "Admin", StringComparison.OrdinalIgnoreCase))
             {
@@ -160,13 +121,6 @@ namespace CHEMLINK.Views
                     DeleteUserEvent?.Invoke(this, id);
                 }
             }
-=======
-            var confirm = MessageBox.Show(
-                $"Apakah Anda yakin ingin menghapus user \"{userToDelete.Username}\"?\nTindakan ini tidak dapat dibatalkan.",
-                "Konfirmasi Hapus User", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (confirm == DialogResult.Yes)
-                DeleteUserEvent?.Invoke(this, id);
->>>>>>> 9508ab673f34c86fdb33f989d99a4ce6b1efef2f
         }
     }
 }

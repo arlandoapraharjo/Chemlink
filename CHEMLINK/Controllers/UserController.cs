@@ -86,7 +86,7 @@ namespace CHEMLINK.Controllers
         {
             try
             {
-                var updated = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address };
+                var updated = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address, KontakPerson = e.KontakPerson, Email = e.Email, Kota = e.Kota };
                 _supplierContext.Update(e.Id, updated);
                 _view.ShowMessage("Data supplier berhasil diupdate!");
                 ShowSupplierManagement();
@@ -311,7 +311,7 @@ namespace CHEMLINK.Controllers
         {
             try
             {
-                var supplier = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address };
+                var supplier = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address, KontakPerson = e.KontakPerson, Email = e.Email, Kota = e.Kota };
                 _supplierContext.Create(supplier);
                 _view.ShowMessage("Supplier baru berhasil dicatat!");
                 ShowSupplierManagement();
@@ -345,7 +345,17 @@ namespace CHEMLINK.Controllers
         {
             try
             {
-                var newUser = new User { Username = e.Username, Password = e.Password, Role = e.Role };
+                var newUser = new User
+                {
+                    Username = e.Username,
+                    Password = e.Password,
+                    Role = e.Role,
+                    Alamat = e.Alamat,
+                    NoTelp = e.NoTelp,
+                    Email = e.Email,
+                    Kota = e.Kota,
+                    Kecamatan = e.Kecamatan
+                };
                 _userContext.Create(newUser);
                 _view.ShowMessage("User berhasil ditambahkan!");
                 ShowUserManagement();
@@ -374,7 +384,18 @@ namespace CHEMLINK.Controllers
                 }
             }
 
-            var updatedUser = new User { Id = e.Id, Username = e.Username, Password = e.Password, Role = e.Role };
+            var updatedUser = new User
+            {
+                Id = e.Id,
+                Username = e.Username,
+                Password = e.Password,
+                Role = e.Role,
+                Alamat = e.Alamat,
+                NoTelp = e.NoTelp,
+                Email = e.Email,
+                Kota = e.Kota,
+                Kecamatan = e.Kecamatan
+            };
             _userContext.Update(updatedUser);
             _view.ShowMessage("User berhasil diupdate!");
             ShowUserManagement();
@@ -382,18 +403,6 @@ namespace CHEMLINK.Controllers
 
         private void HandleDeleteUser(object? sender, int id)
         {
-            // Cegah penghapusan admin terakhir (safety net di controller)
-            var userToDelete = _users.FirstOrDefault(u => u.Id == id);
-            if (userToDelete != null && userToDelete.Role == "Admin")
-            {
-                int adminCount = _users.Count(u => u.Role == "Admin");
-                if (adminCount <= 1)
-                {
-                    _view.ShowMessage("Akun admin ini tidak dapat dihapus karena merupakan satu-satunya admin yang terdaftar.\nMinimal harus ada 1 akun admin di dalam sistem.");
-                    return;
-                }
-            }
-
             _userContext.Delete(id);
             _view.ShowMessage("User berhasil dihapus!");
             ShowUserManagement();

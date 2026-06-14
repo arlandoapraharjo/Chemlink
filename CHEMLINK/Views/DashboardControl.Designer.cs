@@ -38,7 +38,6 @@ namespace CHEMLINK.Views
         // Notification
         private System.Windows.Forms.Label lblNotifTitle;
         public System.Windows.Forms.DataGridView dgvMain;
-        private System.Windows.Forms.Panel pnlGrid;
 
         private void InitializeComponent()
         {
@@ -67,14 +66,12 @@ namespace CHEMLINK.Views
             this.lblStatusKategori = new System.Windows.Forms.Label();
             this.lblNotifTitle = new System.Windows.Forms.Label();
             this.dgvMain = new System.Windows.Forms.DataGridView();
-            this.pnlGrid = new System.Windows.Forms.Panel();
             this.tblMaster.SuspendLayout();
             this.tblKPI.SuspendLayout();
             this.cardTotalProduk.SuspendLayout();
             this.cardTotalStok.SuspendLayout();
             this.cardStokKritis.SuspendLayout();
             this.cardKategori.SuspendLayout();
-            this.pnlGrid.SuspendLayout();
             this.pnlBanner.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
             this.SuspendLayout();
@@ -92,7 +89,7 @@ namespace CHEMLINK.Views
             this.tblMaster.Controls.Add(this.pnlBanner, 0, 0);
             this.tblMaster.Controls.Add(this.tblKPI, 0, 1);
             this.tblMaster.Controls.Add(this.lblNotifTitle, 0, 2);
-            this.tblMaster.Controls.Add(this.pnlGrid, 0, 3);
+            this.tblMaster.Controls.Add(this.dgvMain, 0, 3);
 
             // ===================== BANNER =====================
             this.pnlBanner.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -122,7 +119,7 @@ namespace CHEMLINK.Views
             this.lblBannerTitle.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.lblBannerTitle.ForeColor = System.Drawing.Color.White;
             this.lblBannerTitle.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblBannerTitle.Location = new System.Drawing.Point(22, 37);
+            this.lblBannerTitle.Location = new System.Drawing.Point(32, 44);
             this.lblBannerTitle.Text = "Manajemen Inventaris";
 
             // lblBannerDesc
@@ -130,9 +127,9 @@ namespace CHEMLINK.Views
             this.lblBannerDesc.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.lblBannerDesc.ForeColor = System.Drawing.Color.FromArgb(226, 232, 240);
             this.lblBannerDesc.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.lblBannerDesc.Location = new System.Drawing.Point(22, 76);
+            this.lblBannerDesc.Location = new System.Drawing.Point(32, 76);
             this.lblBannerDesc.AutoSize = false;
-            this.lblBannerDesc.Size = new System.Drawing.Size(635, 35);
+            this.lblBannerDesc.Size = new System.Drawing.Size(650, 36);
             this.lblBannerDesc.Text = "Pantau pergerakan stok obat pertanian, pupuk, pestisida, dan peralatan tani Anda secara real-time untuk produktivitas optimal.";
 
             // ===================== KPI TABLE (4 equal columns) =====================
@@ -179,7 +176,7 @@ namespace CHEMLINK.Views
             this.lblStatusProduk.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblStatusProduk.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblStatusProduk.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStatusProduk.Location = new System.Drawing.Point(12, 80);
+            this.lblStatusProduk.Location = new System.Drawing.Point(12, 64);
             this.lblStatusProduk.Text = "\u25CF  Aktif dalam katalog";
 
             // ===================== CARD 2: TOTAL STOK (#C7EABB) =====================
@@ -212,7 +209,7 @@ namespace CHEMLINK.Views
             this.lblStatusStok.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblStatusStok.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblStatusStok.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStatusStok.Location = new System.Drawing.Point(12, 80);
+            this.lblStatusStok.Location = new System.Drawing.Point(12, 64);
             this.lblStatusStok.Text = "\u25CF  Tersedia di gudang";
 
             // ===================== CARD 3: STOK KRITIS (#E8F5BD) =====================
@@ -245,7 +242,7 @@ namespace CHEMLINK.Views
             this.lblStatusKritis.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblStatusKritis.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblStatusKritis.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStatusKritis.Location = new System.Drawing.Point(12, 80);
+            this.lblStatusKritis.Location = new System.Drawing.Point(12, 64);
             this.lblStatusKritis.Text = "\u25CF  Perlu restok segera";
 
             // ===================== CARD 4: KATEGORI (#C7EABB) =====================
@@ -278,14 +275,8 @@ namespace CHEMLINK.Views
             this.lblStatusKategori.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblStatusKategori.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblStatusKategori.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStatusKategori.Location = new System.Drawing.Point(12, 80);
+            this.lblStatusKategori.Location = new System.Drawing.Point(12, 64);
             this.lblStatusKategori.Text = "\u25CF  Jenis produk aktif";
-
-            // ===================== NOTIFICATION GRID WRAPPER =====================
-            this.pnlGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlGrid.BackColor = System.Drawing.Color.White;
-            this.pnlGrid.Padding = new System.Windows.Forms.Padding(0);
-            this.pnlGrid.Controls.Add(this.dgvMain);
 
             // ===================== NOTIFICATION TITLE =====================
             this.lblNotifTitle.AutoSize = true;
@@ -327,7 +318,6 @@ namespace CHEMLINK.Views
             this.cardStokKritis.PerformLayout();
             this.cardKategori.ResumeLayout(false);
             this.cardKategori.PerformLayout();
-            this.pnlGrid.ResumeLayout(false);
             this.pnlBanner.ResumeLayout(false);
             this.pnlBanner.PerformLayout();
             this.pnlBadge.ResumeLayout(false);

@@ -45,14 +45,17 @@ namespace CHEMLINK.Views
             pnlBanner.Paint += PnlBanner_Paint;
 
             // Dark green border paint handlers
-            pnlGrid.Paint += DrawPanelBorder;
+            dgvMain.Paint += DgvBorder_Paint;
 
             // Responsive: reflow banner description width on resize
             this.Resize += (s, e) =>
             {
                 int descWidth = Math.Max(300, pnlBanner.Width - 64);
-                lblBannerDesc.Size = new Size(descWidth, 36);
+                lblBannerDesc.Size = new Size(descWidth, 80);
             };
+
+            // Set initial description width
+            lblBannerDesc.Size = new Size(Math.Max(300, pnlBanner.Width - 64), 80);
         }
 
         protected override void Dispose(bool disposing)
@@ -157,6 +160,15 @@ namespace CHEMLINK.Views
         {
             if (sender is not Panel pnl) return;
             var r = pnl.ClientRectangle;
+            if (r.Width <= 0 || r.Height <= 0) return;
+            using var pen = new Pen(Agro950, 2f);
+            e.Graphics.DrawRectangle(pen, 0, 0, r.Width - 1, r.Height - 1);
+        }
+
+        private void DgvBorder_Paint(object? sender, PaintEventArgs e)
+        {
+            if (sender is not DataGridView dgv) return;
+            var r = dgv.ClientRectangle;
             if (r.Width <= 0 || r.Height <= 0) return;
             using var pen = new Pen(Agro950, 2f);
             e.Graphics.DrawRectangle(pen, 0, 0, r.Width - 1, r.Height - 1);

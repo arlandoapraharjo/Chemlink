@@ -10,5 +10,11 @@ namespace CHEMLINK.Models
         public string Password { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty; // "Admin" atau "Kasir"
         public string FullName { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public string Alamat { get; set; } = string.Empty;
+        public string NoTelp { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Kota { get; set; } = string.Empty;
+        public string Kecamatan { get; set; } = string.Empty;
     }
 }

@@ -75,7 +75,7 @@ namespace CHEMLINK
             // ===================== TOPBAR PANEL =====================
             this.topbarPanel.BackColor = System.Drawing.Color.FromArgb(2, 44, 34); // Agro950 #022C22
             this.topbarPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.topbarPanel.Height = 64;
+            this.topbarPanel.Height = 74;
             this.topbarPanel.Padding = new System.Windows.Forms.Padding(20, 0, 20, 0);
             this.topbarPanel.Controls.Add(this.navPanel);
             this.topbarPanel.Controls.Add(this.brandPanel);
@@ -91,7 +91,7 @@ namespace CHEMLINK
 
             // picLogo - transparent logo from Assets
             this.picLogo.BackColor = System.Drawing.Color.Transparent;
-            this.picLogo.Location = new System.Drawing.Point(4, 14);
+            this.picLogo.Location = new System.Drawing.Point(4, 19);
             this.picLogo.Size = new System.Drawing.Size(36, 36);
             this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 
@@ -106,7 +106,7 @@ namespace CHEMLINK
             this.lblBrandSub.AutoSize = true;
             this.lblBrandSub.Font = new System.Drawing.Font("Segoe UI Semibold", 7F, System.Drawing.FontStyle.Bold);
             this.lblBrandSub.ForeColor = System.Drawing.Color.FromArgb(134, 239, 172); // Agro300
-            this.lblBrandSub.Location = new System.Drawing.Point(48, 38);
+            this.lblBrandSub.Location = new System.Drawing.Point(48, 42);
             this.lblBrandSub.Text = "SISTEM STOK & PENJUALAN";
 
             // ===================== NAV PANEL (Center - FlowLayout) =====================
@@ -144,7 +144,7 @@ namespace CHEMLINK
             this.lblGreeting.AutoSize = true;
             this.lblGreeting.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblGreeting.ForeColor = System.Drawing.Color.FromArgb(134, 239, 172); // Agro300
-            this.lblGreeting.Location = new System.Drawing.Point(0, 14);
+            this.lblGreeting.Location = new System.Drawing.Point(0, 18);
             this.lblGreeting.Text = "Selamat Bekerja,";
             this.lblGreeting.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 
@@ -152,12 +152,12 @@ namespace CHEMLINK
             this.lblUsername.AutoSize = true;
             this.lblUsername.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.lblUsername.ForeColor = System.Drawing.Color.White;
-            this.lblUsername.Location = new System.Drawing.Point(0, 32);
+            this.lblUsername.Location = new System.Drawing.Point(0, 36);
             this.lblUsername.Text = "Admin";
 
             // pnlAvatar (circle)
             this.pnlAvatar.BackColor = System.Drawing.Color.FromArgb(22, 101, 52); // Agro800
-            this.pnlAvatar.Location = new System.Drawing.Point(168, 13);
+            this.pnlAvatar.Location = new System.Drawing.Point(168, 18);
             this.pnlAvatar.Size = new System.Drawing.Size(38, 38);
             this.pnlAvatar.Controls.Add(this.lblAvatar);
 
@@ -174,7 +174,7 @@ namespace CHEMLINK
             this.btnLogout.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnLogout.ForeColor = System.Drawing.Color.FromArgb(134, 239, 172); // Agro300
             this.btnLogout.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnLogout.Location = new System.Drawing.Point(214, 18);
+            this.btnLogout.Location = new System.Drawing.Point(214, 23);
             this.btnLogout.Size = new System.Drawing.Size(30, 28);
             this.btnLogout.Text = "⏻";
             this.btnLogout.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -228,7 +228,7 @@ namespace CHEMLINK
             btn.ForeColor = System.Drawing.Color.FromArgb(148, 163, 184); // TextMuted #94A3B8
             btn.Cursor = System.Windows.Forms.Cursors.Hand;
             btn.Size = new System.Drawing.Size(110, 36);
-            btn.Margin = new System.Windows.Forms.Padding(4, 14, 4, 0);
+            btn.Margin = new System.Windows.Forms.Padding(4, 19, 4, 0);
             btn.Text = text;
             btn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             btn.UseVisualStyleBackColor = true;

@@ -118,7 +118,7 @@ namespace CHEMLINK.Views
             this.txtPass.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtPass.Location = new System.Drawing.Point(2, 4);
             this.txtPass.Name = "txtPass";
-            this.txtPass.PasswordChar = '•';
+            this.txtPass.PasswordChar = '\u2022';
             this.txtPass.Size = new System.Drawing.Size(296, 20);
             this.txtPass.TabIndex = 0;
             this.txtPass.GotFocus += new System.EventHandler(this.txtPass_GotFocus);

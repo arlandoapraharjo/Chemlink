@@ -6,6 +6,7 @@ namespace CHEMLINK.Views
         public System.Windows.Forms.DataGridView dgvMain;
         private System.Windows.Forms.Panel pnlCrud;
         // input moved to dialog; inline textboxes removed
+        private System.Windows.Forms.Label lblKelola;
         public System.Windows.Forms.Button btnAddSup;
         public System.Windows.Forms.Button btnEditSup;
         public System.Windows.Forms.Button btnDeleteSup;
@@ -57,7 +58,7 @@ namespace CHEMLINK.Views
             dgvMain.Name = "dgvMain";
             dgvMain.ReadOnly = true;
             dgvMain.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvMain.Size = new Size(1070, 520);
+            dgvMain.Size = new Size(1070, 540);
             dgvMain.TabIndex = 0;
             // 
             // pnlCrud
@@ -68,9 +69,9 @@ namespace CHEMLINK.Views
             pnlCrud.Controls.Add(btnDelSup1);
             pnlCrud.Controls.Add(btnEditSup1);
             pnlCrud.Controls.Add(btnAddSup);
-            pnlCrud.Location = new Point(20, 560);
+            pnlCrud.Location = new Point(20, 580);
             pnlCrud.Name = "pnlCrud";
-            pnlCrud.Size = new Size(1070, 88);
+            pnlCrud.Size = new Size(1070, 60);
             pnlCrud.TabIndex = 1;
             // 
             // lblKelola
@@ -107,18 +108,16 @@ namespace CHEMLINK.Views
             btnEditSup1.Text = "Edit Supplier";
             btnEditSup1.UseVisualStyleBackColor = false;
             // 
-            // inline inputs removed; use dialog for add/edit
-            // 
             // btnAddSup
             // 
             btnAddSup.BackColor = Color.FromArgb(72, 161, 17);
             btnAddSup.FlatStyle = FlatStyle.Flat;
             btnAddSup.ForeColor = Color.White;
-            btnAddSup.Location = new Point(599, 12);
+            btnAddSup.Location = new Point(20, 12);
             btnAddSup.Name = "btnAddSup";
             btnAddSup.Size = new Size(142, 35);
             btnAddSup.TabIndex = 3;
-            btnAddSup.Text = "Tambahkan Supplier";
+            btnAddSup.Text = "+ Tambah Supplier";
             btnAddSup.UseVisualStyleBackColor = false;
             // 
             // btnEditSup
@@ -175,6 +174,5 @@ namespace CHEMLINK.Views
 
         public Button btnEditSup1;
         public Button btnDelSup1;
-        private Label lblKelola;
     }
 }

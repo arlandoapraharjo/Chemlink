@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using CHEMLINK.Models;
 
@@ -17,6 +18,15 @@ namespace CHEMLINK.Views
             btnAddSup.Click += BtnAddSup_Click;
             btnEditSup1.Click += BtnEditSup1_Click;
             btnDelSup1.Click += BtnDelSup1_Click;
+            this.Paint += Control_Paint;
+        }
+
+        private void Control_Paint(object? sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            using var pen = new Pen(Color.FromArgb(2, 44, 34), 2f);
+            g.DrawRectangle(pen, dgvMain.Bounds);
+            g.DrawRectangle(pen, pnlCrud.Bounds);
         }
 
         public void SetData(List<Supplier> suppliers)

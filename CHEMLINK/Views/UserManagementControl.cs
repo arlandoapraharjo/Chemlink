@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using CHEMLINK.Models;
@@ -20,6 +21,16 @@ namespace CHEMLINK.Views
             btnTambah.Click += BtnTambah_Click;
             btnUbah.Click += BtnUbah_Click;
             btnHapus.Click += BtnHapus_Click;
+            this.Paint += Control_Paint;
+        }
+
+        private void Control_Paint(object? sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            using var pen = new Pen(Color.FromArgb(2, 44, 34), 2f);
+            g.DrawRectangle(pen, pnlGrid.Bounds);
+            if (pnlToolbar.Visible)
+                g.DrawRectangle(pen, pnlToolbar.Bounds);
         }
 
         public void SetData(List<User> users, bool isAdmin)
@@ -28,7 +39,7 @@ namespace CHEMLINK.Views
             dgvMain.DataSource = null;
             dgvMain.Columns.Clear();
             dgvMain.DataSource = users;
-            pnlActions.Visible = isAdmin;
+            pnlToolbar.Visible = isAdmin;
         }
 
         private void BtnTambah_Click(object? sender, EventArgs e)

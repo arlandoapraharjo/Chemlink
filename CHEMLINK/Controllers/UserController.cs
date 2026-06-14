@@ -362,6 +362,18 @@ namespace CHEMLINK.Controllers
 
         private void HandleUpdateUser(object? sender, UserEventArgs e)
         {
+            // Cegah perubahan role admin terakhir menjadi non-admin
+            var existingUser = _users.FirstOrDefault(u => u.Id == e.Id);
+            if (existingUser != null && existingUser.Role == "Admin" && e.Role != "Admin")
+            {
+                int adminCount = _users.Count(u => u.Role == "Admin");
+                if (adminCount <= 1)
+                {
+                    _view.ShowMessage("Role admin ini tidak dapat diubah karena merupakan satu-satunya admin yang terdaftar.\nMinimal harus ada 1 akun admin di dalam sistem.");
+                    return;
+                }
+            }
+
             var updatedUser = new User { Id = e.Id, Username = e.Username, Password = e.Password, Role = e.Role };
             _userContext.Update(updatedUser);
             _view.ShowMessage("User berhasil diupdate!");
@@ -370,6 +382,18 @@ namespace CHEMLINK.Controllers
 
         private void HandleDeleteUser(object? sender, int id)
         {
+            // Cegah penghapusan admin terakhir (safety net di controller)
+            var userToDelete = _users.FirstOrDefault(u => u.Id == id);
+            if (userToDelete != null && userToDelete.Role == "Admin")
+            {
+                int adminCount = _users.Count(u => u.Role == "Admin");
+                if (adminCount <= 1)
+                {
+                    _view.ShowMessage("Akun admin ini tidak dapat dihapus karena merupakan satu-satunya admin yang terdaftar.\nMinimal harus ada 1 akun admin di dalam sistem.");
+                    return;
+                }
+            }
+
             _userContext.Delete(id);
             _view.ShowMessage("User berhasil dihapus!");
             ShowUserManagement();

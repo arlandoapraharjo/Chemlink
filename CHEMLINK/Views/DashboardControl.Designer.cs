@@ -85,8 +85,8 @@ namespace CHEMLINK.Views
             this.tblMaster.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tblMaster.AutoScroll = true;
             this.tblMaster.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));   // banner
-            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 105F));   // KPI cards
+            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 155F));   // banner
+            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));   // KPI cards
             this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));          // notif title
             this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));    // grid fills rest
             this.tblMaster.Controls.Add(this.pnlBanner, 0, 0);
@@ -122,7 +122,7 @@ namespace CHEMLINK.Views
             this.lblBannerTitle.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.lblBannerTitle.ForeColor = System.Drawing.Color.White;
             this.lblBannerTitle.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblBannerTitle.Location = new System.Drawing.Point(32, 44);
+            this.lblBannerTitle.Location = new System.Drawing.Point(22, 37);
             this.lblBannerTitle.Text = "Manajemen Inventaris";
 
             // lblBannerDesc
@@ -130,9 +130,9 @@ namespace CHEMLINK.Views
             this.lblBannerDesc.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.lblBannerDesc.ForeColor = System.Drawing.Color.FromArgb(226, 232, 240);
             this.lblBannerDesc.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.lblBannerDesc.Location = new System.Drawing.Point(32, 76);
+            this.lblBannerDesc.Location = new System.Drawing.Point(22, 76);
             this.lblBannerDesc.AutoSize = false;
-            this.lblBannerDesc.Size = new System.Drawing.Size(650, 36);
+            this.lblBannerDesc.Size = new System.Drawing.Size(635, 35);
             this.lblBannerDesc.Text = "Pantau pergerakan stok obat pertanian, pupuk, pestisida, dan peralatan tani Anda secara real-time untuk produktivitas optimal.";
 
             // ===================== KPI TABLE (4 equal columns) =====================
@@ -171,7 +171,7 @@ namespace CHEMLINK.Views
             this.lblTotalProdukVal.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
             this.lblTotalProdukVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblTotalProdukVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblTotalProdukVal.Location = new System.Drawing.Point(12, 28);
+            this.lblTotalProdukVal.Location = new System.Drawing.Point(12, 36);
             this.lblTotalProdukVal.Text = "0";
 
             this.lblStatusProduk.AutoSize = true;
@@ -179,7 +179,7 @@ namespace CHEMLINK.Views
             this.lblStatusProduk.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblStatusProduk.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblStatusProduk.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStatusProduk.Location = new System.Drawing.Point(12, 64);
+            this.lblStatusProduk.Location = new System.Drawing.Point(12, 80);
             this.lblStatusProduk.Text = "\u25CF  Aktif dalam katalog";
 
             // ===================== CARD 2: TOTAL STOK (#C7EABB) =====================
@@ -204,7 +204,7 @@ namespace CHEMLINK.Views
             this.lblTotalStokVal.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
             this.lblTotalStokVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblTotalStokVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblTotalStokVal.Location = new System.Drawing.Point(12, 28);
+            this.lblTotalStokVal.Location = new System.Drawing.Point(12, 36);
             this.lblTotalStokVal.Text = "0";
 
             this.lblStatusStok.AutoSize = true;
@@ -212,7 +212,7 @@ namespace CHEMLINK.Views
             this.lblStatusStok.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblStatusStok.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblStatusStok.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStatusStok.Location = new System.Drawing.Point(12, 64);
+            this.lblStatusStok.Location = new System.Drawing.Point(12, 80);
             this.lblStatusStok.Text = "\u25CF  Tersedia di gudang";
 
             // ===================== CARD 3: STOK KRITIS (#E8F5BD) =====================
@@ -237,7 +237,7 @@ namespace CHEMLINK.Views
             this.lblStokKritisVal.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
             this.lblStokKritisVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblStokKritisVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStokKritisVal.Location = new System.Drawing.Point(12, 28);
+            this.lblStokKritisVal.Location = new System.Drawing.Point(12, 36);
             this.lblStokKritisVal.Text = "0";
 
             this.lblStatusKritis.AutoSize = true;
@@ -245,7 +245,7 @@ namespace CHEMLINK.Views
             this.lblStatusKritis.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblStatusKritis.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblStatusKritis.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStatusKritis.Location = new System.Drawing.Point(12, 64);
+            this.lblStatusKritis.Location = new System.Drawing.Point(12, 80);
             this.lblStatusKritis.Text = "\u25CF  Perlu restok segera";
 
             // ===================== CARD 4: KATEGORI (#C7EABB) =====================
@@ -270,7 +270,7 @@ namespace CHEMLINK.Views
             this.lblKategoriVal.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
             this.lblKategoriVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblKategoriVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblKategoriVal.Location = new System.Drawing.Point(12, 28);
+            this.lblKategoriVal.Location = new System.Drawing.Point(12, 36);
             this.lblKategoriVal.Text = "0";
 
             this.lblStatusKategori.AutoSize = true;
@@ -278,7 +278,7 @@ namespace CHEMLINK.Views
             this.lblStatusKategori.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblStatusKategori.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblStatusKategori.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStatusKategori.Location = new System.Drawing.Point(12, 64);
+            this.lblStatusKategori.Location = new System.Drawing.Point(12, 80);
             this.lblStatusKategori.Text = "\u25CF  Jenis produk aktif";
 
             // ===================== NOTIFICATION GRID WRAPPER =====================

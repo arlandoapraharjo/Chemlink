@@ -94,8 +94,8 @@ namespace CHEMLINK.Views
             this.tblMaster.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tblMaster.AutoScroll = true;
             this.tblMaster.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));   // banner
-            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));   // KPI cards
+            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 155F));   // banner
+            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));   // KPI cards
             this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));    // grids fill rest
             this.tblMaster.Controls.Add(this.pnlBanner, 0, 0);
             this.tblMaster.Controls.Add(this.tblKPI, 0, 1);
@@ -178,15 +178,15 @@ namespace CHEMLINK.Views
             this.lblOmzetVal.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.lblOmzetVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblOmzetVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblOmzetVal.Location = new System.Drawing.Point(14, 32);
+            this.lblOmzetVal.Location = new System.Drawing.Point(14, 36);
             this.lblOmzetVal.Text = "Rp 0";
 
             this.lblOmzetStatus.AutoSize = true;
             this.lblOmzetStatus.BackColor = System.Drawing.Color.Transparent;
             this.lblOmzetStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblOmzetStatus.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblOmzetStatus.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            this.lblOmzetStatus.Location = new System.Drawing.Point(14, 70);
+            this.lblOmzetStatus.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
+            this.lblOmzetStatus.Location = new System.Drawing.Point(14, 72);
             this.lblOmzetStatus.Text = "\u25CF  Akumulasi seluruh bulan";
 
             // ===================== CARD 2: TOTAL TRANSAKSI =====================
@@ -211,15 +211,15 @@ namespace CHEMLINK.Views
             this.lblTransaksiVal.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.lblTransaksiVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblTransaksiVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblTransaksiVal.Location = new System.Drawing.Point(14, 32);
+            this.lblTransaksiVal.Location = new System.Drawing.Point(14, 36);
             this.lblTransaksiVal.Text = "0";
 
             this.lblTransaksiStatus.AutoSize = true;
             this.lblTransaksiStatus.BackColor = System.Drawing.Color.Transparent;
             this.lblTransaksiStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblTransaksiStatus.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblTransaksiStatus.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            this.lblTransaksiStatus.Location = new System.Drawing.Point(14, 70);
+            this.lblTransaksiStatus.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
+            this.lblTransaksiStatus.Location = new System.Drawing.Point(14, 72);
             this.lblTransaksiStatus.Text = "\u25CF  Keseluruhan periode";
 
             // ===================== CARD 3: RATA-RATA / BULAN =====================
@@ -244,15 +244,15 @@ namespace CHEMLINK.Views
             this.lblRataRataVal.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.lblRataRataVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblRataRataVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblRataRataVal.Location = new System.Drawing.Point(14, 32);
+            this.lblRataRataVal.Location = new System.Drawing.Point(14, 36);
             this.lblRataRataVal.Text = "Rp 0";
 
             this.lblRataRataStatus.AutoSize = true;
             this.lblRataRataStatus.BackColor = System.Drawing.Color.Transparent;
             this.lblRataRataStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblRataRataStatus.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblRataRataStatus.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            this.lblRataRataStatus.Location = new System.Drawing.Point(14, 70);
+            this.lblRataRataStatus.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
+            this.lblRataRataStatus.Location = new System.Drawing.Point(14, 72);
             this.lblRataRataStatus.Text = "\u25CF  Omzet rata-rata bulanan";
 
             // ===================== CARD 4: BULAN TERBAIK =====================
@@ -277,15 +277,15 @@ namespace CHEMLINK.Views
             this.lblBestMonthVal.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.lblBestMonthVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblBestMonthVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblBestMonthVal.Location = new System.Drawing.Point(14, 32);
+            this.lblBestMonthVal.Location = new System.Drawing.Point(14, 36);
             this.lblBestMonthVal.Text = "-";
 
             this.lblBestMonthStatus.AutoSize = true;
             this.lblBestMonthStatus.BackColor = System.Drawing.Color.Transparent;
             this.lblBestMonthStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblBestMonthStatus.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblBestMonthStatus.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            this.lblBestMonthStatus.Location = new System.Drawing.Point(14, 70);
+            this.lblBestMonthStatus.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
+            this.lblBestMonthStatus.Location = new System.Drawing.Point(14, 72);
             this.lblBestMonthStatus.Text = "\u25CF  Omzet tertinggi";
 
             // ===================== SIDE-BY-SIDE GRID TABLE =====================

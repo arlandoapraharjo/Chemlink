@@ -99,7 +99,7 @@ namespace CHEMLINK
             this.lblBrand.AutoSize = true;
             this.lblBrand.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold);
             this.lblBrand.ForeColor = System.Drawing.Color.White;
-            this.lblBrand.Location = new System.Drawing.Point(48, 14);
+            this.lblBrand.Location = new System.Drawing.Point(45, 8);
             this.lblBrand.Text = "ChemLink";
 
             // lblBrandSub

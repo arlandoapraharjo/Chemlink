@@ -1,19 +1,22 @@
 namespace CHEMLINK.Views
 {
-    partial class DeleteUserForm
+    partial class ProductForm
     {
         private System.ComponentModel.IContainer components = null;
         private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Panel pnlLeft;
         private System.Windows.Forms.Panel pnlRight;
-        private System.Windows.Forms.Label lblUsernameLbl;
-        private System.Windows.Forms.Label lblInfoUsername;
-        private System.Windows.Forms.Label lblRoleLbl;
-        private System.Windows.Forms.Label lblInfoRole;
-        private System.Windows.Forms.Label lblWarning;
+        private System.Windows.Forms.Label lblNama;
+        public System.Windows.Forms.TextBox txtNama;
+        private System.Windows.Forms.Label lblKategori;
+        public System.Windows.Forms.ComboBox cbKategori;
+        private System.Windows.Forms.Label lblStok;
+        public System.Windows.Forms.TextBox txtStok;
+        private System.Windows.Forms.Label lblHarga;
+        public System.Windows.Forms.TextBox txtHarga;
         public System.Windows.Forms.DataGridView dgvReference;
-        public System.Windows.Forms.Button btnHapus;
+        public System.Windows.Forms.Button btnSubmit;
         public System.Windows.Forms.Button btnBatal;
         private System.Windows.Forms.Panel pnlBottom;
 
@@ -29,13 +32,16 @@ namespace CHEMLINK.Views
             this.lblTitle = new System.Windows.Forms.Label();
             this.pnlLeft = new System.Windows.Forms.Panel();
             this.pnlRight = new System.Windows.Forms.Panel();
-            this.lblUsernameLbl = new System.Windows.Forms.Label();
-            this.lblInfoUsername = new System.Windows.Forms.Label();
-            this.lblRoleLbl = new System.Windows.Forms.Label();
-            this.lblInfoRole = new System.Windows.Forms.Label();
-            this.lblWarning = new System.Windows.Forms.Label();
+            this.lblNama = new System.Windows.Forms.Label();
+            this.txtNama = new System.Windows.Forms.TextBox();
+            this.lblKategori = new System.Windows.Forms.Label();
+            this.cbKategori = new System.Windows.Forms.ComboBox();
+            this.lblStok = new System.Windows.Forms.Label();
+            this.txtStok = new System.Windows.Forms.TextBox();
+            this.lblHarga = new System.Windows.Forms.Label();
+            this.txtHarga = new System.Windows.Forms.TextBox();
             this.dgvReference = new System.Windows.Forms.DataGridView();
-            this.btnHapus = new System.Windows.Forms.Button();
+            this.btnSubmit = new System.Windows.Forms.Button();
             this.btnBatal = new System.Windows.Forms.Button();
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.pnlHeader.SuspendLayout();
@@ -66,16 +72,19 @@ namespace CHEMLINK.Views
             this.lblTitle.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
             this.lblTitle.Size = new System.Drawing.Size(300, 70);
             this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Hapus User";
+            this.lblTitle.Text = "Tambah Obat Baru";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlLeft
             // 
-            this.pnlLeft.Controls.Add(this.lblWarning);
-            this.pnlLeft.Controls.Add(this.lblUsernameLbl);
-            this.pnlLeft.Controls.Add(this.lblInfoUsername);
-            this.pnlLeft.Controls.Add(this.lblRoleLbl);
-            this.pnlLeft.Controls.Add(this.lblInfoRole);
+            this.pnlLeft.Controls.Add(this.lblNama);
+            this.pnlLeft.Controls.Add(this.txtNama);
+            this.pnlLeft.Controls.Add(this.lblKategori);
+            this.pnlLeft.Controls.Add(this.cbKategori);
+            this.pnlLeft.Controls.Add(this.lblStok);
+            this.pnlLeft.Controls.Add(this.txtStok);
+            this.pnlLeft.Controls.Add(this.lblHarga);
+            this.pnlLeft.Controls.Add(this.txtHarga);
             this.pnlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlLeft.Location = new System.Drawing.Point(0, 70);
             this.pnlLeft.Name = "pnlLeft";
@@ -83,57 +92,77 @@ namespace CHEMLINK.Views
             this.pnlLeft.Size = new System.Drawing.Size(300, 370);
             this.pnlLeft.TabIndex = 1;
             // 
-            // lblWarning
+            // lblNama
             // 
-            this.lblWarning.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblWarning.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
-            this.lblWarning.Location = new System.Drawing.Point(20, 20);
-            this.lblWarning.Name = "lblWarning";
-            this.lblWarning.Size = new System.Drawing.Size(260, 40);
-            this.lblWarning.TabIndex = 0;
-            this.lblWarning.Text = "⚠ User berikut akan dihapus dari sistem:";
+            this.lblNama.AutoSize = true;
+            this.lblNama.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblNama.Location = new System.Drawing.Point(20, 20);
+            this.lblNama.Name = "lblNama";
+            this.lblNama.Size = new System.Drawing.Size(80, 17);
+            this.lblNama.TabIndex = 0;
+            this.lblNama.Text = "Nama Obat";
             // 
-            // lblUsernameLbl
+            // txtNama
             // 
-            this.lblUsernameLbl.AutoSize = true;
-            this.lblUsernameLbl.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblUsernameLbl.Location = new System.Drawing.Point(20, 75);
-            this.lblUsernameLbl.Name = "lblUsernameLbl";
-            this.lblUsernameLbl.Size = new System.Drawing.Size(70, 17);
-            this.lblUsernameLbl.TabIndex = 1;
-            this.lblUsernameLbl.Text = "Username";
+            this.txtNama.Location = new System.Drawing.Point(20, 43);
+            this.txtNama.Name = "txtNama";
+            this.txtNama.PlaceholderText = "Masukkan nama obat";
+            this.txtNama.Size = new System.Drawing.Size(260, 25);
+            this.txtNama.TabIndex = 1;
             // 
-            // lblInfoUsername
+            // lblKategori
             // 
-            this.lblInfoUsername.AutoSize = true;
-            this.lblInfoUsername.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblInfoUsername.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
-            this.lblInfoUsername.Location = new System.Drawing.Point(20, 98);
-            this.lblInfoUsername.Name = "lblInfoUsername";
-            this.lblInfoUsername.Size = new System.Drawing.Size(50, 20);
-            this.lblInfoUsername.TabIndex = 2;
-            this.lblInfoUsername.Text = "-";
+            this.lblKategori.AutoSize = true;
+            this.lblKategori.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblKategori.Location = new System.Drawing.Point(20, 80);
+            this.lblKategori.Name = "lblKategori";
+            this.lblKategori.Size = new System.Drawing.Size(60, 17);
+            this.lblKategori.TabIndex = 2;
+            this.lblKategori.Text = "Kategori";
             // 
-            // lblRoleLbl
+            // cbKategori
             // 
-            this.lblRoleLbl.AutoSize = true;
-            this.lblRoleLbl.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblRoleLbl.Location = new System.Drawing.Point(20, 135);
-            this.lblRoleLbl.Name = "lblRoleLbl";
-            this.lblRoleLbl.Size = new System.Drawing.Size(35, 17);
-            this.lblRoleLbl.TabIndex = 3;
-            this.lblRoleLbl.Text = "Role";
+            this.cbKategori.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbKategori.Location = new System.Drawing.Point(20, 103);
+            this.cbKategori.Name = "cbKategori";
+            this.cbKategori.Size = new System.Drawing.Size(260, 25);
+            this.cbKategori.TabIndex = 3;
             // 
-            // lblInfoRole
+            // lblStok
             // 
-            this.lblInfoRole.AutoSize = true;
-            this.lblInfoRole.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblInfoRole.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
-            this.lblInfoRole.Location = new System.Drawing.Point(20, 158);
-            this.lblInfoRole.Name = "lblInfoRole";
-            this.lblInfoRole.Size = new System.Drawing.Size(50, 20);
-            this.lblInfoRole.TabIndex = 4;
-            this.lblInfoRole.Text = "-";
+            this.lblStok.AutoSize = true;
+            this.lblStok.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblStok.Location = new System.Drawing.Point(20, 140);
+            this.lblStok.Name = "lblStok";
+            this.lblStok.Size = new System.Drawing.Size(35, 17);
+            this.lblStok.TabIndex = 4;
+            this.lblStok.Text = "Stok";
+            // 
+            // txtStok
+            // 
+            this.txtStok.Location = new System.Drawing.Point(20, 163);
+            this.txtStok.Name = "txtStok";
+            this.txtStok.PlaceholderText = "Jumlah stok";
+            this.txtStok.Size = new System.Drawing.Size(260, 25);
+            this.txtStok.TabIndex = 5;
+            // 
+            // lblHarga
+            // 
+            this.lblHarga.AutoSize = true;
+            this.lblHarga.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblHarga.Location = new System.Drawing.Point(20, 200);
+            this.lblHarga.Name = "lblHarga";
+            this.lblHarga.Size = new System.Drawing.Size(45, 17);
+            this.lblHarga.TabIndex = 6;
+            this.lblHarga.Text = "Harga";
+            // 
+            // txtHarga
+            // 
+            this.txtHarga.Location = new System.Drawing.Point(20, 223);
+            this.txtHarga.Name = "txtHarga";
+            this.txtHarga.PlaceholderText = "Harga satuan (Rp)";
+            this.txtHarga.Size = new System.Drawing.Size(260, 25);
+            this.txtHarga.TabIndex = 7;
             // 
             // pnlRight
             // 
@@ -164,7 +193,7 @@ namespace CHEMLINK.Views
             // pnlBottom
             // 
             this.pnlBottom.BackColor = System.Drawing.Color.White;
-            this.pnlBottom.Controls.Add(this.btnHapus);
+            this.pnlBottom.Controls.Add(this.btnSubmit);
             this.pnlBottom.Controls.Add(this.btnBatal);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlBottom.Location = new System.Drawing.Point(0, 420);
@@ -173,18 +202,18 @@ namespace CHEMLINK.Views
             this.pnlBottom.Size = new System.Drawing.Size(800, 60);
             this.pnlBottom.TabIndex = 3;
             // 
-            // btnHapus
+            // btnSubmit
             // 
-            this.btnHapus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
-            this.btnHapus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnHapus.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnHapus.ForeColor = System.Drawing.Color.White;
-            this.btnHapus.Location = new System.Drawing.Point(560, 13);
-            this.btnHapus.Name = "btnHapus";
-            this.btnHapus.Size = new System.Drawing.Size(110, 35);
-            this.btnHapus.TabIndex = 0;
-            this.btnHapus.Text = "Hapus";
-            this.btnHapus.UseVisualStyleBackColor = false;
+            this.btnSubmit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
+            this.btnSubmit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSubmit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnSubmit.ForeColor = System.Drawing.Color.White;
+            this.btnSubmit.Location = new System.Drawing.Point(560, 13);
+            this.btnSubmit.Name = "btnSubmit";
+            this.btnSubmit.Size = new System.Drawing.Size(110, 35);
+            this.btnSubmit.TabIndex = 0;
+            this.btnSubmit.Text = "Tambah";
+            this.btnSubmit.UseVisualStyleBackColor = false;
             // 
             // btnBatal
             // 
@@ -200,7 +229,7 @@ namespace CHEMLINK.Views
             this.btnBatal.UseVisualStyleBackColor = false;
             this.btnBatal.Click += new System.EventHandler((s, e) => { this.DialogResult = System.Windows.Forms.DialogResult.Cancel; this.Close(); });
             // 
-            // DeleteUserForm
+            // ProductForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(243)))), ((int)(((byte)(246)))));
@@ -213,9 +242,9 @@ namespace CHEMLINK.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "DeleteUserForm";
+            this.Name = "ProductForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Hapus User";
+            this.Text = "Produk";
             this.pnlHeader.ResumeLayout(false);
             this.pnlLeft.ResumeLayout(false);
             this.pnlLeft.PerformLayout();

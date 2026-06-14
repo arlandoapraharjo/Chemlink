@@ -1,6 +1,6 @@
 namespace CHEMLINK.Views
 {
-    partial class AddUserForm
+    partial class UserForm
     {
         private System.ComponentModel.IContainer components = null;
         private System.Windows.Forms.Panel pnlHeader;
@@ -24,7 +24,7 @@ namespace CHEMLINK.Views
         private System.Windows.Forms.Label lblKecamatan;
         public System.Windows.Forms.TextBox txtKecamatan;
         public System.Windows.Forms.DataGridView dgvReference;
-        public System.Windows.Forms.Button btnTambah;
+        public System.Windows.Forms.Button btnSubmit;
         public System.Windows.Forms.Button btnBatal;
         private System.Windows.Forms.Panel pnlBottom;
 
@@ -57,7 +57,7 @@ namespace CHEMLINK.Views
             this.lblKecamatan = new System.Windows.Forms.Label();
             this.txtKecamatan = new System.Windows.Forms.TextBox();
             this.dgvReference = new System.Windows.Forms.DataGridView();
-            this.btnTambah = new System.Windows.Forms.Button();
+            this.btnSubmit = new System.Windows.Forms.Button();
             this.btnBatal = new System.Windows.Forms.Button();
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.pnlHeader.SuspendLayout();
@@ -149,7 +149,7 @@ namespace CHEMLINK.Views
             // 
             this.txtPassword.Location = new System.Drawing.Point(20, 88);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.PasswordChar = '•';
+            this.txtPassword.PasswordChar = '\u2022';
             this.txtPassword.PlaceholderText = "Masukkan password";
             this.txtPassword.Size = new System.Drawing.Size(310, 25);
             this.txtPassword.TabIndex = 3;
@@ -294,7 +294,7 @@ namespace CHEMLINK.Views
             // pnlBottom
             // 
             this.pnlBottom.BackColor = System.Drawing.Color.White;
-            this.pnlBottom.Controls.Add(this.btnTambah);
+            this.pnlBottom.Controls.Add(this.btnSubmit);
             this.pnlBottom.Controls.Add(this.btnBatal);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlBottom.Location = new System.Drawing.Point(0, 490);
@@ -303,8 +303,9 @@ namespace CHEMLINK.Views
             this.pnlBottom.Size = new System.Drawing.Size(850, 60);
             this.pnlBottom.TabIndex = 3;
             // 
-            // btnTambah
+            // btnSubmit
             // 
+<<<<<<< HEAD:CHEMLINK/Views/AddUserForm.Designer.cs
             this.btnTambah.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
             this.btnTambah.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTambah.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
@@ -315,6 +316,18 @@ namespace CHEMLINK.Views
             this.btnTambah.TabIndex = 0;
             this.btnTambah.Text = "Tambah";
             this.btnTambah.UseVisualStyleBackColor = false;
+=======
+            this.btnSubmit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
+            this.btnSubmit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSubmit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnSubmit.ForeColor = System.Drawing.Color.White;
+            this.btnSubmit.Location = new System.Drawing.Point(560, 13);
+            this.btnSubmit.Name = "btnSubmit";
+            this.btnSubmit.Size = new System.Drawing.Size(110, 35);
+            this.btnSubmit.TabIndex = 0;
+            this.btnSubmit.Text = "Tambah";
+            this.btnSubmit.UseVisualStyleBackColor = false;
+>>>>>>> 9508ab673f34c86fdb33f989d99a4ce6b1efef2f:CHEMLINK/Views/UserForm.Designer.cs
             // 
             // btnBatal
             // 
@@ -330,7 +343,7 @@ namespace CHEMLINK.Views
             this.btnBatal.UseVisualStyleBackColor = false;
             this.btnBatal.Click += new System.EventHandler((s, e) => { this.DialogResult = System.Windows.Forms.DialogResult.Cancel; this.Close(); });
             // 
-            // AddUserForm
+            // UserForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(243)))), ((int)(((byte)(246)))));
@@ -343,9 +356,9 @@ namespace CHEMLINK.Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "AddUserForm";
+            this.Name = "UserForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Tambah User";
+            this.Text = "User";
             this.pnlHeader.ResumeLayout(false);
             this.pnlLeft.ResumeLayout(false);
             this.pnlLeft.PerformLayout();

@@ -21,10 +21,23 @@ namespace CHEMLINK.Views
             lblInfoUsername.Text = userToDelete.Username;
             lblInfoRole.Text = userToDelete.Role;
 
-            // Show all users in reference grid
+            // Show all users in reference grid (only Id and Username)
             dgvReference.DataSource = null;
             dgvReference.Columns.Clear();
             dgvReference.DataSource = allUsers;
+
+            // Hide all columns except Id and Username
+            foreach (DataGridViewColumn col in dgvReference.Columns)
+            {
+                if (col.Name != "Id" && col.Name != "Username")
+                    col.Visible = false;
+            }
+
+            // Rename column headers for clarity
+            if (dgvReference.Columns["Id"] != null)
+                dgvReference.Columns["Id"].HeaderText = "ID User";
+            if (dgvReference.Columns["Username"] != null)
+                dgvReference.Columns["Username"].HeaderText = "Username";
 
             btnHapus.Click += BtnHapus_Click;
         }

@@ -52,7 +52,12 @@ namespace CHEMLINK.Views
                     {
                         Username = form.NewUsername,
                         Password = form.NewPassword,
-                        Role = form.NewRole
+                        Role = form.NewRole,
+                        Alamat = form.NewAlamat,
+                        NoTelp = form.NewNoTelp,
+                        Email = form.NewEmail,
+                        Kota = form.NewKota,
+                        Kecamatan = form.NewKecamatan
                     });
                 }
             }
@@ -69,11 +74,19 @@ namespace CHEMLINK.Views
             string currentUsername = dgvMain.CurrentRow.Cells["Username"].Value?.ToString() ?? "";
             string currentRole = dgvMain.CurrentRow.Cells["Role"].Value?.ToString() ?? "Kasir";
 
+            // Get existing detail fields
+            var currentUser = _users.FirstOrDefault(u => u.Id == id);
+
             using (var dialog = new EditUserDialog())
             {
                 dialog.EditUsername = currentUsername;
                 dialog.EditPassword = "";
                 dialog.EditRole = currentRole;
+                dialog.EditAlamat = currentUser?.Alamat ?? "";
+                dialog.EditNoTelp = currentUser?.NoTelp ?? "";
+                dialog.EditEmail = currentUser?.Email ?? "";
+                dialog.EditKota = currentUser?.Kota ?? "";
+                dialog.EditKecamatan = currentUser?.Kecamatan ?? "";
 
                 if (dialog.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
@@ -82,7 +95,12 @@ namespace CHEMLINK.Views
                         Id = id,
                         Username = dialog.EditUsername,
                         Password = dialog.EditPassword,
-                        Role = dialog.EditRole
+                        Role = dialog.EditRole,
+                        Alamat = dialog.EditAlamat,
+                        NoTelp = dialog.EditNoTelp,
+                        Email = dialog.EditEmail,
+                        Kota = dialog.EditKota,
+                        Kecamatan = dialog.EditKecamatan
                     });
                 }
             }
@@ -102,6 +120,17 @@ namespace CHEMLINK.Views
             {
                 MessageBox.Show("Data user tidak ditemukan.", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
+            }
+
+            // Admin protection: prevent deletion if this is the last admin
+            if (string.Equals(userToDelete.Role, "Admin", StringComparison.OrdinalIgnoreCase))
+            {
+                int activeAdminCount = _users.Count(u => string.Equals(u.Role, "Admin", StringComparison.OrdinalIgnoreCase));
+                if (activeAdminCount <= 1)
+                {
+                    MessageBox.Show("Tidak dapat menghapus akun admin terakhir! Minimal harus ada 1 akun admin terdaftar.", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
             }
 
             using (var form = new DeleteUserForm(userToDelete, _users))

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -7,46 +8,26 @@ using CHEMLINK.Models;
 
 namespace CHEMLINK.Views
 {
-    public partial class AddUserForm : Form
+    public partial class AddSupplierForm : Form
     {
-        public string NewUsername => txtUsername.Text.Trim();
-        public string NewPassword => txtPassword.Text;
-        public string NewRole => cbRole.SelectedItem?.ToString() ?? "Kasir";
-        public string NewAlamat => txtAlamat.Text.Trim();
-        public string NewNoTelp => txtNoTelp.Text.Trim();
+        public string NewName => txtNama.Text.Trim();
+        public string NewKontakPerson => txtKontakPerson.Text.Trim();
+        public string NewPhone => txtNoTelp.Text.Trim();
         public string NewEmail => txtEmail.Text.Trim();
+        public string NewAddress => txtAlamat.Text.Trim();
         public string NewKota => txtKota.Text.Trim();
-        public string NewKecamatan => txtKecamatan.Text.Trim();
 
-        public AddUserForm(List<User> existingUsers)
+        public AddSupplierForm()
         {
             InitializeComponent();
-
-            dgvReference.DataSource = null;
-            dgvReference.Columns.Clear();
-            dgvReference.DataSource = existingUsers;
-
-            // Hide all columns except Id and Username
-            foreach (DataGridViewColumn col in dgvReference.Columns)
-            {
-                if (col.Name != "Id" && col.Name != "Username")
-                    col.Visible = false;
-            }
-
-            if (dgvReference.Columns["Id"] != null)
-                dgvReference.Columns["Id"].HeaderText = "ID User";
-            if (dgvReference.Columns["Username"] != null)
-                dgvReference.Columns["Username"].HeaderText = "Username";
-
-            cbRole.SelectedIndex = 1; // Default to "Kasir"
             btnTambah.Click += BtnTambah_Click;
         }
 
         private void BtnTambah_Click(object? sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtUsername.Text) || string.IsNullOrWhiteSpace(txtPassword.Text))
+            if (string.IsNullOrWhiteSpace(txtNama.Text))
             {
-                MessageBox.Show("Username dan Password wajib diisi untuk user baru.", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Nama supplier wajib diisi.", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -72,8 +53,8 @@ namespace CHEMLINK.Views
             if (pnlHeader.ClientRectangle.Width <= 0 || pnlHeader.ClientRectangle.Height <= 0) return;
             using (var brush = new LinearGradientBrush(
                 pnlHeader.ClientRectangle,
-                Color.FromArgb(37, 103, 30),   // #25671E
-                Color.FromArgb(72, 161, 17),   // #48A111
+                Color.FromArgb(37, 103, 30),
+                Color.FromArgb(72, 161, 17),
                 LinearGradientMode.Horizontal))
             {
                 e.Graphics.FillRectangle(brush, pnlHeader.ClientRectangle);

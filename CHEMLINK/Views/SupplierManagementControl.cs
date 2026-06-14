@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using CHEMLINK.Models;
 
@@ -11,6 +12,8 @@ namespace CHEMLINK.Views
         public event EventHandler<SupplierEventArgs>? AddSupplierEvent;
         public event EventHandler<SupplierEventArgs>? UpdateSupplierEvent;
         public event EventHandler<int>? DeleteSupplierEvent;
+
+        private List<Supplier> _suppliers = new();
 
         public SupplierManagementControl()
         {
@@ -31,6 +34,7 @@ namespace CHEMLINK.Views
 
         public void SetData(List<Supplier> suppliers)
         {
+            _suppliers = suppliers;
             dgvMain.DataSource = null;
             dgvMain.Columns.Clear();
             dgvMain.DataSource = suppliers;
@@ -38,22 +42,21 @@ namespace CHEMLINK.Views
 
         private void BtnAddSup_Click(object? sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtNamaSup.Text)) return;
-            // Validate phone contains only digits (if provided)
-            if (!string.IsNullOrWhiteSpace(txtTelp.Text))
+            using (var form = new AddSupplierForm())
             {
-                foreach (char c in txtTelp.Text)
+                if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
-                    if (!char.IsDigit(c))
+                    AddSupplierEvent?.Invoke(this, new SupplierEventArgs
                     {
-                        MessageBox.Show("Nomor telepon harus berupa angka dan tanpa simbol!", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
+                        Name = form.NewName,
+                        Phone = form.NewPhone,
+                        Address = form.NewAddress,
+                        KontakPerson = form.NewKontakPerson,
+                        Email = form.NewEmail,
+                        Kota = form.NewKota
+                    });
                 }
             }
-
-            AddSupplierEvent?.Invoke(this, new SupplierEventArgs { Name = txtNamaSup.Text, Phone = txtTelp.Text, Address = txtAlamat.Text });
-            txtNamaSup.Clear(); txtTelp.Clear(); txtAlamat.Clear();
         }
 
         private void BtnEditSup1_Click(object? sender, EventArgs e)
@@ -68,35 +71,32 @@ namespace CHEMLINK.Views
             string currentPhone = dgvMain.CurrentRow.Cells["Phone"].Value?.ToString() ?? "";
             string currentAddress = dgvMain.CurrentRow.Cells["Address"].Value?.ToString() ?? "";
 
+            // Get existing detail fields from the supplier object
+            var currentSupplier = _suppliers.FirstOrDefault(s => s.Id == id);
+            string currentKontakPerson = currentSupplier?.KontakPerson ?? "";
+            string currentEmail = currentSupplier?.Email ?? "";
+            string currentKota = currentSupplier?.Kota ?? "";
+
             using (var dialog = new EditSupplierDialog())
             {
                 dialog.EditName = currentName;
+                dialog.EditKontakPerson = currentKontakPerson;
                 dialog.EditPhone = currentPhone;
+                dialog.EditEmail = currentEmail;
                 dialog.EditAddress = currentAddress;
+                dialog.EditKota = currentKota;
 
                 if (dialog.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
-                    // Validate phone on edit
-                    if (!string.IsNullOrWhiteSpace(dialog.EditPhone))
-                    {
-                        bool ok = true;
-                        foreach (char c in dialog.EditPhone)
-                        {
-                            if (!char.IsDigit(c)) { ok = false; break; }
-                        }
-                        if (!ok)
-                        {
-                            MessageBox.Show("Nomor telepon harus berupa angka dan tanpa simbol!", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
-                    }
-
                     UpdateSupplierEvent?.Invoke(this, new SupplierEventArgs
                     {
                         Id = id,
                         Name = dialog.EditName,
                         Phone = dialog.EditPhone,
-                        Address = dialog.EditAddress
+                        Address = dialog.EditAddress,
+                        KontakPerson = dialog.EditKontakPerson,
+                        Email = dialog.EditEmail,
+                        Kota = dialog.EditKota
                     });
                 }
             }

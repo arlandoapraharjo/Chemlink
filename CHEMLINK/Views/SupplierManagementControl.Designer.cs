@@ -5,9 +5,6 @@ namespace CHEMLINK.Views
         private System.ComponentModel.IContainer components = null;
         public System.Windows.Forms.DataGridView dgvMain;
         private System.Windows.Forms.Panel pnlCrud;
-        public System.Windows.Forms.TextBox txtNamaSup;
-        public System.Windows.Forms.TextBox txtTelp;
-        public System.Windows.Forms.TextBox txtAlamat;
         public System.Windows.Forms.Button btnAddSup;
         public System.Windows.Forms.Button btnEditSup;
         public System.Windows.Forms.Button btnDeleteSup;
@@ -27,12 +24,8 @@ namespace CHEMLINK.Views
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             dgvMain = new DataGridView();
             pnlCrud = new Panel();
-            lblKelola = new Label();
             btnDelSup1 = new Button();
             btnEditSup1 = new Button();
-            txtNamaSup = new TextBox();
-            txtTelp = new TextBox();
-            txtAlamat = new TextBox();
             btnAddSup = new Button();
             btnEditSup = new Button();
             btnDeleteSup = new Button();
@@ -62,94 +55,57 @@ namespace CHEMLINK.Views
             dgvMain.Name = "dgvMain";
             dgvMain.ReadOnly = true;
             dgvMain.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvMain.Size = new Size(1070, 520);
+            dgvMain.Size = new Size(1070, 540);
             dgvMain.TabIndex = 0;
             // 
             // pnlCrud
             // 
             pnlCrud.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnlCrud.BackColor = Color.White;
-            pnlCrud.Controls.Add(lblKelola);
-            pnlCrud.Controls.Add(btnDelSup1);
-            pnlCrud.Controls.Add(btnEditSup1);
-            pnlCrud.Controls.Add(txtNamaSup);
-            pnlCrud.Controls.Add(txtTelp);
-            pnlCrud.Controls.Add(txtAlamat);
             pnlCrud.Controls.Add(btnAddSup);
-            pnlCrud.Location = new Point(20, 560);
+            pnlCrud.Controls.Add(btnEditSup1);
+            pnlCrud.Controls.Add(btnDelSup1);
+            pnlCrud.Location = new Point(20, 580);
             pnlCrud.Name = "pnlCrud";
-            pnlCrud.Size = new Size(1070, 88);
+            pnlCrud.Size = new Size(1070, 60);
             pnlCrud.TabIndex = 1;
             // 
-            // lblKelola
-            // 
-            lblKelola.AutoSize = true;
-            lblKelola.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblKelola.Location = new Point(13, 21);
-            lblKelola.Name = "lblKelola";
-            lblKelola.Size = new Size(116, 19);
-            lblKelola.TabIndex = 6;
-            lblKelola.Text = "Kelola Supplier:";
-            // 
-            // btnDelSup1
-            // 
-            btnDelSup1.BackColor = Color.FromArgb(244, 67, 54);
-            btnDelSup1.FlatStyle = FlatStyle.Flat;
-            btnDelSup1.ForeColor = Color.White;
-            btnDelSup1.Location = new Point(905, 12);
-            btnDelSup1.Name = "btnDelSup1";
-            btnDelSup1.Size = new Size(142, 35);
-            btnDelSup1.TabIndex = 5;
-            btnDelSup1.Text = "Hapus Supplier";
-            btnDelSup1.UseVisualStyleBackColor = false;
-            // 
-            // btnEditSup1
-            // 
-            btnEditSup1.BackColor = Color.FromArgb(33, 150, 243);
-            btnEditSup1.FlatStyle = FlatStyle.Flat;
-            btnEditSup1.ForeColor = Color.White;
-            btnEditSup1.Location = new Point(752, 12);
-            btnEditSup1.Name = "btnEditSup1";
-            btnEditSup1.Size = new Size(142, 35);
-            btnEditSup1.TabIndex = 4;
-            btnEditSup1.Text = "Edit Supplier";
-            btnEditSup1.UseVisualStyleBackColor = false;
-            // 
-            // txtNamaSup
-            // 
-            txtNamaSup.Location = new Point(136, 17);
-            txtNamaSup.Name = "txtNamaSup";
-            txtNamaSup.PlaceholderText = "Nama Supplier";
-            txtNamaSup.Size = new Size(150, 25);
-            txtNamaSup.TabIndex = 0;
-            // 
-            // txtTelp
-            // 
-            txtTelp.Location = new Point(301, 17);
-            txtTelp.Name = "txtTelp";
-            txtTelp.PlaceholderText = "No Telepon";
-            txtTelp.Size = new Size(120, 25);
-            txtTelp.TabIndex = 1;
-            // 
-            // txtAlamat
-            // 
-            txtAlamat.Location = new Point(436, 17);
-            txtAlamat.Name = "txtAlamat";
-            txtAlamat.PlaceholderText = "Alamat";
-            txtAlamat.Size = new Size(150, 25);
-            txtAlamat.TabIndex = 2;
             // 
             // btnAddSup
             // 
             btnAddSup.BackColor = Color.FromArgb(72, 161, 17);
             btnAddSup.FlatStyle = FlatStyle.Flat;
             btnAddSup.ForeColor = Color.White;
-            btnAddSup.Location = new Point(599, 12);
+            btnAddSup.Location = new Point(20, 12);
             btnAddSup.Name = "btnAddSup";
             btnAddSup.Size = new Size(142, 35);
             btnAddSup.TabIndex = 3;
-            btnAddSup.Text = "Tambahkan Supplier";
+            btnAddSup.Text = "+ Tambah Supplier";
             btnAddSup.UseVisualStyleBackColor = false;
+            // 
+            // btnEditSup1
+            // 
+            btnEditSup1.BackColor = Color.FromArgb(33, 150, 243);
+            btnEditSup1.FlatStyle = FlatStyle.Flat;
+            btnEditSup1.ForeColor = Color.White;
+            btnEditSup1.Location = new Point(172, 12);
+            btnEditSup1.Name = "btnEditSup1";
+            btnEditSup1.Size = new Size(142, 35);
+            btnEditSup1.TabIndex = 4;
+            btnEditSup1.Text = "✏ Edit Supplier";
+            btnEditSup1.UseVisualStyleBackColor = false;
+            // 
+            // btnDelSup1
+            // 
+            btnDelSup1.BackColor = Color.FromArgb(244, 67, 54);
+            btnDelSup1.FlatStyle = FlatStyle.Flat;
+            btnDelSup1.ForeColor = Color.White;
+            btnDelSup1.Location = new Point(324, 12);
+            btnDelSup1.Name = "btnDelSup1";
+            btnDelSup1.Size = new Size(142, 35);
+            btnDelSup1.TabIndex = 5;
+            btnDelSup1.Text = "🗑 Hapus Supplier";
+            btnDelSup1.UseVisualStyleBackColor = false;
             // 
             // btnEditSup
             // 
@@ -205,6 +161,5 @@ namespace CHEMLINK.Views
 
         public Button btnEditSup1;
         public Button btnDelSup1;
-        private Label lblKelola;
     }
 }

@@ -149,7 +149,8 @@ namespace CHEMLINK
             btnLaporan.Click += delegate { ShowReportEvent?.Invoke(this, EventArgs.Empty); };
             btnUser.Click += delegate { ShowUserManagementEvent?.Invoke(this, EventArgs.Empty); };
 
-            btnLogout.Click += delegate {
+            btnLogout.Click += delegate
+            {
                 DialogResult dr = MessageBox.Show("Apakah Anda yakin ingin logout dari sistem?", "Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dr == DialogResult.Yes)
                 {
@@ -279,6 +280,11 @@ namespace CHEMLINK
                     ControlStyles.OptimizedDoubleBuffer |
                     ControlStyles.AllPaintingInWmPaint |
                     ControlStyles.UserPaint, true });
+        }
+
+        private void lblGreeting_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

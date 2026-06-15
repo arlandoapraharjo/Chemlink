@@ -25,7 +25,6 @@ namespace CHEMLINK.Views
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             dgvMain = new DataGridView();
             pnlCrud = new Panel();
-            lblKelola = new Label();
             btnDelSup1 = new Button();
             btnEditSup1 = new Button();
             btnAddSup = new Button();
@@ -57,38 +56,28 @@ namespace CHEMLINK.Views
             dgvMain.Name = "dgvMain";
             dgvMain.ReadOnly = true;
             dgvMain.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvMain.Size = new Size(1070, 520);
+            dgvMain.Size = new Size(1070, 548);
             dgvMain.TabIndex = 0;
             // 
             // pnlCrud
             // 
             pnlCrud.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnlCrud.BackColor = Color.White;
-            pnlCrud.Controls.Add(lblKelola);
             pnlCrud.Controls.Add(btnDelSup1);
             pnlCrud.Controls.Add(btnEditSup1);
             pnlCrud.Controls.Add(btnAddSup);
-            pnlCrud.Location = new Point(20, 560);
+            pnlCrud.Location = new Point(20, 591);
             pnlCrud.Name = "pnlCrud";
-            pnlCrud.Size = new Size(1070, 88);
+            pnlCrud.Size = new Size(1070, 57);
             pnlCrud.TabIndex = 1;
-            // 
-            // lblKelola
-            // 
-            lblKelola.AutoSize = true;
-            lblKelola.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblKelola.Location = new Point(13, 21);
-            lblKelola.Name = "lblKelola";
-            lblKelola.Size = new Size(116, 19);
-            lblKelola.TabIndex = 6;
-            lblKelola.Text = "Kelola Supplier:";
             // 
             // btnDelSup1
             // 
             btnDelSup1.BackColor = Color.FromArgb(244, 67, 54);
             btnDelSup1.FlatStyle = FlatStyle.Flat;
+            btnDelSup1.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnDelSup1.ForeColor = Color.White;
-            btnDelSup1.Location = new Point(905, 12);
+            btnDelSup1.Location = new Point(323, 11);
             btnDelSup1.Name = "btnDelSup1";
             btnDelSup1.Size = new Size(142, 35);
             btnDelSup1.TabIndex = 5;
@@ -99,26 +88,26 @@ namespace CHEMLINK.Views
             // 
             btnEditSup1.BackColor = Color.FromArgb(33, 150, 243);
             btnEditSup1.FlatStyle = FlatStyle.Flat;
+            btnEditSup1.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEditSup1.ForeColor = Color.White;
-            btnEditSup1.Location = new Point(752, 12);
+            btnEditSup1.Location = new Point(170, 11);
             btnEditSup1.Name = "btnEditSup1";
             btnEditSup1.Size = new Size(142, 35);
             btnEditSup1.TabIndex = 4;
             btnEditSup1.Text = "Edit Supplier";
             btnEditSup1.UseVisualStyleBackColor = false;
             // 
-            // inline inputs removed; use dialog for add/edit
-            // 
             // btnAddSup
             // 
             btnAddSup.BackColor = Color.FromArgb(72, 161, 17);
             btnAddSup.FlatStyle = FlatStyle.Flat;
+            btnAddSup.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAddSup.ForeColor = Color.White;
-            btnAddSup.Location = new Point(599, 12);
+            btnAddSup.Location = new Point(17, 11);
             btnAddSup.Name = "btnAddSup";
             btnAddSup.Size = new Size(142, 35);
             btnAddSup.TabIndex = 3;
-            btnAddSup.Text = "Tambahkan Supplier";
+            btnAddSup.Text = "Tambah Supplier";
             btnAddSup.UseVisualStyleBackColor = false;
             // 
             // btnEditSup
@@ -168,13 +157,11 @@ namespace CHEMLINK.Views
             Size = new Size(1110, 670);
             ((System.ComponentModel.ISupportInitialize)dgvMain).EndInit();
             pnlCrud.ResumeLayout(false);
-            pnlCrud.PerformLayout();
             ResumeLayout(false);
 
         }
 
         public Button btnEditSup1;
         public Button btnDelSup1;
-        private Label lblKelola;
     }
 }

@@ -27,7 +27,7 @@ namespace CHEMLINK.Views
             _users = users;
             dgvMain.DataSource = null;
             dgvMain.Columns.Clear();
-            dgvMain.DataSource = users;
+            dgvMain.DataSource = new System.ComponentModel.BindingList<User>(users);
             pnlActions.Visible = isAdmin;
         }
 

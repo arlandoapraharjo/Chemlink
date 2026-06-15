@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
 using CHEMLINK.Models;
 
@@ -23,7 +24,7 @@ namespace CHEMLINK.Views
         {
             dgvMain.DataSource = null;
             dgvMain.Columns.Clear();
-            dgvMain.DataSource = suppliers;
+            dgvMain.DataSource = new BindingList<Supplier>(suppliers);
         }
 
         private void BtnAddSup_Click(object? sender, EventArgs e)

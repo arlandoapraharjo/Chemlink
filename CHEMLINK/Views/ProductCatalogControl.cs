@@ -23,14 +23,7 @@ namespace CHEMLINK.Views
             btnKategori.Click += BtnKategori_Click;
         }
 
-        public void SetData(List<Product> products, bool isAdmin)
-        {
-            _products = products;
-            dgvMain.DataSource = null;
-            dgvMain.Columns.Clear();
-            dgvMain.DataSource = products;
-            pnlToolbar.Visible = isAdmin;
-        }
+
 
         public void SetCategories(List<Category> categories)
         {
@@ -92,5 +85,28 @@ namespace CHEMLINK.Views
         }
 
         public event EventHandler? ManageCategoryEvent;
+
+        public void SetData(List<Product> products, bool isAdmin)
+        {
+            _products = products;
+            dgvMain.DataSource = null;
+            dgvMain.Columns.Clear();
+            dgvMain.DataSource = new System.ComponentModel.BindingList<Product>(products);
+            pnlToolbar.Visible = isAdmin;
+        }
+
+        public void EnsureComboBoxSelectedIndex(System.Windows.Forms.ComboBox combo)
+        {
+            if (combo == null) return;
+            if (combo.Items.Count == 0)
+            {
+                combo.SelectedIndex = -1;
+                return;
+            }
+            if (combo.SelectedIndex < 0 || combo.SelectedIndex >= combo.Items.Count)
+            {
+                combo.SelectedIndex = 0;
+            }
+        }
     }
 }

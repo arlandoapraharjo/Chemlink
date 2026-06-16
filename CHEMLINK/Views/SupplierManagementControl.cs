@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using CHEMLINK.Models;
+using CHEMLINK.Contexts;
 
 namespace CHEMLINK.Views
 {
@@ -39,27 +41,28 @@ namespace CHEMLINK.Views
             dgvMain.Columns.Clear();
             dgvMain.DataSource = new BindingList<Supplier>(suppliers);
 
-            // Atur ulang kolom untuk menampilkan data lengkap dari database
+            // Atur ulang kolom untuk menampilkan semua data dari Supplier
             try
             {
                 dgvMain.Columns["Id"]!.HeaderText = "ID Supplier";
                 dgvMain.Columns["Name"]!.HeaderText = "Nama Perusahaan";
-                dgvMain.Columns["ContactPerson"]!.HeaderText = "Kontak Person";
+                dgvMain.Columns["KontakPerson"]!.HeaderText = "Kontak Person";
                 dgvMain.Columns["Phone"]!.HeaderText = "Nomor Telepon";
                 dgvMain.Columns["Email"]!.HeaderText = "Email";
-                dgvMain.Columns["Address"]!.HeaderText = "Alamat Supplier";
-                dgvMain.Columns["City"]!.HeaderText = "Kota";
+                dgvMain.Columns["Address"]!.HeaderText = "Alamat";
+                dgvMain.Columns["Kota"]!.HeaderText = "Kota";
                 dgvMain.Columns["Status"]!.HeaderText = "Status";
+                dgvMain.Columns["Status"]!.Visible = false;
 
                 // Atur lebar kolom
-                dgvMain.Columns["Id"]!.Width = 50;
-                dgvMain.Columns["Name"]!.Width = 120;
-                dgvMain.Columns["ContactPerson"]!.Width = 120;
-                dgvMain.Columns["Phone"]!.Width = 100;
-                dgvMain.Columns["Email"]!.Width = 120;
+                dgvMain.Columns["Id"]!.Width = 60;
+                dgvMain.Columns["Name"]!.Width = 150;
+                dgvMain.Columns["KontakPerson"]!.Width = 120;
+                dgvMain.Columns["Phone"]!.Width = 120;
+                dgvMain.Columns["Email"]!.Width = 150;
                 dgvMain.Columns["Address"]!.Width = 150;
-                dgvMain.Columns["City"]!.Width = 100;
-                dgvMain.Columns["Status"]!.Width = 70;
+                dgvMain.Columns["Kota"]!.Width = 100;
+                dgvMain.Columns["Status"]!.Width = 80;
             }
             catch
             {
@@ -98,7 +101,8 @@ namespace CHEMLINK.Views
                         Address = dialog.EditAddress,
                         KontakPerson = dialog.EditKontakPerson,
                         Email = dialog.EditEmail,
-                        Kota = dialog.EditKota
+                        Kota = dialog.EditKota,
+                        Status = dialog.EditStatus
                     });
                 }
             }
@@ -112,15 +116,17 @@ namespace CHEMLINK.Views
                 return;
             }
 
-            string currentName = dgvMain.CurrentRow.Cells["Name"].Value?.ToString() ?? "";
-            string currentPhone = dgvMain.CurrentRow.Cells["Phone"].Value?.ToString() ?? "";
-            string currentAddress = dgvMain.CurrentRow.Cells["Address"].Value?.ToString() ?? "";
-
-            // Get existing detail fields from the supplier object
-            var currentSupplier = _suppliers.FirstOrDefault(s => s.Id == id);
+            // Get detailed supplier data from the database
+            var supplierCtx = new SupplierContext();
+            var currentSupplier = supplierCtx.GetById(id);
+            string currentName = currentSupplier?.Name ?? "";
+            string currentPhone = currentSupplier?.Phone ?? "";
+            string currentAddress = currentSupplier?.Address ?? "";
             string currentKontakPerson = currentSupplier?.KontakPerson ?? "";
             string currentEmail = currentSupplier?.Email ?? "";
             string currentKota = currentSupplier?.Kota ?? "";
+
+            string currentStatus = currentSupplier?.Status ?? "Aktif";
 
             using (var dialog = new EditSupplierDialog())
             {
@@ -130,6 +136,7 @@ namespace CHEMLINK.Views
                 dialog.EditEmail = currentEmail;
                 dialog.EditAddress = currentAddress;
                 dialog.EditKota = currentKota;
+                dialog.EditStatus = currentStatus;
 
                 if (dialog.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
@@ -141,7 +148,8 @@ namespace CHEMLINK.Views
                         Address = dialog.EditAddress,
                         KontakPerson = dialog.EditKontakPerson,
                         Email = dialog.EditEmail,
-                        Kota = dialog.EditKota
+                        Kota = dialog.EditKota,
+                        Status = dialog.EditStatus
                     });
                 }
             }

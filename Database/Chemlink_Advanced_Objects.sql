@@ -375,8 +375,8 @@ BEGIN
         RAISE EXCEPTION 'Produk dengan id % tidak ditemukan.', p_id_produk;
     END IF;
 
-    IF NOT EXISTS (SELECT 1 FROM Users WHERE id_user = p_id_kasir AND Role = 'Kasir') THEN
-        RAISE EXCEPTION 'Kasir dengan id % tidak ditemukan.', p_id_kasir;
+    IF NOT EXISTS (SELECT 1 FROM Users WHERE id_user = p_id_kasir AND Role IN ('Kasir', 'Admin') AND status = 'Active') THEN
+        RAISE EXCEPTION 'Kasir/Admin dengan id % tidak ditemukan.', p_id_kasir;
     END IF;
 
     IF p_jumlah_keluar <= 0 THEN

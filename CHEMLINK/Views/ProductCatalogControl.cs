@@ -52,7 +52,9 @@ namespace CHEMLINK.Views
                         Name = form.ProductName,
                         Category = form.CategoryName,
                         Stock = form.Stock,
-                        Price = form.Price
+                        Price = form.Price,
+                        Description = form.Description,
+                        ExpiryDate = form.ExpiryDate
                     });
                 }
             }
@@ -71,7 +73,9 @@ namespace CHEMLINK.Views
                         Name = form.ProductName,
                         Category = form.CategoryName,
                         Stock = form.Stock,
-                        Price = form.Price
+                        Price = form.Price,
+                        Description = form.Description,
+                        ExpiryDate = form.ExpiryDate
                     });
                 }
             }

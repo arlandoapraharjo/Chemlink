@@ -10,11 +10,11 @@ namespace CHEMLINK.Contexts
     {
         public User? AuthenticateUser(string username, string password)
         {
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "SELECT id_user, username, password, Role, status, alamat, no_telp, email, kota, kecamatan FROM Users WHERE username = @user AND status = 'Active'";
+                    string sql = "SELECT id_user, username, password, Role, fullname, status, alamat, no_telp, email, kecamatan FROM Users WHERE username = @user AND status = 'Active'";
 
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
@@ -40,11 +40,11 @@ namespace CHEMLINK.Contexts
         {
             List<User> listuser = new List<User>();
 
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "SELECT id_user, username, password, Role, status, alamat, no_telp, email, kota, kecamatan FROM Users WHERE status = 'Active' ORDER BY id_user ASC";
+                    string sql = "SELECT id_user, username, password, Role, fullname, status, alamat, no_telp, email, kecamatan FROM Users WHERE status = 'Active' ORDER BY id_user ASC";
 
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
@@ -63,7 +63,7 @@ namespace CHEMLINK.Contexts
 
         public void Create(User user)
         {
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
@@ -77,14 +77,15 @@ namespace CHEMLINK.Contexts
                         if (existingId != null)
                         {
                             // Reactivate the soft-deleted user with new data
-                            string reactivateSql = @"UPDATE Users SET password = @pass, Role = @role, status = 'Active',
-                                alamat = @alamat, no_telp = @telp, email = @email, kota = @kota, kecamatan = @kec
+                            string reactivateSql = @"UPDATE Users SET password = @pass, Role = @role, fullname = @fullname, status = 'Active',
+                                alamat = @alamat, no_telp = @telp, email = @email, kecamatan = @kec
                                 WHERE id_user = @id";
                             using (NpgsqlCommand updateCmd = new NpgsqlCommand(reactivateSql, conn))
                             {
                                 updateCmd.Parameters.AddWithValue("@id", Convert.ToInt32(existingId));
                                 updateCmd.Parameters.AddWithValue("@pass", user.Password);
                                 updateCmd.Parameters.AddWithValue("@role", user.Role);
+                                updateCmd.Parameters.AddWithValue("@fullname", string.IsNullOrWhiteSpace(user.FullName) ? user.Username : user.FullName);
                                 AddDetailParams(updateCmd, user);
                                 updateCmd.ExecuteNonQuery();
                             }
@@ -92,15 +93,18 @@ namespace CHEMLINK.Contexts
                         }
                     }
 
-                    // No inactive duplicate — insert as new user
-                    string sql = @"INSERT INTO Users (username, password, Role, status, alamat, no_telp, email, kota, kecamatan)
-                        VALUES (@user, @pass, @role, 'Active', @alamat, @telp, @email, @kota, @kec)";
+                    // No inactive duplicate — insert as new user using stored procedure sp_tambah_user
+                    string sql = "CALL sp_tambah_user(@user, @pass, @role, @fullname, @alamat, @kec, @telp, @email)";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@user", user.Username);
                         cmd.Parameters.AddWithValue("@pass", user.Password);
                         cmd.Parameters.AddWithValue("@role", user.Role);
-                        AddDetailParams(cmd, user);
+                        cmd.Parameters.AddWithValue("@fullname", string.IsNullOrWhiteSpace(user.FullName) ? user.Username : user.FullName);
+                        cmd.Parameters.AddWithValue("@alamat", string.IsNullOrWhiteSpace(user.Alamat) ? DBNull.Value : user.Alamat);
+                        cmd.Parameters.AddWithValue("@kec", string.IsNullOrWhiteSpace(user.Kecamatan) ? DBNull.Value : user.Kecamatan);
+                        cmd.Parameters.AddWithValue("@telp", string.IsNullOrWhiteSpace(user.NoTelp) ? DBNull.Value : user.NoTelp);
+                        cmd.Parameters.AddWithValue("@email", string.IsNullOrWhiteSpace(user.Email) ? DBNull.Value : user.Email);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -109,21 +113,21 @@ namespace CHEMLINK.Contexts
 
         public void Update(User user)
         {
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
                     string sql;
                     if (!string.IsNullOrWhiteSpace(user.Password))
                     {
-                        sql = @"UPDATE Users SET username = @user, password = @pass, Role = @role,
-                            alamat = @alamat, no_telp = @telp, email = @email, kota = @kota, kecamatan = @kec
+                        sql = @"UPDATE Users SET username = @user, password = @pass, Role = @role, fullname = @fullname, status = @status,
+                            alamat = @alamat, no_telp = @telp, email = @email, kecamatan = @kec
                             WHERE id_user = @id";
                     }
                     else
                     {
-                        sql = @"UPDATE Users SET username = @user, Role = @role,
-                            alamat = @alamat, no_telp = @telp, email = @email, kota = @kota, kecamatan = @kec
+                        sql = @"UPDATE Users SET username = @user, Role = @role, fullname = @fullname, status = @status,
+                            alamat = @alamat, no_telp = @telp, email = @email, kecamatan = @kec
                             WHERE id_user = @id";
                     }
 
@@ -132,6 +136,8 @@ namespace CHEMLINK.Contexts
                         cmd.Parameters.AddWithValue("@id", user.Id);
                         cmd.Parameters.AddWithValue("@user", user.Username);
                         cmd.Parameters.AddWithValue("@role", user.Role);
+                        cmd.Parameters.AddWithValue("@fullname", string.IsNullOrWhiteSpace(user.FullName) ? user.Username : user.FullName);
+                        cmd.Parameters.AddWithValue("@status", string.IsNullOrWhiteSpace(user.Status) ? "Active" : user.Status);
 
                         if (!string.IsNullOrWhiteSpace(user.Password))
                         {
@@ -147,7 +153,7 @@ namespace CHEMLINK.Contexts
 
         public bool Delete(int id)
         {
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
@@ -169,7 +175,7 @@ namespace CHEMLINK.Contexts
                         }
                     }
 
-                    string sql = "UPDATE Users SET status = 'Inactive' WHERE id_user = @id";
+                    string sql = "CALL sp_update_status_user(@id, 'Inactive')";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
@@ -184,19 +190,29 @@ namespace CHEMLINK.Contexts
         // Helper: map DataReader row to User object
         private static User MapUser(NpgsqlDataReader dr)
         {
+            int idxId = dr.GetOrdinal("id_user");
+            int idxUser = dr.GetOrdinal("username");
+            int idxPass = dr.GetOrdinal("password");
+            int idxFull = dr.GetOrdinal("fullname");
+            int idxRole = dr.GetOrdinal("Role");
+            int idxStat = dr.GetOrdinal("status");
+            int idxAlamat = dr.GetOrdinal("alamat");
+            int idxTelp = dr.GetOrdinal("no_telp");
+            int idxEmail = dr.GetOrdinal("email");
+            int idxKec = dr.GetOrdinal("kecamatan");
+
             return new User
             {
-                Id = Convert.ToInt32(dr["id_user"]),
-                Username = dr["username"].ToString() ?? "",
-                Password = dr["password"].ToString() ?? "",
-                FullName = dr["username"].ToString() ?? "",
-                Role = dr["Role"] != DBNull.Value ? dr["Role"].ToString() ?? "" : "",
-                Status = dr["status"] != DBNull.Value ? dr["status"].ToString() ?? "" : "",
-                Alamat = dr["alamat"] != DBNull.Value ? dr["alamat"].ToString() ?? "" : "",
-                NoTelp = dr["no_telp"] != DBNull.Value ? dr["no_telp"].ToString() ?? "" : "",
-                Email = dr["email"] != DBNull.Value ? dr["email"].ToString() ?? "" : "",
-                Kota = dr["kota"] != DBNull.Value ? dr["kota"].ToString() ?? "" : "",
-                Kecamatan = dr["kecamatan"] != DBNull.Value ? dr["kecamatan"].ToString() ?? "" : ""
+                Id = !dr.IsDBNull(idxId) ? dr.GetInt32(idxId) : 0,
+                Username = !dr.IsDBNull(idxUser) ? dr.GetString(idxUser) : "",
+                Password = !dr.IsDBNull(idxPass) ? dr.GetString(idxPass) : "",
+                FullName = !dr.IsDBNull(idxFull) ? dr.GetString(idxFull) : (!dr.IsDBNull(idxUser) ? dr.GetString(idxUser) : ""),
+                Role = !dr.IsDBNull(idxRole) ? dr.GetString(idxRole) : "",
+                Status = !dr.IsDBNull(idxStat) ? dr.GetString(idxStat) : "",
+                Alamat = !dr.IsDBNull(idxAlamat) ? dr.GetString(idxAlamat) : "",
+                NoTelp = !dr.IsDBNull(idxTelp) ? dr.GetString(idxTelp) : "",
+                Email = !dr.IsDBNull(idxEmail) ? dr.GetString(idxEmail) : "",
+                Kecamatan = !dr.IsDBNull(idxKec) ? dr.GetString(idxKec) : ""
             };
         }
 
@@ -206,7 +222,6 @@ namespace CHEMLINK.Contexts
             cmd.Parameters.AddWithValue("@alamat", string.IsNullOrWhiteSpace(user.Alamat) ? DBNull.Value : user.Alamat);
             cmd.Parameters.AddWithValue("@telp", string.IsNullOrWhiteSpace(user.NoTelp) ? DBNull.Value : user.NoTelp);
             cmd.Parameters.AddWithValue("@email", string.IsNullOrWhiteSpace(user.Email) ? DBNull.Value : user.Email);
-            cmd.Parameters.AddWithValue("@kota", string.IsNullOrWhiteSpace(user.Kota) ? DBNull.Value : user.Kota);
             cmd.Parameters.AddWithValue("@kec", string.IsNullOrWhiteSpace(user.Kecamatan) ? DBNull.Value : user.Kecamatan);
         }
     }

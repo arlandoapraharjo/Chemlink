@@ -9,10 +9,11 @@ namespace CHEMLINK.Models
         public string Username { get; set; } = "";
         public string Password { get; set; } = "";
         public string Role { get; set; } = "";
+        public string FullName { get; set; } = "";
+        public string Status { get; set; } = "";
         public string Alamat { get; set; } = "";
         public string NoTelp { get; set; } = "";
         public string Email { get; set; } = "";
-        public string Kota { get; set; } = "";
         public string Kecamatan { get; set; } = "";
     }
 
@@ -23,6 +24,8 @@ namespace CHEMLINK.Models
         public string Category { get; set; } = "";
         public int Stock { get; set; }
         public decimal Price { get; set; }
+        public string Description { get; set; } = "";
+        public DateTime? ExpiryDate { get; set; }
     }
 
     public class CategoryEventArgs : EventArgs
@@ -46,5 +49,6 @@ namespace CHEMLINK.Models
         public string KontakPerson { get; set; } = "";
         public string Email { get; set; } = "";
         public string Kota { get; set; } = "";
+        public string Status { get; set; } = "";
     }
 }

@@ -86,7 +86,7 @@ namespace CHEMLINK.Controllers
         {
             try
             {
-                var updated = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address, KontakPerson = e.KontakPerson, Email = e.Email, Kota = e.Kota };
+                var updated = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address, KontakPerson = e.KontakPerson, Email = e.Email, Kota = e.Kota, Status = e.Status };
                 _supplierContext.Update(e.Id, updated);
                 _view.ShowMessage("Data supplier berhasil diupdate!");
                 ShowSupplierManagement();
@@ -120,12 +120,12 @@ namespace CHEMLINK.Controllers
             // Rename columns for user-friendly headers
             if (dtNotif != null)
             {
-                if (dtNotif.Columns.Contains("id_produk")) dtNotif.Columns["id_produk"].ColumnName = "ID";
-                if (dtNotif.Columns.Contains("nama_produk")) dtNotif.Columns["nama_produk"].ColumnName = "Nama Produk";
-                if (dtNotif.Columns.Contains("jumlah_stock")) dtNotif.Columns["jumlah_stock"].ColumnName = "Jumlah Stock";
+                if (dtNotif.Columns.Contains("id_produk")) dtNotif.Columns["id_produk"]!.ColumnName = "ID";
+                if (dtNotif.Columns.Contains("nama_produk")) dtNotif.Columns["nama_produk"]!.ColumnName = "Nama Produk";
+                if (dtNotif.Columns.Contains("jumlah_stock")) dtNotif.Columns["jumlah_stock"]!.ColumnName = "Jumlah Stock";
             }
 
-            _view.ShowDashboardData(_products, dtNotif);
+            _view.ShowDashboardData(_products, dtNotif!);
         }
 
         private void ShowProductCatalog()
@@ -146,7 +146,7 @@ namespace CHEMLINK.Controllers
                     break;
                 }
             }
-            _productContext.Create(e.Name, idKategori, e.Stock, e.Price);
+            _productContext.Create(e.Name, idKategori, e.Stock, e.Price, e.Description, e.ExpiryDate);
             _view.ShowMessage("Obat pertanian berhasil ditambahkan!");
             ShowProductCatalog();
         }
@@ -162,7 +162,7 @@ namespace CHEMLINK.Controllers
                     break;
                 }
             }
-            _productContext.Update(e.Id, e.Name, idKategori, e.Stock, e.Price);
+            _productContext.Update(e.Id, e.Name, idKategori, e.Stock, e.Price, e.Description, e.ExpiryDate);
             _view.ShowMessage("Data obat berhasil diupdate!");
             ShowProductCatalog();
         }
@@ -212,7 +212,8 @@ namespace CHEMLINK.Controllers
             _currentCategoryFilter = "";
             _currentSearchQuery = "";
             // When showing products for POS, display available stock = db stock minus items already in cart
-            var display = _products.Select(p => new Product {
+            var display = _products.Select(p => new Product
+            {
                 Id = p.Id,
                 Name = p.Name,
                 Category = p.Category,
@@ -252,7 +253,8 @@ namespace CHEMLINK.Controllers
 
             _view.ShowPOS(searchResults.ToList(), _cart);
             // Also ensure displayed stock accounts for items reserved in cart
-            var displayList = searchResults.Select(p => new Product {
+            var displayList = searchResults.Select(p => new Product
+            {
                 Id = p.Id,
                 Name = p.Name,
                 Category = p.Category,
@@ -340,7 +342,7 @@ namespace CHEMLINK.Controllers
         {
             try
             {
-                var supplier = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address, KontakPerson = e.KontakPerson, Email = e.Email, Kota = e.Kota };
+                var supplier = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address, KontakPerson = e.KontakPerson, Email = e.Email, Kota = e.Kota, Status = e.Status };
                 _supplierContext.Create(supplier);
                 _view.ShowMessage("Supplier baru berhasil dicatat!");
                 ShowSupplierManagement();
@@ -379,10 +381,11 @@ namespace CHEMLINK.Controllers
                     Username = e.Username,
                     Password = e.Password,
                     Role = e.Role,
+                    FullName = e.FullName,
+                    Status = e.Status,
                     Alamat = e.Alamat,
                     NoTelp = e.NoTelp,
                     Email = e.Email,
-                    Kota = e.Kota,
                     Kecamatan = e.Kecamatan
                 };
                 _userContext.Create(newUser);
@@ -419,10 +422,11 @@ namespace CHEMLINK.Controllers
                 Username = e.Username,
                 Password = e.Password,
                 Role = e.Role,
+                FullName = e.FullName,
+                Status = e.Status,
                 Alamat = e.Alamat,
                 NoTelp = e.NoTelp,
                 Email = e.Email,
-                Kota = e.Kota,
                 Kecamatan = e.Kecamatan
             };
             _userContext.Update(updatedUser);

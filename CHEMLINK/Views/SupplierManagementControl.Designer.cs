@@ -6,7 +6,6 @@ namespace CHEMLINK.Views
         public System.Windows.Forms.DataGridView dgvMain;
         private System.Windows.Forms.Panel pnlCrud;
         // input moved to dialog; inline textboxes removed
-        private System.Windows.Forms.Label lblKelola;
         public System.Windows.Forms.Button btnAddSup;
         public System.Windows.Forms.Button btnEditSup;
         public System.Windows.Forms.Button btnDeleteSup;

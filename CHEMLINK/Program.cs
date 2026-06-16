@@ -16,9 +16,11 @@ namespace CHEMLINK
         [STAThread]
         static void Main()
         {
-            AppDomain.CurrentDomain.UnhandledException += (s, e) => Console.WriteLine($"Crash: {e.ExceptionObject}");
-            CHEMLINK.Helpers.ConnectDB.UpdateDatabaseObjects();
             ApplicationConfiguration.Initialize();
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => MessageBox.Show($"Fatal error: {e.ExceptionObject}", "Crash", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            // Initialize database objects (views, stored procedures, triggers)
+            CHEMLINK.Helpers.ConnectDB.UpdateDatabaseObjects();
 
             bool appIsRunning = true;
 
@@ -40,21 +42,29 @@ namespace CHEMLINK
                 // 2. AMBIL DATA USER (JIKA LOGIN SUKSES)
                 // Jika program sampai ke baris ini, berarti login sukses dan DialogResult.OK terpicu
                 User loggedInUser = loginController.AuthenticatedUser!;
-
+                
                 // 3. TAMPILKAN FORM DASHBOARD UTAMA
-                // Kita buat form utama dan memberikan data user yang login ke Controllernya
-                MainForm mainForm = new MainForm();
-                UserController mainController = new UserController(mainForm, loggedInUser);
-
-                // Tampilkan Dashboard. Kode akan berhenti di sini sampai Dashboard ditutup/logout.
-                DialogResult mainResult = mainForm.ShowDialog();
-
-                // Jika user menutup dashboard dengan tombol "X" (Close), matikan aplikasi.
-                // Jika user menekan tombol "Logout" (yang mengirimkan sinyal DialogResult.Retry),
-                // maka loop 'while' akan berputar kembali ke langkah 1 (memunculkan form login).
-                if (mainResult != DialogResult.Retry)
+                try
                 {
-                    appIsRunning = false;
+                    MainForm mainForm = new MainForm();
+                    UserController mainController = new UserController(mainForm, loggedInUser);
+                
+                    // Tampilkan Dashboard. Kode akan berhenti di sini sampai Dashboard ditutup/logout.
+                    DialogResult mainResult = mainForm.ShowDialog();
+                
+                    // Jika user menutup dashboard dengan tombol "X" (Close), matikan aplikasi.
+                    // Jika user menekan tombol "Logout" (yang mengirimkan sinyal DialogResult.Retry),
+                    // maka loop 'while' akan berputar kembali ke langkah 1 (memunculkan form login).
+                    if (mainResult != DialogResult.Retry)
+                    {
+                        appIsRunning = false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "Gagal memuat dashboard:\n" + ex.Message + "\n\nPastikan database ChemlinkDB sudah dibuat dan script Chemlink_Advanced_Objects.sql sudah dijalankan.",
+                        "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

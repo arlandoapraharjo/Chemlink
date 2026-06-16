@@ -208,8 +208,50 @@ BEGIN
     VALUES (p_tanggal, 1, p_keterangan, p_input_by)
     RETURNING id_order INTO v_id_order;
 
-    INSERT INTO order_details (tanggal, no_faktur, jumlah_masuk, catatan, id_order, id_produk)
-    VALUES (p_tanggal, p_no_faktur, p_jumlah_masuk, p_catatan_detail, v_id_order, p_id_produk);
+    -- Trigger trg_log_stok_masuk otomatis jalan setelah INSERT ini
+    INSERT INTO order_details (jumlah_masuk, catatan, id_order, id_produk)
+    VALUES (p_jumlah_masuk, p_catatan_detail, v_id_order, p_id_produk);
+
+    RAISE NOTICE 'Transaksi masuk berhasil. ID Order: %, Stok produk % bertambah % unit.',
+        v_id_order, p_id_produk, p_jumlah_masuk;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE EXCEPTION 'Transaksi gagal dan di-rollback. Error: %', SQLERRM;
+END;
+$$;
+
+-- -------------------------------------------------------------------------
+
+CREATE OR REPLACE PROCEDURE sp_transaksi_selling(
+    p_no_faktur VARCHAR,
+    p_tanggal_selling DATE,
+    p_keterangan TEXT,
+    p_id_kasir INTEGER,
+    p_id_produk INTEGER,
+    p_jumlah_keluar INTEGER,
+    p_catatan_detail TEXT
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_id_selling INTEGER;
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM Produk WHERE id_produk = p_id_produk) THEN
+        RAISE EXCEPTION 'Produk dengan id % tidak ditemukan.', p_id_produk;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM Users WHERE id_user = p_id_kasir AND Role IN ('Kasir', 'Admin') AND status = 'Active') THEN
+        RAISE EXCEPTION 'Kasir/Admin dengan id % tidak ditemukan.', p_id_kasir;
+    END IF;
+
+    IF p_jumlah_keluar <= 0 THEN
+        RAISE EXCEPTION 'Jumlah keluar harus lebih dari 0.';
+    END IF;
+
+    IF NOT fn_cek_ketersediaan_stok(p_id_produk, p_jumlah_keluar) THEN
+        RAISE EXCEPTION 'Stok produk id % tidak mencukupi.', p_id_produk;
+    END IF;
 
     UPDATE Stocks 
     SET jumlah_stock = jumlah_stock - p_jumlah_masuk,

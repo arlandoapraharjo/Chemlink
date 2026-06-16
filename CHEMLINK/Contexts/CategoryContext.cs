@@ -12,7 +12,7 @@ namespace CHEMLINK.Contexts
         {
             List<Category> list = new List<Category>();
 
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
@@ -22,12 +22,15 @@ namespace CHEMLINK.Contexts
                     {
                         using (NpgsqlDataReader dr = cmd.ExecuteReader())
                         {
+                            int idxId = dr.GetOrdinal("id_kategori");
+                            int idxName = dr.GetOrdinal("nama_kategori");
+
                             while (dr.Read())
                             {
                                 Category cat = new Category
                                 {
-                                    Id = Convert.ToInt32(dr["id_kategori"]),
-                                    Name = dr["nama_kategori"] != DBNull.Value ? dr["nama_kategori"].ToString() ?? "" : ""
+                                    Id = !dr.IsDBNull(idxId) ? dr.GetInt32(idxId) : 0,
+                                    Name = !dr.IsDBNull(idxName) ? dr.GetString(idxName) : ""
                                 };
                                 list.Add(cat);
                             }
@@ -41,7 +44,7 @@ namespace CHEMLINK.Contexts
 
         public void Create(string name)
         {
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
@@ -57,7 +60,7 @@ namespace CHEMLINK.Contexts
 
         public void Update(int id, string name)
         {
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
@@ -74,7 +77,7 @@ namespace CHEMLINK.Contexts
 
         public void Delete(int id)
         {
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {

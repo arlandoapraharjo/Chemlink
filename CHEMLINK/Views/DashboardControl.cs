@@ -89,7 +89,7 @@ namespace CHEMLINK.Views
             lblKategoriVal.Text = totalKategori.ToString();
 
             dgvMain.DataSource = dtNotif;
-            StyleDataGridView();
+            ApplyDataGridViewStyling();
         }
 
         private void StyleDataGridView()
@@ -110,6 +110,35 @@ namespace CHEMLINK.Views
             dgvMain.BorderStyle = BorderStyle.None;
             dgvMain.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
         }
+
+        public void LoadCriticalStockData()
+        {
+            try
+            {
+                var productContext = new Contexts.ProductContext();
+                var criticalStocks = productContext.ReadCriticalStock();
+
+                // Convert List<StockKritis> to DataTable
+                DataTable dt = new DataTable();
+                dt.Columns.Add("ID Produk", typeof(int));
+                dt.Columns.Add("Nama Produk", typeof(string));
+                dt.Columns.Add("Jumlah Stock", typeof(int));
+
+                foreach (var stock in criticalStocks)
+                {
+                    dt.Rows.Add(stock.IdProduk, stock.NamaProduk, stock.JumlahStock);
+                }
+
+                dgvMain.DataSource = dt;
+                ApplyDataGridViewStyling();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading critical stock data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
 
         private void PnlBanner_Paint(object? sender, PaintEventArgs e)
         {

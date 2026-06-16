@@ -19,6 +19,8 @@ namespace CHEMLINK.Views
         private System.Windows.Forms.TextBox txtEditAlamat;
         private System.Windows.Forms.Label lblKota;
         private System.Windows.Forms.TextBox txtEditKota;
+        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.ComboBox txtEditStatus;
 
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
@@ -46,6 +48,8 @@ namespace CHEMLINK.Views
             this.txtEditAlamat = new System.Windows.Forms.TextBox();
             this.lblKota = new System.Windows.Forms.Label();
             this.txtEditKota = new System.Windows.Forms.TextBox();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.txtEditStatus = new System.Windows.Forms.ComboBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -131,6 +135,20 @@ namespace CHEMLINK.Views
             this.txtEditKota.Size = new System.Drawing.Size(450, 25);
             this.txtEditKota.Font = new System.Drawing.Font("Segoe UI", 10F);
 
+            // ===================== STATUS =====================
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblStatus.ForeColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.lblStatus.Location = new System.Drawing.Point(24, 378);
+            this.lblStatus.Text = "Status";
+
+            this.txtEditStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.txtEditStatus.Items.AddRange(new object[] { "Aktif", "Tidak Aktif" });
+            this.txtEditStatus.SelectedIndex = 0;
+            this.txtEditStatus.Location = new System.Drawing.Point(24, 396);
+            this.txtEditStatus.Size = new System.Drawing.Size(450, 25);
+            this.txtEditStatus.Font = new System.Drawing.Font("Segoe UI", 10F);
+
             // ===================== BUTTONS =====================
             this.btnSave.BackColor = System.Drawing.Color.FromArgb(72, 161, 17);
             this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -138,7 +156,7 @@ namespace CHEMLINK.Views
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(260, 390);
+            this.btnSave.Location = new System.Drawing.Point(260, 438);
             this.btnSave.Size = new System.Drawing.Size(110, 38);
             this.btnSave.Text = "Simpan";
             this.btnSave.UseVisualStyleBackColor = false;
@@ -149,7 +167,7 @@ namespace CHEMLINK.Views
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(380, 390);
+            this.btnCancel.Location = new System.Drawing.Point(380, 438);
             this.btnCancel.Size = new System.Drawing.Size(100, 38);
             this.btnCancel.Text = "Batal";
             this.btnCancel.UseVisualStyleBackColor = false;
@@ -157,9 +175,11 @@ namespace CHEMLINK.Views
             // ===================== FORM =====================
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(500, 450);
+            this.ClientSize = new System.Drawing.Size(500, 500);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.txtEditStatus);
+            this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.txtEditKota);
             this.Controls.Add(this.lblKota);
             this.Controls.Add(this.txtEditAlamat);

@@ -141,8 +141,5 @@ namespace CHEMLINK.Views
             this.ResumeLayout(false);
 
         }
-
-
-
     }
 }

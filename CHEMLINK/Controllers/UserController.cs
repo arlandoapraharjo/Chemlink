@@ -211,16 +211,7 @@ namespace CHEMLINK.Controllers
             _cart.Clear();
             _currentCategoryFilter = "";
             _currentSearchQuery = "";
-            // When showing products for POS, display available stock = db stock minus items already in cart
-            var display = _products.Select(p => new Product {
-                Id = p.Id,
-                Name = p.Name,
-                Category = p.Category,
-                Price = p.Price,
-                Stock = p.Stock - _cart.Where(ci => ci.ProductId == p.Id).Sum(ci => ci.Qty)
-            }).ToList();
-
-            _view.ShowPOS(display, _cart);
+            _view.ShowPOS(_products, _cart);
         }
 
         private void HandleFilterCategory(object? sender, string category)
@@ -251,15 +242,6 @@ namespace CHEMLINK.Controllers
             }
 
             _view.ShowPOS(searchResults.ToList(), _cart);
-            // Also ensure displayed stock accounts for items reserved in cart
-            var displayList = searchResults.Select(p => new Product {
-                Id = p.Id,
-                Name = p.Name,
-                Category = p.Category,
-                Price = p.Price,
-                Stock = p.Stock - _cart.Where(ci => ci.ProductId == p.Id).Sum(ci => ci.Qty)
-            }).ToList();
-            _view.ShowPOS(displayList, _cart);
         }
 
         private void HandleAddCart(object? sender, CartItemEventArgs e)
@@ -269,27 +251,16 @@ namespace CHEMLINK.Controllers
                 _view.ShowMessage("Masukkan produk dan kuantitas dengan benar!");
                 return;
             }
-            // Ensure total quantity requested (existing in cart + new) does not exceed available stock
-            int existingQtyInCart = _cart.Where(ci => ci.ProductId == e.SelectedProduct.Id).Sum(ci => ci.Qty);
-            if (existingQtyInCart + e.Qty > e.SelectedProduct.Stock)
+
+            if (e.Qty > e.SelectedProduct.Stock)
             {
-                int available = e.SelectedProduct.Stock - existingQtyInCart;
-                _view.ShowMessage($"Stok tidak mencukupi! Sisa stok {e.SelectedProduct.Name} hanya {available}.");
+                _view.ShowMessage($"Stok tidak mencukupi! Sisa stok {e.SelectedProduct.Name} hanya {e.SelectedProduct.Stock}.");
                 return;
             }
 
-            // If same product already in cart, increment quantity; otherwise add new cart item
-            var existing = _cart.FirstOrDefault(ci => ci.ProductId == e.SelectedProduct.Id);
-            if (existing != null)
-            {
-                existing.Qty += e.Qty;
-            }
-            else
-            {
-                _cart.Add(new CartItem { ProductId = e.SelectedProduct.Id, ProductName = e.SelectedProduct.Name, Qty = e.Qty, Price = e.SelectedProduct.Price });
-            }
+            _cart.Add(new CartItem { ProductId = e.SelectedProduct.Id, ProductName = e.SelectedProduct.Name, Qty = e.Qty, Price = e.SelectedProduct.Price });
+            e.SelectedProduct.Stock -= e.Qty; // Potong Stok (simulasi)
 
-            // Do not modify in-memory product stock here. Persist stock changes only on Checkout.
             _view.ShowPOS(_products, _cart);
         }
 

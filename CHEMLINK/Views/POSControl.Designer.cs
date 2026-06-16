@@ -25,191 +25,162 @@ namespace CHEMLINK.Views
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            dgvMain = new DataGridView();
-            dgvCart = new DataGridView();
-            pnlCrud = new Panel();
-            lblKategori = new Label();
-            cbCategoryFilter = new ComboBox();
-            lblCari = new Label();
-            txtSearch = new TextBox();
-            txtQty = new TextBox();
-            btnAddCart = new Button();
-            btnCheckout = new Button();
-            btnDelCart = new Button();
-            ((System.ComponentModel.ISupportInitialize)dgvMain).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dgvCart).BeginInit();
-            pnlCrud.SuspendLayout();
-            SuspendLayout();
+            this.dgvMain = new System.Windows.Forms.DataGridView();
+            this.dgvCart = new System.Windows.Forms.DataGridView();
+            this.pnlCrud = new System.Windows.Forms.Panel();
+            this.lblKategori = new System.Windows.Forms.Label();
+            this.cbCategoryFilter = new System.Windows.Forms.ComboBox();
+            this.lblCari = new System.Windows.Forms.Label();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.txtQty = new System.Windows.Forms.TextBox();
+            this.btnAddCart = new System.Windows.Forms.Button();
+            this.btnCheckout = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCart)).BeginInit();
+            this.pnlCrud.SuspendLayout();
+            this.SuspendLayout();
             // 
             // dgvMain
             // 
-            dgvMain.AllowUserToAddRows = false;
-            dgvMain.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgvMain.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvMain.BackgroundColor = Color.White;
-            dgvMain.BorderStyle = BorderStyle.None;
-            dgvMain.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10F);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(72, 161, 17);
-            dataGridViewCellStyle1.SelectionForeColor = Color.White;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
-            dgvMain.DefaultCellStyle = dataGridViewCellStyle1;
-            dgvMain.Location = new Point(20, 280);
-            dgvMain.MultiSelect = false;
-            dgvMain.Name = "dgvMain";
-            dgvMain.ReadOnly = true;
-            dgvMain.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvMain.Size = new Size(1070, 370);
-            dgvMain.TabIndex = 0;
-            // 
-            // dgvCart
-            // 
-            dgvCart.AllowUserToAddRows = false;
-            dgvCart.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgvCart.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvCart.BackgroundColor = Color.WhiteSmoke;
-            dgvCart.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(72, 161, 17);
-            dataGridViewCellStyle2.SelectionForeColor = Color.White;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvCart.DefaultCellStyle = dataGridViewCellStyle2;
-            dgvCart.Location = new Point(15, 60);
-            dgvCart.Name = "dgvCart";
-            dgvCart.ReadOnly = true;
-            dgvCart.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvCart.Size = new Size(1040, 160);
-            dgvCart.TabIndex = 7;
+            this.dgvMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvMain.AllowUserToAddRows = false;
+            this.dgvMain.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvMain.BackgroundColor = System.Drawing.Color.White;
+            this.dgvMain.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(161)))), ((int)(((byte)(17)))));
+            this.dgvMain.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
+            this.dgvMain.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMain.Location = new System.Drawing.Point(20, 280);
+            this.dgvMain.MultiSelect = false;
+            this.dgvMain.Name = "dgvMain";
+            this.dgvMain.ReadOnly = true;
+            this.dgvMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvMain.Size = new System.Drawing.Size(1070, 370);
+            this.dgvMain.TabIndex = 0;
             // 
             // pnlCrud
             // 
-            pnlCrud.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            pnlCrud.BackColor = Color.White;
-            pnlCrud.Controls.Add(btnDelCart);
-            pnlCrud.Controls.Add(lblKategori);
-            pnlCrud.Controls.Add(cbCategoryFilter);
-            pnlCrud.Controls.Add(lblCari);
-            pnlCrud.Controls.Add(txtSearch);
-            pnlCrud.Controls.Add(txtQty);
-            pnlCrud.Controls.Add(btnAddCart);
-            pnlCrud.Controls.Add(btnCheckout);
-            pnlCrud.Controls.Add(dgvCart);
-            pnlCrud.Location = new Point(20, 20);
-            pnlCrud.Name = "pnlCrud";
-            pnlCrud.Size = new Size(1070, 240);
-            pnlCrud.TabIndex = 1;
+            this.pnlCrud.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlCrud.BackColor = System.Drawing.Color.White;
+            this.pnlCrud.Controls.Add(this.lblKategori);
+            this.pnlCrud.Controls.Add(this.cbCategoryFilter);
+            this.pnlCrud.Controls.Add(this.lblCari);
+            this.pnlCrud.Controls.Add(this.txtSearch);
+            this.pnlCrud.Controls.Add(this.txtQty);
+            this.pnlCrud.Controls.Add(this.btnAddCart);
+            this.pnlCrud.Controls.Add(this.btnCheckout);
+            this.pnlCrud.Controls.Add(this.dgvCart);
+            this.pnlCrud.Location = new System.Drawing.Point(20, 20);
+            this.pnlCrud.Name = "pnlCrud";
+            this.pnlCrud.Size = new System.Drawing.Size(1070, 240);
+            this.pnlCrud.TabIndex = 1;
             // 
             // lblKategori
             // 
-            lblKategori.AutoSize = true;
-            lblKategori.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblKategori.Location = new Point(15, 20);
-            lblKategori.Name = "lblKategori";
-            lblKategori.Size = new Size(71, 19);
-            lblKategori.TabIndex = 0;
-            lblKategori.Text = "Kategori:";
+            this.lblKategori.AutoSize = true;
+            this.lblKategori.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblKategori.Location = new System.Drawing.Point(15, 20);
+            this.lblKategori.Name = "lblKategori";
+            this.lblKategori.Size = new System.Drawing.Size(70, 19);
+            this.lblKategori.TabIndex = 0;
+            this.lblKategori.Text = "Kategori:";
             // 
             // cbCategoryFilter
             // 
-            cbCategoryFilter.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbCategoryFilter.FormattingEnabled = true;
-            cbCategoryFilter.Items.AddRange(new object[] { "Semua Kategori", "Herbisida", "Fungisida", "Insektisida", "Pupuk" });
-            cbCategoryFilter.Location = new Point(90, 17);
-            cbCategoryFilter.Name = "cbCategoryFilter";
-            cbCategoryFilter.Size = new Size(150, 25);
-            cbCategoryFilter.TabIndex = 1;
+            this.cbCategoryFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCategoryFilter.FormattingEnabled = true;
+            this.cbCategoryFilter.Items.AddRange(new object[] { "Semua Kategori", "Herbisida", "Fungisida", "Insektisida", "Pupuk" });
+            this.cbCategoryFilter.Location = new System.Drawing.Point(90, 17);
+            this.cbCategoryFilter.Name = "cbCategoryFilter";
+            this.cbCategoryFilter.Size = new System.Drawing.Size(150, 25);
+            this.cbCategoryFilter.TabIndex = 1;
             // 
             // lblCari
             // 
-            lblCari.AutoSize = true;
-            lblCari.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblCari.Location = new Point(260, 20);
-            lblCari.Name = "lblCari";
-            lblCari.Size = new Size(40, 19);
-            lblCari.TabIndex = 2;
-            lblCari.Text = "Cari:";
+            this.lblCari.AutoSize = true;
+            this.lblCari.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblCari.Location = new System.Drawing.Point(260, 20);
+            this.lblCari.Name = "lblCari";
+            this.lblCari.Size = new System.Drawing.Size(39, 19);
+            this.lblCari.TabIndex = 2;
+            this.lblCari.Text = "Cari:";
             // 
             // txtSearch
             // 
-            txtSearch.Location = new Point(305, 17);
-            txtSearch.Name = "txtSearch";
-            txtSearch.PlaceholderText = "Cari Produk (Enter)";
-            txtSearch.Size = new Size(180, 25);
-            txtSearch.TabIndex = 3;
+            this.txtSearch.Location = new System.Drawing.Point(305, 17);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.PlaceholderText = "Cari Produk & Enter...";
+            this.txtSearch.Size = new System.Drawing.Size(180, 25);
+            this.txtSearch.TabIndex = 3;
             // 
             // txtQty
             // 
-            txtQty.Location = new Point(505, 17);
-            txtQty.Name = "txtQty";
-            txtQty.PlaceholderText = "Jumlah";
-            txtQty.Size = new Size(80, 25);
-            txtQty.TabIndex = 4;
+            this.txtQty.Location = new System.Drawing.Point(505, 17);
+            this.txtQty.Name = "txtQty";
+            this.txtQty.PlaceholderText = "Jumlah";
+            this.txtQty.Size = new System.Drawing.Size(80, 25);
+            this.txtQty.TabIndex = 4;
             // 
             // btnAddCart
             // 
-            btnAddCart.BackColor = Color.FromArgb(72, 161, 17);
-            btnAddCart.FlatStyle = FlatStyle.Flat;
-            btnAddCart.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnAddCart.ForeColor = Color.White;
-            btnAddCart.Location = new Point(605, 14);
-            btnAddCart.Name = "btnAddCart";
-            btnAddCart.Size = new Size(150, 33);
-            btnAddCart.TabIndex = 5;
-            btnAddCart.Text = "Tambahkan";
-            btnAddCart.UseVisualStyleBackColor = false;
+            this.btnAddCart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(161)))), ((int)(((byte)(17)))));
+            this.btnAddCart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddCart.ForeColor = System.Drawing.Color.White;
+            this.btnAddCart.Location = new System.Drawing.Point(605, 14);
+            this.btnAddCart.Name = "btnAddCart";
+            this.btnAddCart.Size = new System.Drawing.Size(150, 33);
+            this.btnAddCart.TabIndex = 5;
+            this.btnAddCart.Text = "Tambahkan";
+            this.btnAddCart.UseVisualStyleBackColor = false;
             // 
             // btnCheckout
             // 
-            btnCheckout.BackColor = Color.FromArgb(255, 152, 0);
-            btnCheckout.FlatStyle = FlatStyle.Flat;
-            btnCheckout.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCheckout.ForeColor = Color.White;
-            btnCheckout.Location = new Point(922, 14);
-            btnCheckout.Name = "btnCheckout";
-            btnCheckout.Size = new Size(120, 33);
-            btnCheckout.TabIndex = 6;
-            btnCheckout.Text = "Bayar && Cetak";
-            btnCheckout.UseVisualStyleBackColor = false;
+            this.btnCheckout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(152)))), ((int)(((byte)(0)))));
+            this.btnCheckout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCheckout.ForeColor = System.Drawing.Color.White;
+            this.btnCheckout.Location = new System.Drawing.Point(775, 14);
+            this.btnCheckout.Name = "btnCheckout";
+            this.btnCheckout.Size = new System.Drawing.Size(120, 33);
+            this.btnCheckout.TabIndex = 6;
+            this.btnCheckout.Text = "Bayar && Cetak";
+            this.btnCheckout.UseVisualStyleBackColor = false;
             // 
-            // btnDelCart
+            // dgvCart
             // 
-            btnDelCart.BackColor = Color.FromArgb(220, 38, 38);
-            btnDelCart.FlatStyle = FlatStyle.Flat;
-            btnDelCart.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnDelCart.ForeColor = Color.White;
-            btnDelCart.Location = new Point(778, 14);
-            btnDelCart.Name = "btnDelCart";
-            btnDelCart.Size = new Size(120, 33);
-            btnDelCart.TabIndex = 8;
-            btnDelCart.Text = "Hapus";
-            btnDelCart.UseVisualStyleBackColor = false;
+            this.dgvCart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvCart.AllowUserToAddRows = false;
+            this.dgvCart.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvCart.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.dgvCart.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(161)))), ((int)(((byte)(17)))));
+            this.dgvCart.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
+            this.dgvCart.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCart.Location = new System.Drawing.Point(15, 60);
+            this.dgvCart.Name = "dgvCart";
+            this.dgvCart.ReadOnly = true;
+            this.dgvCart.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvCart.Size = new System.Drawing.Size(1040, 160);
+            this.dgvCart.TabIndex = 7;
             // 
             // POSControl
             // 
-            AutoScaleMode = AutoScaleMode.None;
-            BackColor = Color.FromArgb(240, 243, 246);
-            Controls.Add(pnlCrud);
-            Controls.Add(dgvMain);
-            Font = new Font("Segoe UI", 10F);
-            Name = "POSControl";
-            Size = new Size(1110, 670);
-            ((System.ComponentModel.ISupportInitialize)dgvMain).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dgvCart).EndInit();
-            pnlCrud.ResumeLayout(false);
-            pnlCrud.PerformLayout();
-            ResumeLayout(false);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(243)))), ((int)(((byte)(246)))));
+            this.Controls.Add(this.pnlCrud);
+            this.Controls.Add(this.dgvMain);
+            this.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Name = "POSControl";
+            this.Size = new System.Drawing.Size(1110, 670);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCart)).EndInit();
+            this.pnlCrud.ResumeLayout(false);
+            this.pnlCrud.PerformLayout();
+            this.ResumeLayout(false);
 
         }
-
-        public Button button1;
-        public Button btnDelCart;
     }
 }

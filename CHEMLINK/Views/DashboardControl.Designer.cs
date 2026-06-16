@@ -37,6 +37,7 @@ namespace CHEMLINK.Views
 
         // Notification
         private System.Windows.Forms.Label lblNotifTitle;
+        public System.Windows.Forms.DataGridView dgvMain;
 
         private void InitializeComponent()
         {
@@ -98,14 +99,12 @@ namespace CHEMLINK.Views
             this.pnlBanner.Controls.Add(this.pnlBadge);
 
             // pnlBadge
-            // 
-            pnlBadge.BackColor = Color.FromArgb(48, 255, 255, 255);
-            pnlBadge.Controls.Add(lblBadge);
-            pnlBadge.Location = new Point(32, 16);
-            pnlBadge.Name = "pnlBadge";
-            pnlBadge.Size = new Size(210, 22);
-            pnlBadge.TabIndex = 2;
-            // 
+            this.pnlBadge.BackColor = System.Drawing.Color.FromArgb(48, 255, 255, 255);
+            this.pnlBadge.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
+            this.pnlBadge.Location = new System.Drawing.Point(32, 16);
+            this.pnlBadge.Size = new System.Drawing.Size(210, 22);
+            this.pnlBadge.Controls.Add(this.lblBadge);
+
             // lblBadge
             this.lblBadge.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblBadge.BackColor = System.Drawing.Color.Transparent;
@@ -326,7 +325,5 @@ namespace CHEMLINK.Views
             this.ResumeLayout(false);
             this.PerformLayout();
         }
-
-        private DataGridView dataGridView1;
     }
 }

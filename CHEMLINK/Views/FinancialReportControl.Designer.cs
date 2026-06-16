@@ -37,8 +37,10 @@ namespace CHEMLINK.Views
         private System.Windows.Forms.TableLayoutPanel tblGrids;
         private System.Windows.Forms.Label lblMonthlyTitle;
         public System.Windows.Forms.DataGridView dgvMonthly;
+        private System.Windows.Forms.Panel pnlMonthlyGrid;
         private System.Windows.Forms.Label lblCategoryTitle;
         public System.Windows.Forms.DataGridView dgvCategory;
+        private System.Windows.Forms.Panel pnlCategoryGrid;
 
         private void InitializeComponent()
         {
@@ -68,8 +70,10 @@ namespace CHEMLINK.Views
             this.tblGrids = new System.Windows.Forms.TableLayoutPanel();
             this.lblMonthlyTitle = new System.Windows.Forms.Label();
             this.dgvMonthly = new System.Windows.Forms.DataGridView();
+            this.pnlMonthlyGrid = new System.Windows.Forms.Panel();
             this.lblCategoryTitle = new System.Windows.Forms.Label();
             this.dgvCategory = new System.Windows.Forms.DataGridView();
+            this.pnlCategoryGrid = new System.Windows.Forms.Panel();
             this.tblMaster.SuspendLayout();
             this.tblKPI.SuspendLayout();
             this.cardOmzet.SuspendLayout();
@@ -78,7 +82,9 @@ namespace CHEMLINK.Views
             this.cardBestMonth.SuspendLayout();
             this.pnlBanner.SuspendLayout();
             this.tblGrids.SuspendLayout();
+            this.pnlMonthlyGrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMonthly)).BeginInit();
+            this.pnlCategoryGrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCategory)).BeginInit();
             this.SuspendLayout();
 
@@ -88,8 +94,8 @@ namespace CHEMLINK.Views
             this.tblMaster.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tblMaster.AutoScroll = true;
             this.tblMaster.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));   // banner
-            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));   // KPI cards
+            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 155F));   // banner
+            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));   // KPI cards
             this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));    // grids fill rest
             this.tblMaster.Controls.Add(this.pnlBanner, 0, 0);
             this.tblMaster.Controls.Add(this.tblKPI, 0, 1);
@@ -123,7 +129,7 @@ namespace CHEMLINK.Views
             this.lblBannerTitle.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.lblBannerTitle.ForeColor = System.Drawing.Color.White;
             this.lblBannerTitle.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblBannerTitle.Location = new System.Drawing.Point(24, 40);
+            this.lblBannerTitle.Location = new System.Drawing.Point(18, 46);
             this.lblBannerTitle.Text = "Laporan Keuangan";
 
             // lblBannerDesc
@@ -131,9 +137,9 @@ namespace CHEMLINK.Views
             this.lblBannerDesc.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblBannerDesc.ForeColor = System.Drawing.Color.FromArgb(226, 232, 240);
             this.lblBannerDesc.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.lblBannerDesc.Location = new System.Drawing.Point(24, 76);
+            this.lblBannerDesc.Location = new System.Drawing.Point(24, 86);
             this.lblBannerDesc.AutoSize = false;
-            this.lblBannerDesc.Size = new System.Drawing.Size(600, 30);
+            this.lblBannerDesc.Size = new System.Drawing.Size(600, 64);
             this.lblBannerDesc.Text = "Ringkasan omzet, transaksi, dan performa kategori produk secara berkala.";
 
             // ===================== KPI TABLE (4 equal columns) =====================
@@ -172,7 +178,7 @@ namespace CHEMLINK.Views
             this.lblOmzetVal.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.lblOmzetVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblOmzetVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblOmzetVal.Location = new System.Drawing.Point(14, 32);
+            this.lblOmzetVal.Location = new System.Drawing.Point(14, 36);
             this.lblOmzetVal.Text = "Rp 0";
 
             this.lblOmzetStatus.AutoSize = true;
@@ -205,7 +211,7 @@ namespace CHEMLINK.Views
             this.lblTransaksiVal.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.lblTransaksiVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblTransaksiVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblTransaksiVal.Location = new System.Drawing.Point(14, 32);
+            this.lblTransaksiVal.Location = new System.Drawing.Point(14, 36);
             this.lblTransaksiVal.Text = "0";
 
             this.lblTransaksiStatus.AutoSize = true;
@@ -238,7 +244,7 @@ namespace CHEMLINK.Views
             this.lblRataRataVal.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.lblRataRataVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblRataRataVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblRataRataVal.Location = new System.Drawing.Point(14, 32);
+            this.lblRataRataVal.Location = new System.Drawing.Point(14, 36);
             this.lblRataRataVal.Text = "Rp 0";
 
             this.lblRataRataStatus.AutoSize = true;
@@ -271,7 +277,7 @@ namespace CHEMLINK.Views
             this.lblBestMonthVal.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.lblBestMonthVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblBestMonthVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblBestMonthVal.Location = new System.Drawing.Point(14, 32);
+            this.lblBestMonthVal.Location = new System.Drawing.Point(14, 36);
             this.lblBestMonthVal.Text = "-";
 
             this.lblBestMonthStatus.AutoSize = true;
@@ -284,17 +290,18 @@ namespace CHEMLINK.Views
 
             // ===================== SIDE-BY-SIDE GRID TABLE =====================
             this.tblGrids.ColumnCount = 2;
-            this.tblGrids.RowCount = 2;
+            this.tblGrids.RowCount = 3;
             this.tblGrids.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tblGrids.Padding = new System.Windows.Forms.Padding(0, 8, 0, 0);
             this.tblGrids.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tblGrids.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tblGrids.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
-            this.tblGrids.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblGrids.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblGrids.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tblGrids.Controls.Add(this.lblMonthlyTitle, 0, 0);
-            this.tblGrids.Controls.Add(this.dgvMonthly, 0, 1);
+            this.tblGrids.Controls.Add(this.pnlMonthlyGrid, 0, 1);
             this.tblGrids.Controls.Add(this.lblCategoryTitle, 1, 0);
-            this.tblGrids.Controls.Add(this.dgvCategory, 1, 1);
+            this.tblGrids.Controls.Add(this.pnlCategoryGrid, 1, 1);
 
             // ===================== MONTHLY TITLE =====================
             this.lblMonthlyTitle.AutoSize = true;
@@ -302,6 +309,12 @@ namespace CHEMLINK.Views
             this.lblMonthlyTitle.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblMonthlyTitle.Padding = new System.Windows.Forms.Padding(0, 8, 0, 4);
             this.lblMonthlyTitle.Text = "  Ringkasan Penjualan Bulanan";
+
+            // ===================== MONTHLY GRID WRAPPER =====================
+            this.pnlMonthlyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMonthlyGrid.BackColor = System.Drawing.Color.White;
+            this.pnlMonthlyGrid.Margin = new System.Windows.Forms.Padding(0, 0, 8, 0);
+            this.pnlMonthlyGrid.Controls.Add(this.dgvMonthly);
 
             // ===================== DATAGRIDVIEW MONTHLY =====================
             this.dgvMonthly.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -323,6 +336,12 @@ namespace CHEMLINK.Views
             this.lblCategoryTitle.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
             this.lblCategoryTitle.Padding = new System.Windows.Forms.Padding(0, 8, 0, 4);
             this.lblCategoryTitle.Text = "  Performa Kategori Produk";
+
+            // ===================== CATEGORY GRID WRAPPER =====================
+            this.pnlCategoryGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlCategoryGrid.BackColor = System.Drawing.Color.White;
+            this.pnlCategoryGrid.Margin = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.pnlCategoryGrid.Controls.Add(this.dgvCategory);
 
             // ===================== DATAGRIDVIEW CATEGORY =====================
             this.dgvCategory.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -364,7 +383,9 @@ namespace CHEMLINK.Views
             this.tblGrids.ResumeLayout(false);
             this.tblGrids.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMonthly)).EndInit();
+            this.pnlMonthlyGrid.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvCategory)).EndInit();
+            this.pnlCategoryGrid.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
         }

@@ -86,7 +86,7 @@ namespace CHEMLINK.Controllers
         {
             try
             {
-                var updated = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address };
+                var updated = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address, KontakPerson = e.KontakPerson, Email = e.Email, Kota = e.Kota };
                 _supplierContext.Update(e.Id, updated);
                 _view.ShowMessage("Data supplier berhasil diupdate!");
                 ShowSupplierManagement();
@@ -340,7 +340,7 @@ namespace CHEMLINK.Controllers
         {
             try
             {
-                var supplier = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address };
+                var supplier = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address, KontakPerson = e.KontakPerson, Email = e.Email, Kota = e.Kota };
                 _supplierContext.Create(supplier);
                 _view.ShowMessage("Supplier baru berhasil dicatat!");
                 ShowSupplierManagement();
@@ -374,7 +374,17 @@ namespace CHEMLINK.Controllers
         {
             try
             {
-                var newUser = new User { Username = e.Username, Password = e.Password, Role = e.Role };
+                var newUser = new User
+                {
+                    Username = e.Username,
+                    Password = e.Password,
+                    Role = e.Role,
+                    Alamat = e.Alamat,
+                    NoTelp = e.NoTelp,
+                    Email = e.Email,
+                    Kota = e.Kota,
+                    Kecamatan = e.Kecamatan
+                };
                 _userContext.Create(newUser);
                 _view.ShowMessage("User berhasil ditambahkan!");
                 ShowUserManagement();
@@ -391,7 +401,30 @@ namespace CHEMLINK.Controllers
 
         private void HandleUpdateUser(object? sender, UserEventArgs e)
         {
-            var updatedUser = new User { Id = e.Id, Username = e.Username, Password = e.Password, Role = e.Role };
+            // Cegah perubahan role admin terakhir menjadi non-admin
+            var existingUser = _users.FirstOrDefault(u => u.Id == e.Id);
+            if (existingUser != null && existingUser.Role == "Admin" && e.Role != "Admin")
+            {
+                int adminCount = _users.Count(u => u.Role == "Admin");
+                if (adminCount <= 1)
+                {
+                    _view.ShowMessage("Role admin ini tidak dapat diubah karena merupakan satu-satunya admin yang terdaftar.\nMinimal harus ada 1 akun admin di dalam sistem.");
+                    return;
+                }
+            }
+
+            var updatedUser = new User
+            {
+                Id = e.Id,
+                Username = e.Username,
+                Password = e.Password,
+                Role = e.Role,
+                Alamat = e.Alamat,
+                NoTelp = e.NoTelp,
+                Email = e.Email,
+                Kota = e.Kota,
+                Kecamatan = e.Kecamatan
+            };
             _userContext.Update(updatedUser);
             _view.ShowMessage("User berhasil diupdate!");
             ShowUserManagement();

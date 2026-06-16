@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using CHEMLINK.Models;
@@ -20,6 +21,16 @@ namespace CHEMLINK.Views
             btnTambah.Click += BtnTambah_Click;
             btnUbah.Click += BtnUbah_Click;
             btnHapus.Click += BtnHapus_Click;
+            this.Paint += Control_Paint;
+        }
+
+        private void Control_Paint(object? sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            using var pen = new Pen(Color.FromArgb(2, 44, 34), 2f);
+            g.DrawRectangle(pen, pnlGrid.Bounds);
+            if (pnlToolbar.Visible)
+                g.DrawRectangle(pen, pnlToolbar.Bounds);
         }
 
         public void SetData(List<User> users, bool isAdmin)
@@ -27,54 +38,21 @@ namespace CHEMLINK.Views
             _users = users;
             dgvMain.DataSource = null;
             dgvMain.Columns.Clear();
-            dgvMain.DataSource = new System.ComponentModel.BindingList<User>(users);
-
-            // Atur ulang kolom untuk menampilkan data lengkap dari database
-            try
-            {
-                dgvMain.Columns["Id"]!.HeaderText = "ID User";
-                dgvMain.Columns["Username"]!.HeaderText = "Username";
-                dgvMain.Columns["FullName"]!.HeaderText = "Nama Lengkap";
-                dgvMain.Columns["Role"]!.HeaderText = "Role";
-                dgvMain.Columns["Phone"]!.HeaderText = "Nomor Telepon";
-                dgvMain.Columns["Email"]!.HeaderText = "Email";
-                dgvMain.Columns["Address"]!.HeaderText = "Alamat";
-                dgvMain.Columns["District"]!.HeaderText = "Kecamatan";
-                dgvMain.Columns["Status"]!.HeaderText = "Status";
-
-                // Sembunyikan password karena tidak perlu ditampilkan
-                dgvMain.Columns["Password"]!.Visible = false;
-
-                // Atur lebar kolom
-                dgvMain.Columns["Id"]!.Width = 50;
-                dgvMain.Columns["Username"]!.Width = 80;
-                dgvMain.Columns["FullName"]!.Width = 120;
-                dgvMain.Columns["Role"]!.Width = 60;
-                dgvMain.Columns["Phone"]!.Width = 100;
-                dgvMain.Columns["Email"]!.Width = 120;
-                dgvMain.Columns["Address"]!.Width = 150;
-                dgvMain.Columns["District"]!.Width = 100;
-                dgvMain.Columns["Status"]!.Width = 70;
-            }
-            catch
-            {
-                // Jika kolom tidak ada, lanjutkan dengan default display
-            }
-
-            pnlActions.Visible = isAdmin;
+            dgvMain.DataSource = users;
+            pnlToolbar.Visible = isAdmin;
         }
 
         private void BtnTambah_Click(object? sender, EventArgs e)
         {
-            using (var form = new AddUserForm(_users))
+            using (var form = new UserForm(_users))
             {
                 if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
                     AddUserEvent?.Invoke(this, new UserEventArgs
                     {
-                        Username = form.NewUsername,
-                        Password = form.NewPassword,
-                        Role = form.NewRole
+                        Username = form.Username,
+                        Password = form.Password,
+                        Role = form.Role
                     });
                 }
             }
@@ -91,20 +69,20 @@ namespace CHEMLINK.Views
             string currentUsername = dgvMain.CurrentRow.Cells["Username"].Value?.ToString() ?? "";
             string currentRole = dgvMain.CurrentRow.Cells["Role"].Value?.ToString() ?? "Kasir";
 
-            using (var dialog = new EditUserDialog())
+            using (var dialog = new UserForm())
             {
-                dialog.EditUsername = currentUsername;
-                dialog.EditPassword = "";
-                dialog.EditRole = currentRole;
+                dialog.Username = currentUsername;
+                dialog.Password = "";
+                dialog.Role = currentRole;
 
                 if (dialog.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
                     UpdateUserEvent?.Invoke(this, new UserEventArgs
                     {
                         Id = id,
-                        Username = dialog.EditUsername,
-                        Password = dialog.EditPassword,
-                        Role = dialog.EditRole
+                        Username = dialog.Username,
+                        Password = dialog.Password,
+                        Role = dialog.Role
                     });
                 }
             }
@@ -118,7 +96,6 @@ namespace CHEMLINK.Views
                 return;
             }
 
-            // Find the user object
             var userToDelete = _users.FirstOrDefault(u => u.Id == id);
             if (userToDelete == null)
             {
@@ -126,13 +103,24 @@ namespace CHEMLINK.Views
                 return;
             }
 
-            using (var form = new DeleteUserForm(userToDelete, _users))
+            // Cegah penghapusan admin terakhir
+            if (userToDelete.Role == "Admin")
             {
-                if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
+                int adminCount = _users.Count(u => u.Role == "Admin");
+                if (adminCount <= 1)
                 {
-                    DeleteUserEvent?.Invoke(this, id);
+                    MessageBox.Show(
+                        "Akun admin ini tidak dapat dihapus karena merupakan satu-satunya admin yang terdaftar.\nMinimal harus ada 1 akun admin di dalam sistem.",
+                        "ChemLink Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
             }
+
+            var confirm = MessageBox.Show(
+                $"Apakah Anda yakin ingin menghapus user \"{userToDelete.Username}\"?\nTindakan ini tidak dapat dibatalkan.",
+                "Konfirmasi Hapus User", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (confirm == DialogResult.Yes)
+                DeleteUserEvent?.Invoke(this, id);
         }
     }
 }

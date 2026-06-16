@@ -59,33 +59,6 @@ CREATE TABLE order_details (
     id_order INTEGER REFERENCES orders(id_order),
     id_produk INTEGER REFERENCES Produk(id_produk)
 );
-
-CREATE TABLE selling (
-    id_selling SERIAL PRIMARY KEY,
-    no_faktur VARCHAR(100),
-    tanggal_selling DATE,
-    keterangan TEXT,
-    id_kasir INTEGER REFERENCES Users(id_user)
-);
-
-CREATE TABLE selling_details (
-    id_detail SERIAL PRIMARY KEY,
-    jumlah_keluar INTEGER,
-    catatan TEXT,
-    id_selling INTEGER REFERENCES selling(id_selling),
-    id_produk INTEGER REFERENCES Produk(id_produk)
-);
-
-CREATE TABLE log_stok (
-    id_log SERIAL PRIMARY KEY,
-    tipe_aktivitas VARCHAR(10),
-    id_user INTEGER,
-    nama_user VARCHAR(255),
-    nama_produk VARCHAR(150),
-    jumlah INTEGER,
-    time_stamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 INSERT INTO Kategori (nama_kategori) VALUES 
 ('Herbisida'),
 ('Fungisida'),

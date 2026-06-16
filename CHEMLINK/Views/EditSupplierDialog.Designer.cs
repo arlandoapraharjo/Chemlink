@@ -6,210 +6,183 @@ namespace CHEMLINK.Views
 
         private System.Windows.Forms.Panel header;
         private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblUsername;
-        private System.Windows.Forms.Panel pnlUsername;
-        private System.Windows.Forms.TextBox txtEditUsername;
-        private System.Windows.Forms.Label lblPassword;
-        private System.Windows.Forms.Panel pnlPassword;
-        private System.Windows.Forms.TextBox txtEditPassword;
-        private System.Windows.Forms.Label lblRole;
-        private System.Windows.Forms.TextBox txtEditAddress;
+
+        private System.Windows.Forms.Label lblNama;
+        private System.Windows.Forms.TextBox txtEditNama;
+        private System.Windows.Forms.Label lblKontakPerson;
+        private System.Windows.Forms.TextBox txtEditKontakPerson;
+        private System.Windows.Forms.Label lblNoTelp;
+        private System.Windows.Forms.TextBox txtEditNoTelp;
+        private System.Windows.Forms.Label lblEmail;
+        private System.Windows.Forms.TextBox txtEditEmail;
+        private System.Windows.Forms.Label lblAlamat;
+        private System.Windows.Forms.TextBox txtEditAlamat;
+        private System.Windows.Forms.Label lblKota;
+        private System.Windows.Forms.TextBox txtEditKota;
+
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
 
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
             base.Dispose(disposing);
         }
 
         private void InitializeComponent()
         {
-            header = new Panel();
-            lblTitle = new Label();
-            lblUsername = new Label();
-            pnlUsername = new Panel();
-            txtEditUsername = new TextBox();
-            lblPassword = new Label();
-            pnlPassword = new Panel();
-            txtEditPassword = new TextBox();
-            lblRole = new Label();
-            txtEditAddress = new TextBox();
-            btnSave = new Button();
-            btnCancel = new Button();
-            pnlUsername.SuspendLayout();
-            pnlPassword.SuspendLayout();
-            SuspendLayout();
-            // 
-            // header
-            // 
-            header.Dock = DockStyle.Top;
-            header.Location = new Point(0, 0);
-            header.Name = "header";
-            header.Size = new Size(420, 70);
-            header.TabIndex = 0;
-            header.Paint += header_Paint;
-            // 
-            // lblTitle
-            // 
-            lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            lblTitle.ForeColor = Color.FromArgb(50, 50, 50);
-            lblTitle.Location = new Point(30, 88);
-            lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(134, 20);
-            lblTitle.TabIndex = 1;
-            lblTitle.Text = "Edit Data Supplier";
-            // 
-            // lblUsername
-            // 
-            lblUsername.AutoSize = true;
-            lblUsername.Font = new Font("Segoe UI", 9.5F);
-            lblUsername.ForeColor = Color.FromArgb(100, 100, 100);
-            lblUsername.Location = new Point(30, 125);
-            lblUsername.Name = "lblUsername";
-            lblUsername.Size = new Size(67, 17);
-            lblUsername.TabIndex = 2;
-            lblUsername.Text = "Username";
-            // 
-            // pnlUsername
-            // 
-            pnlUsername.BackColor = Color.White;
-            pnlUsername.Controls.Add(txtEditUsername);
-            pnlUsername.Location = new Point(30, 145);
-            pnlUsername.Name = "pnlUsername";
-            pnlUsername.Size = new Size(360, 32);
-            pnlUsername.TabIndex = 3;
-            pnlUsername.Click += pnlUsername_Click;
-            pnlUsername.Paint += pnlUsername_Paint;
-            // 
-            // txtEditUsername
-            // 
-            txtEditUsername.BorderStyle = BorderStyle.None;
-            txtEditUsername.Font = new Font("Segoe UI", 11F);
-            txtEditUsername.Location = new Point(2, 5);
-            txtEditUsername.Name = "txtEditUsername";
-            txtEditUsername.Size = new Size(356, 20);
-            txtEditUsername.TabIndex = 0;
-            txtEditUsername.GotFocus += txtEditUsername_GotFocus;
-            txtEditUsername.LostFocus += txtEditUsername_LostFocus;
-            // 
-            // lblPassword
-            // 
-            lblPassword.AutoSize = true;
-            lblPassword.Font = new Font("Segoe UI", 9.5F);
-            lblPassword.ForeColor = Color.FromArgb(100, 100, 100);
-            lblPassword.Location = new Point(30, 190);
-            lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(32, 17);
-            lblPassword.TabIndex = 4;
-            lblPassword.Text = "Telp";
-            // 
-            // pnlPassword
-            // 
-            pnlPassword.BackColor = Color.White;
-            pnlPassword.Controls.Add(txtEditPassword);
-            pnlPassword.Location = new Point(30, 210);
-            pnlPassword.Name = "pnlPassword";
-            pnlPassword.Size = new Size(360, 32);
-            pnlPassword.TabIndex = 5;
-            pnlPassword.Click += pnlPassword_Click;
-            pnlPassword.Paint += pnlPassword_Paint;
-            // 
-            // txtEditPassword
-            // 
-            txtEditPassword.BorderStyle = BorderStyle.None;
-            txtEditPassword.Font = new Font("Segoe UI", 11F);
-            txtEditPassword.Location = new Point(2, 5);
-            txtEditPassword.Name = "txtEditPassword";
-            txtEditPassword.PlaceholderText = "Optional";
-            txtEditPassword.Size = new Size(356, 20);
-            txtEditPassword.TabIndex = 0;
-            txtEditPassword.GotFocus += txtEditPassword_GotFocus;
-            txtEditPassword.LostFocus += txtEditPassword_LostFocus;
-            // 
-            // lblRole
-            // 
-            lblRole.AutoSize = true;
-            lblRole.Font = new Font("Segoe UI", 9.5F);
-            lblRole.ForeColor = Color.FromArgb(100, 100, 100);
-            lblRole.Location = new Point(30, 255);
-            lblRole.Name = "lblRole";
-            lblRole.Size = new Size(48, 17);
-            lblRole.TabIndex = 6;
-            lblRole.Text = "Alamat";
-            // 
-            // txtEditAddress
-            // 
-            txtEditAddress.BorderStyle = BorderStyle.FixedSingle;
-            txtEditAddress.Font = new Font("Segoe UI", 10F);
-            txtEditAddress.Location = new Point(30, 277);
-            txtEditAddress.Multiline = true;
-            txtEditAddress.Name = "txtEditAddress";
-            txtEditAddress.Size = new Size(360, 30);
-            txtEditAddress.TabIndex = 7;
-            // 
-            // btnSave
-            // 
-            btnSave.BackColor = Color.FromArgb(72, 161, 17);
-            btnSave.Cursor = Cursors.Hand;
-            btnSave.FlatAppearance.BorderSize = 0;
-            btnSave.FlatStyle = FlatStyle.Flat;
-            btnSave.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(30, 325);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(170, 38);
-            btnSave.TabIndex = 8;
-            btnSave.Text = "Simpan Perubahan";
-            btnSave.UseVisualStyleBackColor = false;
-            // 
-            // btnCancel
-            // 
-            btnCancel.BackColor = Color.FromArgb(180, 180, 180);
-            btnCancel.Cursor = Cursors.Hand;
-            btnCancel.FlatAppearance.BorderSize = 0;
-            btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnCancel.ForeColor = Color.White;
-            btnCancel.Location = new Point(220, 325);
-            btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(170, 38);
-            btnCancel.TabIndex = 9;
-            btnCancel.Text = "Batal";
-            btnCancel.UseVisualStyleBackColor = false;
-            // 
-            // EditSupplierDialog
-            // 
-            AutoScaleMode = AutoScaleMode.None;
-            BackColor = Color.White;
-            ClientSize = new Size(420, 385);
-            Controls.Add(btnCancel);
-            Controls.Add(btnSave);
-            Controls.Add(lblRole);
-            Controls.Add(pnlPassword);
-            Controls.Add(lblPassword);
-            Controls.Add(pnlUsername);
-            Controls.Add(lblUsername);
-            Controls.Add(lblTitle);
-            Controls.Add(header);
-            Controls.Add(txtEditAddress);
-            Font = new Font("Segoe UI", 10F);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-            MinimizeBox = false;
-            Name = "EditSupplierDialog";
-            StartPosition = FormStartPosition.CenterParent;
-            Text = "ChemLink - Edit Data Supplier";
-            pnlUsername.ResumeLayout(false);
-            pnlUsername.PerformLayout();
-            pnlPassword.ResumeLayout(false);
-            pnlPassword.PerformLayout();
-            ResumeLayout(false);
-            PerformLayout();
+            this.header = new System.Windows.Forms.Panel();
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.lblNama = new System.Windows.Forms.Label();
+            this.txtEditNama = new System.Windows.Forms.TextBox();
+            this.lblKontakPerson = new System.Windows.Forms.Label();
+            this.txtEditKontakPerson = new System.Windows.Forms.TextBox();
+            this.lblNoTelp = new System.Windows.Forms.Label();
+            this.txtEditNoTelp = new System.Windows.Forms.TextBox();
+            this.lblEmail = new System.Windows.Forms.Label();
+            this.txtEditEmail = new System.Windows.Forms.TextBox();
+            this.lblAlamat = new System.Windows.Forms.Label();
+            this.txtEditAlamat = new System.Windows.Forms.TextBox();
+            this.lblKota = new System.Windows.Forms.Label();
+            this.txtEditKota = new System.Windows.Forms.TextBox();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+
+            // ===================== HEADER =====================
+            this.header.Dock = System.Windows.Forms.DockStyle.Top;
+            this.header.Location = new System.Drawing.Point(0, 0);
+            this.header.Size = new System.Drawing.Size(500, 70);
+            this.header.Paint += new System.Windows.Forms.PaintEventHandler(this.header_Paint);
+
+            // ===================== TITLE =====================
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(50, 50, 50);
+            this.lblTitle.Location = new System.Drawing.Point(24, 80);
+            this.lblTitle.Text = "Edit Data Supplier";
+
+            // ===================== NAMA PERUSAHAAN =====================
+            this.lblNama.AutoSize = true;
+            this.lblNama.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblNama.ForeColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.lblNama.Location = new System.Drawing.Point(24, 108);
+            this.lblNama.Text = "Nama Perusahaan";
+
+            this.txtEditNama.Location = new System.Drawing.Point(24, 126);
+            this.txtEditNama.Size = new System.Drawing.Size(450, 25);
+            this.txtEditNama.Font = new System.Drawing.Font("Segoe UI", 10F);
+
+            // ===================== KONTAK PERSON =====================
+            this.lblKontakPerson.AutoSize = true;
+            this.lblKontakPerson.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblKontakPerson.ForeColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.lblKontakPerson.Location = new System.Drawing.Point(24, 157);
+            this.lblKontakPerson.Text = "Kontak Person";
+
+            this.txtEditKontakPerson.Location = new System.Drawing.Point(24, 175);
+            this.txtEditKontakPerson.Size = new System.Drawing.Size(215, 25);
+            this.txtEditKontakPerson.Font = new System.Drawing.Font("Segoe UI", 10F);
+
+            // ===================== NO. TELEPON =====================
+            this.lblNoTelp.AutoSize = true;
+            this.lblNoTelp.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblNoTelp.ForeColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.lblNoTelp.Location = new System.Drawing.Point(259, 157);
+            this.lblNoTelp.Text = "No. Telepon";
+
+            this.txtEditNoTelp.Location = new System.Drawing.Point(259, 175);
+            this.txtEditNoTelp.Size = new System.Drawing.Size(215, 25);
+            this.txtEditNoTelp.Font = new System.Drawing.Font("Segoe UI", 10F);
+
+            // ===================== EMAIL =====================
+            this.lblEmail.AutoSize = true;
+            this.lblEmail.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblEmail.ForeColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.lblEmail.Location = new System.Drawing.Point(24, 206);
+            this.lblEmail.Text = "Email";
+
+            this.txtEditEmail.Location = new System.Drawing.Point(24, 224);
+            this.txtEditEmail.Size = new System.Drawing.Size(450, 25);
+            this.txtEditEmail.Font = new System.Drawing.Font("Segoe UI", 10F);
+
+            // ===================== ALAMAT =====================
+            this.lblAlamat.AutoSize = true;
+            this.lblAlamat.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblAlamat.ForeColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.lblAlamat.Location = new System.Drawing.Point(24, 255);
+            this.lblAlamat.Text = "Alamat";
+
+            this.txtEditAlamat.Location = new System.Drawing.Point(24, 273);
+            this.txtEditAlamat.Size = new System.Drawing.Size(450, 50);
+            this.txtEditAlamat.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtEditAlamat.Multiline = true;
+            this.txtEditAlamat.PlaceholderText = "Masukkan alamat lengkap";
+
+            // ===================== KOTA =====================
+            this.lblKota.AutoSize = true;
+            this.lblKota.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblKota.ForeColor = System.Drawing.Color.FromArgb(100, 100, 100);
+            this.lblKota.Location = new System.Drawing.Point(24, 329);
+            this.lblKota.Text = "Kota";
+
+            this.txtEditKota.Location = new System.Drawing.Point(24, 347);
+            this.txtEditKota.Size = new System.Drawing.Size(450, 25);
+            this.txtEditKota.Font = new System.Drawing.Font("Segoe UI", 10F);
+
+            // ===================== BUTTONS =====================
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(72, 161, 17);
+            this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSave.FlatAppearance.BorderSize = 0;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(260, 390);
+            this.btnSave.Size = new System.Drawing.Size(110, 38);
+            this.btnSave.Text = "Simpan";
+            this.btnSave.UseVisualStyleBackColor = false;
+
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(180, 180, 180);
+            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancel.FlatAppearance.BorderSize = 0;
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnCancel.ForeColor = System.Drawing.Color.White;
+            this.btnCancel.Location = new System.Drawing.Point(380, 390);
+            this.btnCancel.Size = new System.Drawing.Size(100, 38);
+            this.btnCancel.Text = "Batal";
+            this.btnCancel.UseVisualStyleBackColor = false;
+
+            // ===================== FORM =====================
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(500, 450);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.txtEditKota);
+            this.Controls.Add(this.lblKota);
+            this.Controls.Add(this.txtEditAlamat);
+            this.Controls.Add(this.lblAlamat);
+            this.Controls.Add(this.txtEditEmail);
+            this.Controls.Add(this.lblEmail);
+            this.Controls.Add(this.txtEditNoTelp);
+            this.Controls.Add(this.lblNoTelp);
+            this.Controls.Add(this.txtEditKontakPerson);
+            this.Controls.Add(this.lblKontakPerson);
+            this.Controls.Add(this.txtEditNama);
+            this.Controls.Add(this.lblNama);
+            this.Controls.Add(this.lblTitle);
+            this.Controls.Add(this.header);
+            this.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "EditSupplierDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "ChemLink - Edit Data Supplier";
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
     }
 }

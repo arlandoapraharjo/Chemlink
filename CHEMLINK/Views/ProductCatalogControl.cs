@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using CHEMLINK.Models;
 
@@ -21,6 +22,16 @@ namespace CHEMLINK.Views
             btnEdit.Click += BtnEdit_Click;
             btnHapus.Click += BtnHapus_Click;
             btnKategori.Click += BtnKategori_Click;
+            this.Paint += Control_Paint;
+        }
+
+        private void Control_Paint(object? sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            using var pen = new Pen(Color.FromArgb(2, 44, 34), 2f);
+            g.DrawRectangle(pen, dgvMain.Bounds);
+            if (pnlToolbar.Visible)
+                g.DrawRectangle(pen, pnlToolbar.Bounds);
         }
 
 
@@ -32,7 +43,7 @@ namespace CHEMLINK.Views
 
         private void BtnTambah_Click(object? sender, EventArgs e)
         {
-            using (var form = new AddProductForm(_products, _categories))
+            using (var form = new ProductForm(_products, _categories, null))
             {
                 if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
@@ -50,7 +61,7 @@ namespace CHEMLINK.Views
         private void BtnEdit_Click(object? sender, EventArgs e)
         {
             Product? selected = dgvMain.CurrentRow?.DataBoundItem as Product;
-            using (var form = new EditProductForm(_products, _categories, selected))
+            using (var form = new ProductForm(_products, _categories, selected))
             {
                 if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
@@ -68,13 +79,17 @@ namespace CHEMLINK.Views
 
         private void BtnHapus_Click(object? sender, EventArgs e)
         {
-            using (var form = new DeleteProductForm(_products))
+            if (dgvMain.CurrentRow?.DataBoundItem is not Product p)
             {
-                if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
-                {
-                    DeleteProductEvent?.Invoke(this, form.SelectedProductId);
-                }
+                MessageBox.Show("Pilih produk yang akan dihapus dari tabel.", "ChemLink Info",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
+            var confirm = MessageBox.Show(
+                $"Apakah Anda yakin ingin menghapus produk '{p.Name}'?",
+                "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (confirm == DialogResult.Yes)
+                DeleteProductEvent?.Invoke(this, p.Id);
         }
 
         private void BtnKategori_Click(object? sender, EventArgs e)

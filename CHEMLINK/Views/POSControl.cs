@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using CHEMLINK.Models;
@@ -23,7 +24,15 @@ namespace CHEMLINK.Views
             txtSearch.KeyDown += TxtSearch_KeyDown;
             btnAddCart.Click += BtnAddCart_Click;
             btnCheckout.Click += BtnCheckout_Click;
-            btnDelCart.Click += BtnDelCart_Click;
+            this.Paint += Control_Paint;
+        }
+
+        private void Control_Paint(object? sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            using var pen = new Pen(Color.FromArgb(2, 44, 34), 2f);
+            g.DrawRectangle(pen, pnlCrud.Bounds);
+            g.DrawRectangle(pen, dgvMain.Bounds);
         }
 
         public void SetData(List<Product> searchResults, List<CartItem> cart)

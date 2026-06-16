@@ -6,6 +6,7 @@ namespace CHEMLINK.Views
         public System.Windows.Forms.DataGridView dgvMain;
         private System.Windows.Forms.Panel pnlCrud;
         // input moved to dialog; inline textboxes removed
+        private System.Windows.Forms.Label lblKelola;
         public System.Windows.Forms.Button btnAddSup;
         public System.Windows.Forms.Button btnEditSup;
         public System.Windows.Forms.Button btnDeleteSup;
@@ -56,7 +57,7 @@ namespace CHEMLINK.Views
             dgvMain.Name = "dgvMain";
             dgvMain.ReadOnly = true;
             dgvMain.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvMain.Size = new Size(1070, 548);
+            dgvMain.Size = new Size(1070, 540);
             dgvMain.TabIndex = 0;
             // 
             // pnlCrud
@@ -66,9 +67,9 @@ namespace CHEMLINK.Views
             pnlCrud.Controls.Add(btnDelSup1);
             pnlCrud.Controls.Add(btnEditSup1);
             pnlCrud.Controls.Add(btnAddSup);
-            pnlCrud.Location = new Point(20, 591);
+            pnlCrud.Location = new Point(20, 580);
             pnlCrud.Name = "pnlCrud";
-            pnlCrud.Size = new Size(1070, 57);
+            pnlCrud.Size = new Size(1070, 60);
             pnlCrud.TabIndex = 1;
             // 
             // btnDelSup1
@@ -103,11 +104,11 @@ namespace CHEMLINK.Views
             btnAddSup.FlatStyle = FlatStyle.Flat;
             btnAddSup.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAddSup.ForeColor = Color.White;
-            btnAddSup.Location = new Point(17, 11);
+            btnAddSup.Location = new Point(20, 12);
             btnAddSup.Name = "btnAddSup";
             btnAddSup.Size = new Size(142, 35);
             btnAddSup.TabIndex = 3;
-            btnAddSup.Text = "Tambah Supplier";
+            btnAddSup.Text = "+ Tambah Supplier";
             btnAddSup.UseVisualStyleBackColor = false;
             // 
             // btnEditSup

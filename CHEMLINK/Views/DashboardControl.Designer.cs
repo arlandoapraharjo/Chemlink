@@ -325,5 +325,7 @@ namespace CHEMLINK.Views
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private DataGridView dgvMain;
     }
 }

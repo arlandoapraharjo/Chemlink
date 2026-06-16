@@ -15,6 +15,10 @@ namespace CHEMLINK.Views
         public System.Windows.Forms.TextBox txtStok;
         private System.Windows.Forms.Label lblHarga;
         public System.Windows.Forms.TextBox txtHarga;
+        private System.Windows.Forms.Label lblKeterangan;
+        public System.Windows.Forms.TextBox txtKeterangan;
+        private System.Windows.Forms.Label lblTglExp;
+        public System.Windows.Forms.DateTimePicker dtpTglExp;
         public System.Windows.Forms.DataGridView dgvReference;
         public System.Windows.Forms.Button btnSubmit;
         public System.Windows.Forms.Button btnBatal;
@@ -40,6 +44,10 @@ namespace CHEMLINK.Views
             this.txtStok = new System.Windows.Forms.TextBox();
             this.lblHarga = new System.Windows.Forms.Label();
             this.txtHarga = new System.Windows.Forms.TextBox();
+            this.lblKeterangan = new System.Windows.Forms.Label();
+            this.txtKeterangan = new System.Windows.Forms.TextBox();
+            this.lblTglExp = new System.Windows.Forms.Label();
+            this.dtpTglExp = new System.Windows.Forms.DateTimePicker();
             this.dgvReference = new System.Windows.Forms.DataGridView();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.btnBatal = new System.Windows.Forms.Button();
@@ -77,6 +85,7 @@ namespace CHEMLINK.Views
             // 
             // pnlLeft
             // 
+            this.pnlLeft.AutoScroll = true;
             this.pnlLeft.Controls.Add(this.lblNama);
             this.pnlLeft.Controls.Add(this.txtNama);
             this.pnlLeft.Controls.Add(this.lblKategori);
@@ -85,18 +94,22 @@ namespace CHEMLINK.Views
             this.pnlLeft.Controls.Add(this.txtStok);
             this.pnlLeft.Controls.Add(this.lblHarga);
             this.pnlLeft.Controls.Add(this.txtHarga);
+            this.pnlLeft.Controls.Add(this.lblKeterangan);
+            this.pnlLeft.Controls.Add(this.txtKeterangan);
+            this.pnlLeft.Controls.Add(this.lblTglExp);
+            this.pnlLeft.Controls.Add(this.dtpTglExp);
             this.pnlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlLeft.Location = new System.Drawing.Point(0, 70);
             this.pnlLeft.Name = "pnlLeft";
             this.pnlLeft.Padding = new System.Windows.Forms.Padding(20, 15, 10, 10);
-            this.pnlLeft.Size = new System.Drawing.Size(300, 370);
+            this.pnlLeft.Size = new System.Drawing.Size(300, 410);
             this.pnlLeft.TabIndex = 1;
             // 
             // lblNama
             // 
             this.lblNama.AutoSize = true;
             this.lblNama.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblNama.Location = new System.Drawing.Point(20, 20);
+            this.lblNama.Location = new System.Drawing.Point(20, 15);
             this.lblNama.Name = "lblNama";
             this.lblNama.Size = new System.Drawing.Size(80, 17);
             this.lblNama.TabIndex = 0;
@@ -104,7 +117,7 @@ namespace CHEMLINK.Views
             // 
             // txtNama
             // 
-            this.txtNama.Location = new System.Drawing.Point(20, 43);
+            this.txtNama.Location = new System.Drawing.Point(20, 35);
             this.txtNama.Name = "txtNama";
             this.txtNama.PlaceholderText = "Masukkan nama obat";
             this.txtNama.Size = new System.Drawing.Size(260, 25);
@@ -114,7 +127,7 @@ namespace CHEMLINK.Views
             // 
             this.lblKategori.AutoSize = true;
             this.lblKategori.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblKategori.Location = new System.Drawing.Point(20, 80);
+            this.lblKategori.Location = new System.Drawing.Point(20, 65);
             this.lblKategori.Name = "lblKategori";
             this.lblKategori.Size = new System.Drawing.Size(60, 17);
             this.lblKategori.TabIndex = 2;
@@ -123,7 +136,7 @@ namespace CHEMLINK.Views
             // cbKategori
             // 
             this.cbKategori.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbKategori.Location = new System.Drawing.Point(20, 103);
+            this.cbKategori.Location = new System.Drawing.Point(20, 85);
             this.cbKategori.Name = "cbKategori";
             this.cbKategori.Size = new System.Drawing.Size(260, 25);
             this.cbKategori.TabIndex = 3;
@@ -132,7 +145,7 @@ namespace CHEMLINK.Views
             // 
             this.lblStok.AutoSize = true;
             this.lblStok.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblStok.Location = new System.Drawing.Point(20, 140);
+            this.lblStok.Location = new System.Drawing.Point(20, 115);
             this.lblStok.Name = "lblStok";
             this.lblStok.Size = new System.Drawing.Size(35, 17);
             this.lblStok.TabIndex = 4;
@@ -140,7 +153,7 @@ namespace CHEMLINK.Views
             // 
             // txtStok
             // 
-            this.txtStok.Location = new System.Drawing.Point(20, 163);
+            this.txtStok.Location = new System.Drawing.Point(20, 135);
             this.txtStok.Name = "txtStok";
             this.txtStok.PlaceholderText = "Jumlah stok";
             this.txtStok.Size = new System.Drawing.Size(260, 25);
@@ -150,7 +163,7 @@ namespace CHEMLINK.Views
             // 
             this.lblHarga.AutoSize = true;
             this.lblHarga.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblHarga.Location = new System.Drawing.Point(20, 200);
+            this.lblHarga.Location = new System.Drawing.Point(20, 165);
             this.lblHarga.Name = "lblHarga";
             this.lblHarga.Size = new System.Drawing.Size(45, 17);
             this.lblHarga.TabIndex = 6;
@@ -158,11 +171,48 @@ namespace CHEMLINK.Views
             // 
             // txtHarga
             // 
-            this.txtHarga.Location = new System.Drawing.Point(20, 223);
+            this.txtHarga.Location = new System.Drawing.Point(20, 185);
             this.txtHarga.Name = "txtHarga";
             this.txtHarga.PlaceholderText = "Harga satuan (Rp)";
             this.txtHarga.Size = new System.Drawing.Size(260, 25);
             this.txtHarga.TabIndex = 7;
+            // 
+            // lblKeterangan
+            // 
+            this.lblKeterangan.AutoSize = true;
+            this.lblKeterangan.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblKeterangan.Location = new System.Drawing.Point(20, 215);
+            this.lblKeterangan.Name = "lblKeterangan";
+            this.lblKeterangan.Size = new System.Drawing.Size(75, 17);
+            this.lblKeterangan.TabIndex = 8;
+            this.lblKeterangan.Text = "Keterangan";
+            // 
+            // txtKeterangan
+            // 
+            this.txtKeterangan.Location = new System.Drawing.Point(20, 235);
+            this.txtKeterangan.Name = "txtKeterangan";
+            this.txtKeterangan.PlaceholderText = "Keterangan produk";
+            this.txtKeterangan.Size = new System.Drawing.Size(260, 45);
+            this.txtKeterangan.TabIndex = 9;
+            this.txtKeterangan.Multiline = true;
+            // 
+            // lblTglExp
+            // 
+            this.lblTglExp.AutoSize = true;
+            this.lblTglExp.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblTglExp.Location = new System.Drawing.Point(20, 288);
+            this.lblTglExp.Name = "lblTglExp";
+            this.lblTglExp.Size = new System.Drawing.Size(100, 17);
+            this.lblTglExp.TabIndex = 10;
+            this.lblTglExp.Text = "Tanggal Expired";
+            // 
+            // dtpTglExp
+            // 
+            this.dtpTglExp.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpTglExp.Location = new System.Drawing.Point(20, 308);
+            this.dtpTglExp.Name = "dtpTglExp";
+            this.dtpTglExp.Size = new System.Drawing.Size(260, 25);
+            this.dtpTglExp.TabIndex = 11;
             // 
             // pnlRight
             // 
@@ -171,7 +221,7 @@ namespace CHEMLINK.Views
             this.pnlRight.Location = new System.Drawing.Point(300, 70);
             this.pnlRight.Name = "pnlRight";
             this.pnlRight.Padding = new System.Windows.Forms.Padding(10, 15, 20, 10);
-            this.pnlRight.Size = new System.Drawing.Size(500, 370);
+            this.pnlRight.Size = new System.Drawing.Size(500, 410);
             this.pnlRight.TabIndex = 2;
             // 
             // dgvReference
@@ -187,7 +237,7 @@ namespace CHEMLINK.Views
             this.dgvReference.Name = "dgvReference";
             this.dgvReference.ReadOnly = true;
             this.dgvReference.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvReference.Size = new System.Drawing.Size(470, 345);
+            this.dgvReference.Size = new System.Drawing.Size(470, 385);
             this.dgvReference.TabIndex = 0;
             // 
             // pnlBottom
@@ -196,7 +246,7 @@ namespace CHEMLINK.Views
             this.pnlBottom.Controls.Add(this.btnSubmit);
             this.pnlBottom.Controls.Add(this.btnBatal);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlBottom.Location = new System.Drawing.Point(0, 420);
+            this.pnlBottom.Location = new System.Drawing.Point(0, 480);
             this.pnlBottom.Name = "pnlBottom";
             this.pnlBottom.Padding = new System.Windows.Forms.Padding(20, 10, 20, 10);
             this.pnlBottom.Size = new System.Drawing.Size(800, 60);
@@ -233,7 +283,7 @@ namespace CHEMLINK.Views
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(243)))), ((int)(((byte)(246)))));
-            this.ClientSize = new System.Drawing.Size(800, 480);
+            this.ClientSize = new System.Drawing.Size(800, 540);
             this.Controls.Add(this.pnlRight);
             this.Controls.Add(this.pnlLeft);
             this.Controls.Add(this.pnlBottom);

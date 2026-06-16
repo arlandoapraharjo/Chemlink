@@ -14,7 +14,6 @@ namespace CHEMLINK.Models
         public string Alamat { get; set; } = string.Empty;
         public string NoTelp { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string Kota { get; set; } = string.Empty;
         public string Kecamatan { get; set; } = string.Empty;
     }
 }

@@ -12,12 +12,12 @@ namespace CHEMLINK.Contexts
         {
             List<Product> listproduct = new List<Product>(); //objek untuk list
 
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
                     string sql = @"
-                        SELECT id_produk, nama_produk, nama_kategori, harga, jumlah_stock 
+                        SELECT id_produk, nama_produk, harga, tanggal_exp, keterangan, nama_kategori, nama_supplier, jumlah_stock 
                         FROM v_detail_produk 
                         ORDER BY id_produk ASC";
 
@@ -25,14 +25,26 @@ namespace CHEMLINK.Contexts
                     {
                         using (NpgsqlDataReader dr = cmd.ExecuteReader()) //syntax untuk menjalankan query
                         {
+                            int idxId = dr.GetOrdinal("id_produk");
+                            int idxName = dr.GetOrdinal("nama_produk");
+                            int idxHarga = dr.GetOrdinal("harga");
+                            int idxExp = dr.GetOrdinal("tanggal_exp");
+                            int idxKet = dr.GetOrdinal("keterangan");
+                            int idxKat = dr.GetOrdinal("nama_kategori");
+                            int idxSup = dr.GetOrdinal("nama_supplier");
+                            int idxStock = dr.GetOrdinal("jumlah_stock");
+
                             while (dr.Read())
                             {
                                 Product product = new Product();
-                                product.Id = Convert.ToInt32(dr["id_produk"]);
-                                product.Name = dr["nama_produk"].ToString() ?? "";
-                                product.Category = dr["nama_kategori"] != DBNull.Value ? dr["nama_kategori"].ToString() ?? "" : "";
-                                product.Price = dr["harga"] != DBNull.Value ? Convert.ToDecimal(dr["harga"]) : 0m;
-                                product.Stock = dr["jumlah_stock"] != DBNull.Value ? Convert.ToInt32(dr["jumlah_stock"]) : 0;
+                                product.Id = !dr.IsDBNull(idxId) ? dr.GetInt32(idxId) : 0;
+                                product.Name = !dr.IsDBNull(idxName) ? dr.GetString(idxName) : "";
+                                product.Category = !dr.IsDBNull(idxKat) ? dr.GetString(idxKat) : "";
+                                product.Price = !dr.IsDBNull(idxHarga) ? dr.GetInt32(idxHarga) : 0;
+                                product.Stock = !dr.IsDBNull(idxStock) ? dr.GetInt32(idxStock) : 0;
+                                product.Description = !dr.IsDBNull(idxKet) ? dr.GetString(idxKet) : "";
+                                product.ExpiryDate = !dr.IsDBNull(idxExp) ? dr.GetDateTime(idxExp) : (DateTime?)null;
+                                product.SupplierName = !dr.IsDBNull(idxSup) ? dr.GetString(idxSup) : "";
 
                                 listproduct.Add(product);
                             }
@@ -44,19 +56,22 @@ namespace CHEMLINK.Contexts
             return listproduct;
         }
 
-        public void Create(string nama, int idKategori, int stok, decimal harga)
+        public void Create(string nama, int idKategori, int stok, decimal harga, string keterangan = "", DateTime? tanggalExp = null)
         {
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
                     // Step 1: Insert product via stored procedure (creates Stocks row with 0)
-                    string sql = "CALL sp_tambah_produk_baru(@nama, '', 'pcs', @harga, CURRENT_DATE, '', @idKat, 1, 1)";
+                    string sql = "CALL sp_tambah_produk_baru(@nama, @harga, @tglExp, @keterangan, @idKat, @idSup)";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@nama", nama);
                         cmd.Parameters.AddWithValue("@harga", (int)harga);
+                        cmd.Parameters.AddWithValue("@tglExp", tanggalExp.HasValue ? (object)tanggalExp.Value.Date : DateTime.Now.Date);
+                        cmd.Parameters.AddWithValue("@keterangan", string.IsNullOrWhiteSpace(keterangan) ? "" : keterangan);
                         cmd.Parameters.AddWithValue("@idKat", idKategori);
+                        cmd.Parameters.AddWithValue("@idSup", 1); // Default supplier ID 1
                         cmd.ExecuteNonQuery();
                     }
 
@@ -79,28 +94,31 @@ namespace CHEMLINK.Contexts
             }
         }
 
-        public void Update(int id, string nama, int idKategori, int stok, decimal harga)
+        public void Update(int id, string nama, int idKategori, int stok, decimal harga, string keterangan = "", DateTime? tanggalExp = null)
         {
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
                     // Step 1: Update Produk table (no jumlah_stock column here)
                     string sqlProduk = @"UPDATE Produk 
-                        SET nama_produk = @nama, id_kategori = @idKat, harga = @harga
+                        SET nama_produk = @nama, id_kategori = @idKat, harga = @harga,
+                            tanggal_exp = @tglExp, keterangan = @keterangan
                         WHERE id_produk = @id";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sqlProduk, conn))
                     {
                         cmd.Parameters.AddWithValue("@nama", nama);
                         cmd.Parameters.AddWithValue("@idKat", idKategori);
                         cmd.Parameters.AddWithValue("@harga", (int)harga);
+                        cmd.Parameters.AddWithValue("@tglExp", tanggalExp.HasValue ? (object)tanggalExp.Value.Date : DBNull.Value);
+                        cmd.Parameters.AddWithValue("@keterangan", string.IsNullOrWhiteSpace(keterangan) ? "" : keterangan);
                         cmd.Parameters.AddWithValue("@id", id);
                         cmd.ExecuteNonQuery();
                     }
 
                     // Step 2: Update stock in Stocks table
                     string sqlStock = @"UPDATE Stocks 
-                        SET jumlah_stock = @stok, timestamp = CURRENT_TIMESTAMP
+                        SET jumlah_stock = @stok, time_stamp = CURRENT_TIMESTAMP
                         WHERE id_produk = @id";
                     using (NpgsqlCommand cmd2 = new NpgsqlCommand(sqlStock, conn))
                     {
@@ -114,7 +132,7 @@ namespace CHEMLINK.Contexts
 
         public void Delete(int id)
         {
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
@@ -140,7 +158,7 @@ namespace CHEMLINK.Contexts
         public System.Data.DataTable GetCriticalStockTable()
         {
             var dt = new System.Data.DataTable();
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
@@ -153,6 +171,44 @@ namespace CHEMLINK.Contexts
                 }
             }
             return dt;
+        }
+
+        public List<StockKritis> ReadCriticalStock()
+        {
+            List<StockKritis> listStokKritis = new List<StockKritis>();
+
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
+            {
+                if (conn != null && conn.State == System.Data.ConnectionState.Open)
+                {
+                    string sql = @"
+                        SELECT id_produk, nama_produk, jumlah_stock 
+                        FROM v_stok_kritis 
+                        ORDER BY jumlah_stock ASC, id_produk ASC";
+
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        using (NpgsqlDataReader dr = cmd.ExecuteReader())
+                        {
+                            int idxId = dr.GetOrdinal("id_produk");
+                            int idxName = dr.GetOrdinal("nama_produk");
+                            int idxStock = dr.GetOrdinal("jumlah_stock");
+
+                            while (dr.Read())
+                            {
+                                StockKritis stok = new StockKritis();
+                                stok.IdProduk = !dr.IsDBNull(idxId) ? dr.GetInt32(idxId) : 0;
+                                stok.NamaProduk = !dr.IsDBNull(idxName) ? dr.GetString(idxName) : "";
+                                stok.JumlahStock = !dr.IsDBNull(idxStock) ? dr.GetInt32(idxStock) : 0;
+
+                                listStokKritis.Add(stok);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return listStokKritis;
         }
     }
 }

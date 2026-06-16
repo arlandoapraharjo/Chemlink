@@ -37,6 +37,56 @@ namespace CHEMLINK.Views
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string FullName
+        {
+            get => txtFullName.Text.Trim();
+            set => txtFullName.Text = value;
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string Status
+        {
+            get => cbStatus.SelectedItem?.ToString() ?? "Active";
+            set
+            {
+                int idx = cbStatus.Items.IndexOf(value);
+                cbStatus.SelectedIndex = idx >= 0 ? idx : 0;
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string Alamat
+        {
+            get => txtAlamat.Text.Trim();
+            set => txtAlamat.Text = value;
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string NoTelp
+        {
+            get => txtNoTelp.Text.Trim();
+            set => txtNoTelp.Text = value;
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string Email
+        {
+            get => txtEmail.Text.Trim();
+            set => txtEmail.Text = value;
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string Kecamatan
+        {
+            get => cbKecamatan.SelectedItem?.ToString() ?? "";
+            set
+            {
+                int idx = cbKecamatan.Items.IndexOf(value);
+                if (idx >= 0) cbKecamatan.SelectedIndex = idx;
+            }
+        }
+
         /// <summary>
         /// Unified Add/Edit user form.
         /// Pass existingUsers for Add mode (shows reference grid).
@@ -53,8 +103,20 @@ namespace CHEMLINK.Views
             btnSubmit.Text = _isEditMode ? "Simpan" : "Tambah";
             this.Text = _isEditMode ? "Edit User" : "Tambah User";
 
-            // Default role
+            // Default role & status
             cbRole.SelectedIndex = 1; // "Kasir"
+            cbStatus.SelectedIndex = 0; // "Active"
+
+            // Populate kecamatan Jember
+            cbKecamatan.Items.AddRange(new object[]
+            {
+                "Arjasa", "Balung", "Bangsalsari", "Gumukmas", "Jelbuk",
+                "Jenggawah", "Jombang", "Kalisat", "Kaliwates", "Kencong",
+                "Ledokombo", "Mayang", "Mumbulsari", "Pakusari", "Panti",
+                "Patrang", "Puger", "Rambipuji", "Semboro", "Silo",
+                "Sukorambi", "Sukowono", "Sumberbaru", "Sumberjambe", "Sumbersari",
+                "Tanggul", "Tempurejo", "Umbulsari", "Wuluhan"
+            });
 
             if (!_isEditMode && existingUsers != null)
             {
@@ -62,6 +124,27 @@ namespace CHEMLINK.Views
                 dgvReference.DataSource = null;
                 dgvReference.Columns.Clear();
                 dgvReference.DataSource = existingUsers;
+
+                try
+                {
+                    dgvReference.Columns["Id"]!.HeaderText = "ID User";
+                    dgvReference.Columns["Username"]!.HeaderText = "Username";
+                    dgvReference.Columns["Role"]!.HeaderText = "Role";
+                    dgvReference.Columns["FullName"]!.HeaderText = "Nama Lengkap";
+                    dgvReference.Columns["Status"]!.HeaderText = "Status";
+
+                    // Sembunyikan detail sensitif atau panjang
+                    if (dgvReference.Columns["Password"] != null) dgvReference.Columns["Password"]!.Visible = false;
+                    if (dgvReference.Columns["Status"] != null) dgvReference.Columns["Status"]!.Visible = false;
+                    if (dgvReference.Columns["Alamat"] != null) dgvReference.Columns["Alamat"]!.Visible = false;
+                    if (dgvReference.Columns["NoTelp"] != null) dgvReference.Columns["NoTelp"]!.Visible = false;
+                    if (dgvReference.Columns["Email"] != null) dgvReference.Columns["Email"]!.Visible = false;
+                    if (dgvReference.Columns["Kecamatan"] != null) dgvReference.Columns["Kecamatan"]!.Visible = false;
+                }
+                catch
+                {
+                    // Lanjutkan jika ada kolom yang tidak ditemukan
+                }
             }
             else
             {

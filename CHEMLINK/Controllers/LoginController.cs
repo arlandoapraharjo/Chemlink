@@ -19,17 +19,24 @@ namespace CHEMLINK.Controllers
 
         private void HandleLogin(object? sender, EventArgs e)
         {
-            var userContext = new Contexts.UserContext();
-            var user = userContext.AuthenticateUser(_view.Username, _view.Password);
+            try
+            {
+                var userContext = new Contexts.UserContext();
+                var user = userContext.AuthenticateUser(_view.Username, _view.Password);
 
-            if (user != null)
-            {
-                AuthenticatedUser = user;
-                _view.CloseView();
+                if (user != null)
+                {
+                    AuthenticatedUser = user;
+                    _view.CloseView();
+                }
+                else
+                {
+                    _view.ShowError("Username atau password salah!");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                _view.ShowError("Username atau password salah!");
+                _view.ShowError("Gagal terhubung ke database:\n" + ex.Message);
             }
         }
     }

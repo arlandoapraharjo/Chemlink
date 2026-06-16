@@ -23,6 +23,7 @@ namespace CHEMLINK.Views
             txtSearch.KeyDown += TxtSearch_KeyDown;
             btnAddCart.Click += BtnAddCart_Click;
             btnCheckout.Click += BtnCheckout_Click;
+            btnDelCart.Click += BtnDelCart_Click;
             this.Paint += Control_Paint;
         }
 
@@ -40,10 +41,45 @@ namespace CHEMLINK.Views
             dgvMain.DataSource = null;
             dgvMain.DataSource = searchResults;
 
+            try
+            {
+                dgvMain.Columns["Id"]!.HeaderText = "ID Produk";
+                dgvMain.Columns["Name"]!.HeaderText = "Nama Produk";
+                dgvMain.Columns["Category"]!.HeaderText = "Kategori";
+                dgvMain.Columns["Price"]!.HeaderText = "Harga";
+                dgvMain.Columns["Stock"]!.HeaderText = "Stok";
+
+                // Sembunyikan kolom detail yang tidak diperlukan untuk transaksi POS
+                if (dgvMain.Columns["Description"] != null) dgvMain.Columns["Description"]!.Visible = false;
+                if (dgvMain.Columns["ExpiryDate"] != null) dgvMain.Columns["ExpiryDate"]!.Visible = false;
+                if (dgvMain.Columns["SupplierName"] != null) dgvMain.Columns["SupplierName"]!.Visible = false;
+                if (dgvMain.Columns["CategoryId"] != null) dgvMain.Columns["CategoryId"]!.Visible = false;
+                if (dgvMain.Columns["SupplierId"] != null) dgvMain.Columns["SupplierId"]!.Visible = false;
+            }
+            catch
+            {
+                // Abaikan jika ada kolom yang hilang
+            }
+
             dgvCart.DataSource = null;
-            dgvCart.DataSource = cart;
-            
-            if (cbCategoryFilter.SelectedIndex == -1)
+            dgvCart.DataSource = new System.ComponentModel.BindingList<CartItem>(cart);
+
+            try
+            {
+                dgvCart.Columns["ProductId"]!.HeaderText = "ID Produk";
+                dgvCart.Columns["ProductName"]!.HeaderText = "Nama Produk";
+                dgvCart.Columns["Qty"]!.HeaderText = "Kuantitas";
+                dgvCart.Columns["Price"]!.HeaderText = "Harga Satuan";
+                dgvCart.Columns["Total"]!.HeaderText = "Total";
+            }
+            catch
+            {
+                // Abaikan jika ada kolom yang hilang
+            }
+
+            // Only set SelectedIndex when there are items to select
+            if (cbCategoryFilter.Items.Count > 0 && cbCategoryFilter.SelectedIndex == -1)
+            {
                 cbCategoryFilter.SelectedIndex = 0;
         }
 

@@ -50,6 +50,17 @@ namespace CHEMLINK.Views
             set => txtEditKota.Text = value;
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string EditStatus
+        {
+            get => txtEditStatus.SelectedItem?.ToString() ?? "Aktif";
+            set
+            {
+                int idx = txtEditStatus.Items.IndexOf(value);
+                txtEditStatus.SelectedIndex = idx >= 0 ? idx : 0;
+            }
+        }
+
         public EditSupplierDialog()
         {
             InitializeComponent();

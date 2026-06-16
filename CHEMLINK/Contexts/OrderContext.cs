@@ -12,8 +12,7 @@ namespace CHEMLINK.Contexts
         public void Checkout(List<CartItem> cart, int inputByUserId, string keterangan)
         {
             if (cart == null || cart.Count == 0) return;
-
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == ConnectionState.Open)
                 {
@@ -23,8 +22,29 @@ namespace CHEMLINK.Contexts
 
                     foreach (var item in cart)
                     {
-                        string sql = "CALL sp_catat_pesanan_masuk(@tanggal::DATE, @keterangan, @inputBy, @idProduk, @jumlahMasuk, @noFaktur, @catatan)";
-                        using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                        try
+                        {
+                            foreach (var item in cart)
+                            {
+                                // Record selling detail. The stored procedure sp_transaksi_selling
+                                // inserts selling/selling_details and trigger updates Stocks accordingly.
+                                string sql = "CALL sp_transaksi_selling(@noFaktur, @tanggal::DATE, @keterangan, @idKasir, @idProduk, @jumlahKeluar, @catatan)";
+                                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn, tx))
+                                {
+                                    cmd.Parameters.AddWithValue("@noFaktur", noFaktur);
+                                    cmd.Parameters.AddWithValue("@tanggal", today.Date);
+                                    cmd.Parameters.AddWithValue("@keterangan", keterangan);
+                                    cmd.Parameters.AddWithValue("@idKasir", inputByUserId);
+                                    cmd.Parameters.AddWithValue("@idProduk", item.ProductId);
+                                    cmd.Parameters.AddWithValue("@jumlahKeluar", item.Qty);
+                                    cmd.Parameters.AddWithValue("@catatan", $"Penjualan produk {item.ProductName}");
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+
+                            tx.Commit();
+                        }
+                        catch
                         {
                             cmd.Parameters.AddWithValue("@tanggal", today.Date);
                             cmd.Parameters.AddWithValue("@keterangan", keterangan);
@@ -43,7 +63,7 @@ namespace CHEMLINK.Contexts
         public DataTable GetFinancialReport()
         {
             DataTable dt = new DataTable();
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == ConnectionState.Open)
                 {
@@ -63,7 +83,7 @@ namespace CHEMLINK.Contexts
         public DataTable GetCategoryBreakdown()
         {
             DataTable dt = new DataTable();
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == ConnectionState.Open)
                 {

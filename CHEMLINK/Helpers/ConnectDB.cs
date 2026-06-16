@@ -13,10 +13,12 @@ namespace CHEMLINK.Helpers
             "Host=localhost;" +
             "Port=5432;" +
             "Username=postgres;" +
-            "Password=adminadmin;" + //pw kalian
-            "Database=ChemDB;"; //nama db kalian
+            "Password=audrey;" + //pw kalian
+            "Database=ChemlinkDB;" + //nama db kalian
+            "Timeout=10;" +
+            "CommandTimeout=30;";
             
-        public static NpgsqlConnection GetConn() 
+        public static NpgsqlConnection? GetConn() 
         {
             NpgsqlConnection conn = new NpgsqlConnection(connString);
 
@@ -26,7 +28,9 @@ namespace CHEMLINK.Helpers
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Koneksi gagal di : " + ex.Message);
+                conn.Dispose();
+                MessageBox.Show("Koneksi database gagal: " + ex.Message + "\n\nPastikan PostgreSQL berjalan dan database ChemlinkDB sudah dibuat.", "Koneksi Gagal", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
             }
 
             return conn;
@@ -36,31 +40,51 @@ namespace CHEMLINK.Helpers
         {
             try
             {
-                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                string sqlFile = Path.GetFullPath(Path.Combine(baseDir, @"..\..\..\..\Database\Chemlink_Advanced_Objects.sql"));
-                if (File.Exists(sqlFile))
+                // Try multiple possible locations for the SQL file
+                string? sqlFile = FindSqlFile();
+                if (sqlFile == null)
                 {
-                    string sql = File.ReadAllText(sqlFile);
-                    using (var conn = GetConn())
+                    MessageBox.Show(
+                        "Script SQL tidak ditemukan.\nPastikan folder 'Database' dengan file 'Chemlink_Advanced_Objects.sql' berada di root project.",
+                        "File SQL Tidak Ditemukan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+        
+                string sql = File.ReadAllText(sqlFile);
+                using (var conn = GetConn())
+                {
+                    if (conn != null && conn.State == System.Data.ConnectionState.Open)
                     {
-                        if (conn != null && conn.State == System.Data.ConnectionState.Open)
+                        using (var cmd = new NpgsqlCommand(sql, conn))
                         {
-                            using (var cmd = new NpgsqlCommand(sql, conn))
-                            {
-                                cmd.ExecuteNonQuery();
-                            }
+                            cmd.CommandTimeout = 60;
+                            cmd.ExecuteNonQuery();
                         }
                     }
-                }
-                else
-                {
-                    MessageBox.Show("Script SQL lanjutan tidak ditemukan: " + sqlFile);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Gagal update objek database: " + ex.Message);
+                MessageBox.Show("Gagal update objek database: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+        
+        private static string? FindSqlFile()
+        {
+            string fileName = "Chemlink_Advanced_Objects.sql";
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+        
+            // Walk up the directory tree to find the Database folder
+            var dir = new DirectoryInfo(baseDir);
+            while (dir != null)
+            {
+                string candidate = Path.Combine(dir.FullName, "Database", fileName);
+                if (File.Exists(candidate))
+                    return candidate;
+                dir = dir.Parent;
+            }
+        
+            return null;
         }
     }
 }

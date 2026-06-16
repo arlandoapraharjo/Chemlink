@@ -10,6 +10,7 @@ namespace CHEMLINK.Views
         public System.Windows.Forms.TextBox txtSearch;
         public System.Windows.Forms.TextBox txtQty;
         public System.Windows.Forms.Button btnAddCart;
+        public System.Windows.Forms.Button btnDelCart;
         public System.Windows.Forms.Button btnCheckout;
         private System.Windows.Forms.Label lblKategori;
         private System.Windows.Forms.Label lblCari;
@@ -34,6 +35,7 @@ namespace CHEMLINK.Views
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.txtQty = new System.Windows.Forms.TextBox();
             this.btnAddCart = new System.Windows.Forms.Button();
+            this.btnDelCart = new System.Windows.Forms.Button();
             this.btnCheckout = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCart)).BeginInit();
@@ -71,6 +73,7 @@ namespace CHEMLINK.Views
             this.pnlCrud.Controls.Add(this.txtSearch);
             this.pnlCrud.Controls.Add(this.txtQty);
             this.pnlCrud.Controls.Add(this.btnAddCart);
+            this.pnlCrud.Controls.Add(this.btnDelCart);
             this.pnlCrud.Controls.Add(this.btnCheckout);
             this.pnlCrud.Controls.Add(this.dgvCart);
             this.pnlCrud.Location = new System.Drawing.Point(20, 20);
@@ -135,6 +138,18 @@ namespace CHEMLINK.Views
             this.btnAddCart.TabIndex = 5;
             this.btnAddCart.Text = "Tambahkan";
             this.btnAddCart.UseVisualStyleBackColor = false;
+            // 
+            // btnDelCart
+            // 
+            this.btnDelCart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(67)))), ((int)(((byte)(54)))));
+            this.btnDelCart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDelCart.ForeColor = System.Drawing.Color.White;
+            this.btnDelCart.Location = new System.Drawing.Point(915, 14);
+            this.btnDelCart.Name = "btnDelCart";
+            this.btnDelCart.Size = new System.Drawing.Size(130, 33);
+            this.btnDelCart.TabIndex = 8;
+            this.btnDelCart.Text = "Hapus dari Keranjang";
+            this.btnDelCart.UseVisualStyleBackColor = false;
             // 
             // btnCheckout
             // 

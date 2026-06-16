@@ -1,0 +1,68 @@
+%% ============================================================================
+%%  CHEMLINK — Use Case Diagram
+%% ============================================================================
+%%  Format : Mermaid (.mmd)
+%%  Author : ChemLink Dev Team
+%% ============================================================================
+
+graph TB
+    subgraph System["ChemLink - Manajemen Kios Pertanian"]
+        UC1["Login / Autentikasi"]
+        UC2["Lihat Dashboard"]
+        UC3["Lihat Stok Kritis"]
+        UC4["Lihat Log Aktivitas Stok"]
+        UC5["Kelola Produk (CRUD)"]
+        UC6["Kelola Kategori (CRUD)"]
+        UC7["Transaksi POS"]
+        UC8["Tambah ke Keranjang"]
+        UC9["Hapus dari Keranjang"]
+        UC10["Checkout / Bayar"]
+        UC11["Cetak Struk"]
+        UC12["Lihat Laporan Keuangan"]
+        UC13["Lihat Breakdown Kategori"]
+        UC14["Kelola Supplier (CRUD)"]
+        UC15["Kelola User (CRUD)"]
+        UC16["Logout"]
+    end
+
+    Admin(("👤 Admin"))
+    Kasir(("👤 Kasir"))
+
+    Admin --> UC1
+    Admin --> UC2
+    Admin --> UC3
+    Admin --> UC4
+    Admin --> UC5
+    Admin --> UC6
+    Admin --> UC7
+    Admin --> UC8
+    Admin --> UC9
+    Admin --> UC10
+    Admin --> UC11
+    Admin --> UC12
+    Admin --> UC13
+    Admin --> UC14
+    Admin --> UC15
+    Admin --> UC16
+
+    Kasir --> UC1
+    Kasir --> UC2
+    Kasir --> UC3
+    Kasir --> UC4
+    Kasir --> UC7
+    Kasir --> UC8
+    Kasir --> UC9
+    Kasir --> UC10
+    Kasir --> UC11
+    Kasir --> UC12
+    Kasir --> UC16
+
+    UC10 -.-> UC11
+    UC7 -.-> UC8
+    UC7 -.-> UC9
+    UC7 -.-> UC10
+
+    style UC5 fill:#48a111,color:#fff
+    style UC6 fill:#48a111,color:#fff
+    style UC14 fill:#48a111,color:#fff
+    style UC15 fill:#48a111,color:#fff

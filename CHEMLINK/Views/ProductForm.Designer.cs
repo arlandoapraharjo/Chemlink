@@ -17,8 +17,6 @@ namespace CHEMLINK.Views
         public System.Windows.Forms.TextBox txtHarga;
         private System.Windows.Forms.Label lblKeterangan;
         public System.Windows.Forms.TextBox txtKeterangan;
-        private System.Windows.Forms.Label lblTglExp;
-        public System.Windows.Forms.DateTimePicker dtpTglExp;
         public System.Windows.Forms.DataGridView dgvReference;
         public System.Windows.Forms.Button btnSubmit;
         public System.Windows.Forms.Button btnBatal;
@@ -46,8 +44,6 @@ namespace CHEMLINK.Views
             this.txtHarga = new System.Windows.Forms.TextBox();
             this.lblKeterangan = new System.Windows.Forms.Label();
             this.txtKeterangan = new System.Windows.Forms.TextBox();
-            this.lblTglExp = new System.Windows.Forms.Label();
-            this.dtpTglExp = new System.Windows.Forms.DateTimePicker();
             this.dgvReference = new System.Windows.Forms.DataGridView();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.btnBatal = new System.Windows.Forms.Button();
@@ -96,8 +92,6 @@ namespace CHEMLINK.Views
             this.pnlLeft.Controls.Add(this.txtHarga);
             this.pnlLeft.Controls.Add(this.lblKeterangan);
             this.pnlLeft.Controls.Add(this.txtKeterangan);
-            this.pnlLeft.Controls.Add(this.lblTglExp);
-            this.pnlLeft.Controls.Add(this.dtpTglExp);
             this.pnlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlLeft.Location = new System.Drawing.Point(0, 70);
             this.pnlLeft.Name = "pnlLeft";
@@ -195,24 +189,6 @@ namespace CHEMLINK.Views
             this.txtKeterangan.Size = new System.Drawing.Size(260, 45);
             this.txtKeterangan.TabIndex = 9;
             this.txtKeterangan.Multiline = true;
-            // 
-            // lblTglExp
-            // 
-            this.lblTglExp.AutoSize = true;
-            this.lblTglExp.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblTglExp.Location = new System.Drawing.Point(20, 288);
-            this.lblTglExp.Name = "lblTglExp";
-            this.lblTglExp.Size = new System.Drawing.Size(100, 17);
-            this.lblTglExp.TabIndex = 10;
-            this.lblTglExp.Text = "Tanggal Expired";
-            // 
-            // dtpTglExp
-            // 
-            this.dtpTglExp.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpTglExp.Location = new System.Drawing.Point(20, 308);
-            this.dtpTglExp.Name = "dtpTglExp";
-            this.dtpTglExp.Size = new System.Drawing.Size(260, 25);
-            this.dtpTglExp.TabIndex = 11;
             // 
             // pnlRight
             // 

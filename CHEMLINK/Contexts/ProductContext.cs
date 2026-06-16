@@ -17,7 +17,7 @@ namespace CHEMLINK.Contexts
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
                     string sql = @"
-                        SELECT id_produk, nama_produk, harga, tanggal_exp, keterangan, nama_kategori, nama_supplier, jumlah_stock 
+                        SELECT id_produk, nama_produk, harga, keterangan, nama_kategori, nama_supplier, jumlah_stock 
                         FROM v_detail_produk 
                         ORDER BY id_produk ASC";
 
@@ -28,7 +28,6 @@ namespace CHEMLINK.Contexts
                             int idxId = dr.GetOrdinal("id_produk");
                             int idxName = dr.GetOrdinal("nama_produk");
                             int idxHarga = dr.GetOrdinal("harga");
-                            int idxExp = dr.GetOrdinal("tanggal_exp");
                             int idxKet = dr.GetOrdinal("keterangan");
                             int idxKat = dr.GetOrdinal("nama_kategori");
                             int idxSup = dr.GetOrdinal("nama_supplier");
@@ -43,7 +42,6 @@ namespace CHEMLINK.Contexts
                                 product.Price = !dr.IsDBNull(idxHarga) ? dr.GetInt32(idxHarga) : 0;
                                 product.Stock = !dr.IsDBNull(idxStock) ? dr.GetInt32(idxStock) : 0;
                                 product.Description = !dr.IsDBNull(idxKet) ? dr.GetString(idxKet) : "";
-                                product.ExpiryDate = !dr.IsDBNull(idxExp) ? dr.GetDateTime(idxExp) : (DateTime?)null;
                                 product.SupplierName = !dr.IsDBNull(idxSup) ? dr.GetString(idxSup) : "";
 
                                 listproduct.Add(product);
@@ -56,22 +54,22 @@ namespace CHEMLINK.Contexts
             return listproduct;
         }
 
-        public void Create(string nama, int idKategori, int stok, decimal harga, string keterangan = "", DateTime? tanggalExp = null)
+        public void Create(string nama, int idKategori, int stok, decimal harga, string keterangan = "", int idUser = 1)
         {
             using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
                     // Step 1: Insert product via stored procedure (creates Stocks row with 0)
-                    string sql = "CALL sp_tambah_produk_baru(@nama, @harga, @tglExp, @keterangan, @idKat, @idSup)";
+                    string sql = "CALL sp_tambah_produk_baru(@nama, @harga, @keterangan, @idKat, @idSup, @idUser)";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@nama", nama);
                         cmd.Parameters.AddWithValue("@harga", (int)harga);
-                        cmd.Parameters.AddWithValue("@tglExp", tanggalExp.HasValue ? (object)tanggalExp.Value.Date : DateTime.Now.Date);
                         cmd.Parameters.AddWithValue("@keterangan", string.IsNullOrWhiteSpace(keterangan) ? "" : keterangan);
                         cmd.Parameters.AddWithValue("@idKat", idKategori);
                         cmd.Parameters.AddWithValue("@idSup", 1); // Default supplier ID 1
+                        cmd.Parameters.AddWithValue("@idUser", idUser);
                         cmd.ExecuteNonQuery();
                     }
 
@@ -94,7 +92,7 @@ namespace CHEMLINK.Contexts
             }
         }
 
-        public void Update(int id, string nama, int idKategori, int stok, decimal harga, string keterangan = "", DateTime? tanggalExp = null)
+        public void Update(int id, string nama, int idKategori, int stok, decimal harga, string keterangan = "")
         {
             using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
@@ -103,14 +101,13 @@ namespace CHEMLINK.Contexts
                     // Step 1: Update Produk table (no jumlah_stock column here)
                     string sqlProduk = @"UPDATE Produk 
                         SET nama_produk = @nama, id_kategori = @idKat, harga = @harga,
-                            tanggal_exp = @tglExp, keterangan = @keterangan
+                            keterangan = @keterangan
                         WHERE id_produk = @id";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sqlProduk, conn))
                     {
                         cmd.Parameters.AddWithValue("@nama", nama);
                         cmd.Parameters.AddWithValue("@idKat", idKategori);
                         cmd.Parameters.AddWithValue("@harga", (int)harga);
-                        cmd.Parameters.AddWithValue("@tglExp", tanggalExp.HasValue ? (object)tanggalExp.Value.Date : DBNull.Value);
                         cmd.Parameters.AddWithValue("@keterangan", string.IsNullOrWhiteSpace(keterangan) ? "" : keterangan);
                         cmd.Parameters.AddWithValue("@id", id);
                         cmd.ExecuteNonQuery();

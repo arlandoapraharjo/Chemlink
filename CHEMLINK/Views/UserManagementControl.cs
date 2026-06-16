@@ -9,8 +9,8 @@ namespace CHEMLINK.Views
 {
     public partial class UserManagementControl : UserControl
     {
-        public event EventHandler<UserEventArgs>? AddUserEvent;
-        public event EventHandler<UserEventArgs>? UpdateUserEvent;
+        public event EventHandler<User>? AddUserEvent;
+        public event EventHandler<User>? UpdateUserEvent;
         public event EventHandler<int>? DeleteUserEvent;
 
         private List<User> _users = new();
@@ -70,7 +70,7 @@ namespace CHEMLINK.Views
             {
                 if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
-                    AddUserEvent?.Invoke(this, new UserEventArgs
+                    AddUserEvent?.Invoke(this, new User
                     {
                         Username = form.Username,
                         Password = form.Password,
@@ -117,7 +117,7 @@ namespace CHEMLINK.Views
 
                 if (dialog.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
-                    UpdateUserEvent?.Invoke(this, new UserEventArgs
+                    UpdateUserEvent?.Invoke(this, new User
                     {
                         Id = id,
                         Username = dialog.Username,

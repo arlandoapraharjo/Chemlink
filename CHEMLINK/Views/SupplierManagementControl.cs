@@ -11,8 +11,8 @@ namespace CHEMLINK.Views
 {
     public partial class SupplierManagementControl : UserControl
     {
-        public event EventHandler<SupplierEventArgs>? AddSupplierEvent;
-        public event EventHandler<SupplierEventArgs>? UpdateSupplierEvent;
+        public event EventHandler<Supplier>? AddSupplierEvent;
+        public event EventHandler<Supplier>? UpdateSupplierEvent;
         public event EventHandler<int>? DeleteSupplierEvent;
 
         private List<Supplier> _suppliers = new();
@@ -20,9 +20,9 @@ namespace CHEMLINK.Views
         public SupplierManagementControl()
         {
             InitializeComponent();
-            btnAddSup.Click += BtnAddSup_Click;
-            btnEditSup1.Click += BtnEditSup1_Click;
-            btnDelSup1.Click += BtnDelSup1_Click;
+            btnTambah.Click += BtnTambah_Click;
+            btnUbah.Click += BtnUbah_Click;
+            btnHapus.Click += BtnHapus_Click;
             this.Paint += Control_Paint;
         }
 
@@ -30,18 +30,18 @@ namespace CHEMLINK.Views
         {
             var g = e.Graphics;
             using var pen = new Pen(Color.FromArgb(2, 44, 34), 2f);
-            g.DrawRectangle(pen, dgvMain.Bounds);
-            g.DrawRectangle(pen, pnlCrud.Bounds);
+            g.DrawRectangle(pen, pnlGrid.Bounds);
+            if (pnlToolbar.Visible)
+                g.DrawRectangle(pen, pnlToolbar.Bounds);
         }
 
-        public void SetData(List<Supplier> suppliers)
+        public void SetData(List<Supplier> suppliers, bool isAdmin = true)
         {
             _suppliers = suppliers;
             dgvMain.DataSource = null;
             dgvMain.Columns.Clear();
             dgvMain.DataSource = new BindingList<Supplier>(suppliers);
 
-            // Atur ulang kolom untuk menampilkan semua data dari Supplier
             try
             {
                 dgvMain.Columns["Id"]!.HeaderText = "ID Supplier";
@@ -54,7 +54,6 @@ namespace CHEMLINK.Views
                 dgvMain.Columns["Status"]!.HeaderText = "Status";
                 dgvMain.Columns["Status"]!.Visible = false;
 
-                // Atur lebar kolom
                 dgvMain.Columns["Id"]!.Width = 60;
                 dgvMain.Columns["Name"]!.Width = 150;
                 dgvMain.Columns["KontakPerson"]!.Width = 120;
@@ -62,39 +61,26 @@ namespace CHEMLINK.Views
                 dgvMain.Columns["Email"]!.Width = 150;
                 dgvMain.Columns["Address"]!.Width = 150;
                 dgvMain.Columns["Kota"]!.Width = 100;
-                dgvMain.Columns["Status"]!.Width = 80;
             }
             catch
             {
-                // Jika kolom tidak ada, lanjutkan dengan default display
+                // If columns don't exist, continue with default display
             }
+
+            pnlToolbar.Visible = isAdmin;
         }
 
-        private void BtnAddSup_Click(object? sender, EventArgs e)
+        private void BtnTambah_Click(object? sender, EventArgs e)
         {
             using (var dialog = new EditSupplierDialog())
             {
-                // empty by default for new supplier
                 dialog.EditName = "";
                 dialog.EditPhone = "";
                 dialog.EditAddress = "";
 
                 if (dialog.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
-                    // Validate phone contains only digits (if provided)
-                    if (!string.IsNullOrWhiteSpace(dialog.EditPhone))
-                    {
-                        foreach (char c in dialog.EditPhone)
-                        {
-                            if (!char.IsDigit(c))
-                            {
-                                MessageBox.Show("Nomor telepon harus berupa angka dan tanpa simbol!", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
-                            }
-                        }
-                    }
-
-                    AddSupplierEvent?.Invoke(this, new SupplierEventArgs
+                    AddSupplierEvent?.Invoke(this, new Supplier
                     {
                         Name = dialog.EditName,
                         Phone = dialog.EditPhone,
@@ -108,7 +94,7 @@ namespace CHEMLINK.Views
             }
         }
 
-        private void BtnEditSup1_Click(object? sender, EventArgs e)
+        private void BtnUbah_Click(object? sender, EventArgs e)
         {
             if (dgvMain.CurrentRow == null || dgvMain.CurrentRow.Cells["Id"].Value is not int id)
             {
@@ -116,7 +102,6 @@ namespace CHEMLINK.Views
                 return;
             }
 
-            // Get detailed supplier data from the database
             var supplierCtx = new SupplierContext();
             var currentSupplier = supplierCtx.GetById(id);
             string currentName = currentSupplier?.Name ?? "";
@@ -125,7 +110,6 @@ namespace CHEMLINK.Views
             string currentKontakPerson = currentSupplier?.KontakPerson ?? "";
             string currentEmail = currentSupplier?.Email ?? "";
             string currentKota = currentSupplier?.Kota ?? "";
-
             string currentStatus = currentSupplier?.Status ?? "Aktif";
 
             using (var dialog = new EditSupplierDialog())
@@ -140,7 +124,7 @@ namespace CHEMLINK.Views
 
                 if (dialog.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
-                    UpdateSupplierEvent?.Invoke(this, new SupplierEventArgs
+                    UpdateSupplierEvent?.Invoke(this, new Supplier
                     {
                         Id = id,
                         Name = dialog.EditName,
@@ -155,7 +139,7 @@ namespace CHEMLINK.Views
             }
         }
 
-        private void BtnDelSup1_Click(object? sender, EventArgs e)
+        private void BtnHapus_Click(object? sender, EventArgs e)
         {
             if (dgvMain.CurrentRow == null || dgvMain.CurrentRow.Cells["Id"].Value is not int id)
             {
@@ -163,8 +147,13 @@ namespace CHEMLINK.Views
                 return;
             }
 
-            var dr = MessageBox.Show("Apakah Anda yakin ingin menghapus supplier ini?", "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (dr == DialogResult.Yes)
+            var supplierToDelete = _suppliers.FirstOrDefault(s => s.Id == id);
+            string supplierName = supplierToDelete?.Name ?? "supplier ini";
+
+            var confirm = MessageBox.Show(
+                $"Apakah Anda yakin ingin menghapus '{supplierName}'?",
+                "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (confirm == DialogResult.Yes)
             {
                 DeleteSupplierEvent?.Invoke(this, id);
             }

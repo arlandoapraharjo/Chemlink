@@ -16,44 +16,65 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == ConnectionState.Open)
                 {
-                    // Generate a common factor/invoice number
-                    string noFaktur = "INV-" + DateTime.Now.ToString("yyyyMMddHHmmss");
                     DateTime today = DateTime.Now;
 
-                    foreach (var item in cart)
+                    using (var tx = conn.BeginTransaction())
                     {
                         try
                         {
-                            foreach (var item in cart)
+                            // Insert selling header
+                            int idSelling;
+                            using (var cmdHead = new NpgsqlCommand(
+                                "INSERT INTO selling (tanggal_selling, keterangan, id_kasir) VALUES (@tgl, @ket, @kasir) RETURNING id_selling",
+                                conn, tx))
                             {
-                                // Record selling detail. The stored procedure sp_transaksi_selling
-                                // inserts selling/selling_details and trigger updates Stocks accordingly.
-                                string sql = "CALL sp_transaksi_selling(@noFaktur, @tanggal::DATE, @keterangan, @idKasir, @idProduk, @jumlahKeluar, @catatan)";
-                                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn, tx))
-                                {
-                                    cmd.Parameters.AddWithValue("@noFaktur", noFaktur);
-                                    cmd.Parameters.AddWithValue("@tanggal", today.Date);
-                                    cmd.Parameters.AddWithValue("@keterangan", keterangan);
-                                    cmd.Parameters.AddWithValue("@idKasir", inputByUserId);
-                                    cmd.Parameters.AddWithValue("@idProduk", item.ProductId);
-                                    cmd.Parameters.AddWithValue("@jumlahKeluar", item.Qty);
-                                    cmd.Parameters.AddWithValue("@catatan", $"Penjualan produk {item.ProductName}");
-                                    cmd.ExecuteNonQuery();
-                                }
+                                cmdHead.Parameters.AddWithValue("@tgl", today.Date);
+                                cmdHead.Parameters.AddWithValue("@ket", keterangan);
+                                cmdHead.Parameters.AddWithValue("@kasir", inputByUserId);
+                                idSelling = (int)cmdHead.ExecuteScalar()!;
                             }
 
+                            // Insert selling details + update stock + log for each item
+                            foreach (var item in cart)
+                            {
+                                // Insert detail
+                                using (var cmdDet = new NpgsqlCommand(
+                                    "INSERT INTO selling_details (jumlah_keluar, id_selling, id_produk) VALUES (@jml, @idSell, @idProd)",
+                                    conn, tx))
+                                {
+                                    cmdDet.Parameters.AddWithValue("@jml", item.Qty);
+                                    cmdDet.Parameters.AddWithValue("@idSell", idSelling);
+                                    cmdDet.Parameters.AddWithValue("@idProd", item.ProductId);
+                                    cmdDet.ExecuteNonQuery();
+                                }
+
+                                // Decrement stock
+                                using (var cmdStock = new NpgsqlCommand(
+                                    "UPDATE Stocks SET jumlah_stock = jumlah_stock - @jml, timestamp = CURRENT_TIMESTAMP WHERE id_produk = @idProd",
+                                    conn, tx))
+                                {
+                                    cmdStock.Parameters.AddWithValue("@jml", item.Qty);
+                                    cmdStock.Parameters.AddWithValue("@idProd", item.ProductId);
+                                    cmdStock.ExecuteNonQuery();
+                                }
+
+                                // Log stock activity
+                                using (var cmdLog = new NpgsqlCommand(
+                                    "INSERT INTO log_stok (tipe_aktivitas, id_user, nama_user, nama_produk, jumlah) SELECT 'OUT', @idUser, u.username, p.nama_produk, @jml FROM Users u, Produk p WHERE u.id_user = @idUser AND p.id_produk = @idProd",
+                                    conn, tx))
+                                {
+                                    cmdLog.Parameters.AddWithValue("@idUser", inputByUserId);
+                                    cmdLog.Parameters.AddWithValue("@jml", item.Qty);
+                                    cmdLog.Parameters.AddWithValue("@idProd", item.ProductId);
+                                    cmdLog.ExecuteNonQuery();
+                                }
+                            }
                             tx.Commit();
                         }
                         catch
                         {
-                            cmd.Parameters.AddWithValue("@tanggal", today.Date);
-                            cmd.Parameters.AddWithValue("@keterangan", keterangan);
-                            cmd.Parameters.AddWithValue("@inputBy", inputByUserId);
-                            cmd.Parameters.AddWithValue("@idProduk", item.ProductId);
-                            cmd.Parameters.AddWithValue("@jumlahMasuk", item.Qty);
-                            cmd.Parameters.AddWithValue("@noFaktur", noFaktur);
-                            cmd.Parameters.AddWithValue("@catatan", $"Pesanan produk {item.ProductName}");
-                            cmd.ExecuteNonQuery();
+                            tx.Rollback();
+                            throw;
                         }
                     }
                 }
@@ -89,13 +110,32 @@ namespace CHEMLINK.Contexts
                 {
                     string sql = @"SELECT 
                         k.nama_kategori AS ""Kategori"",
-                        SUM(od.jumlah_masuk)::int AS ""Qty Terjual"",
-                        (SUM(od.jumlah_masuk * p.harga))::int AS ""Total Pendapatan""
-                    FROM order_details od
-                    JOIN Produk p ON od.id_produk = p.id_produk
+                        SUM(sd.jumlah_keluar)::int AS ""Qty Terjual"",
+                        (SUM(sd.jumlah_keluar * p.harga))::int AS ""Total Pendapatan""
+                    FROM selling_details sd
+                    JOIN Produk p ON sd.id_produk = p.id_produk
                     JOIN Kategori k ON p.id_kategori = k.id_kategori
                     GROUP BY k.nama_kategori
-                    ORDER BY SUM(od.jumlah_masuk * p.harga) DESC";
+                    ORDER BY SUM(sd.jumlah_keluar * p.harga) DESC";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        using (NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd))
+                        {
+                            da.Fill(dt);
+                        }
+                    }
+                }
+            }
+            return dt;
+        }
+        public DataTable GetStockLog()
+        {
+            DataTable dt = new DataTable();
+            using (NpgsqlConnection? conn = ConnectDB.GetConn())
+            {
+                if (conn != null && conn.State == ConnectionState.Open)
+                {
+                    string sql = "SELECT * FROM v_log_stok";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         using (NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd))

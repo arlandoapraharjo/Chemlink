@@ -8,8 +8,8 @@ namespace CHEMLINK.Views
 {
     public partial class ProductCatalogControl : UserControl
     {
-        public event EventHandler<ProductEventArgs>? AddProductEvent;
-        public event EventHandler<ProductEventArgs>? EditProductEvent;
+        public event EventHandler<Product>? AddProductEvent;
+        public event EventHandler<Product>? EditProductEvent;
         public event EventHandler<int>? DeleteProductEvent;
 
         private List<Category> _categories = new List<Category>();
@@ -40,6 +40,11 @@ namespace CHEMLINK.Views
             dgvMain.DataSource = null;
             dgvMain.Columns.Clear();
             dgvMain.DataSource = products;
+
+            // Hide internal FK columns
+            if (dgvMain.Columns["CategoryId"] != null) dgvMain.Columns["CategoryId"]!.Visible = false;
+            if (dgvMain.Columns["SupplierId"] != null) dgvMain.Columns["SupplierId"]!.Visible = false;
+
             pnlToolbar.Visible = isAdmin;
         }
 
@@ -54,14 +59,13 @@ namespace CHEMLINK.Views
             {
                 if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
-                    AddProductEvent?.Invoke(this, new ProductEventArgs
+                    AddProductEvent?.Invoke(this, new Product
                     {
                         Name = form.ProductName,
                         Category = form.CategoryName,
                         Stock = form.Stock,
                         Price = form.Price,
-                        Description = form.Description,
-                        ExpiryDate = form.ExpiryDate
+                        Description = form.Description
                     });
                 }
             }
@@ -74,15 +78,14 @@ namespace CHEMLINK.Views
             {
                 if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
-                    EditProductEvent?.Invoke(this, new ProductEventArgs
+                    EditProductEvent?.Invoke(this, new Product
                     {
                         Id = form.ProductId,
                         Name = form.ProductName,
                         Category = form.CategoryName,
                         Stock = form.Stock,
                         Price = form.Price,
-                        Description = form.Description,
-                        ExpiryDate = form.ExpiryDate
+                        Description = form.Description
                     });
                 }
             }

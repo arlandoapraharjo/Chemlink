@@ -9,8 +9,8 @@ namespace CHEMLINK.Views
 {
     public partial class ManageCategoryForm : Form
     {
-        public event EventHandler<CategoryEventArgs>? AddCategoryEvent;
-        public event EventHandler<CategoryEventArgs>? UpdateCategoryEvent;
+        public event EventHandler<Category>? AddCategoryEvent;
+        public event EventHandler<Category>? UpdateCategoryEvent;
         public event EventHandler<int>? DeleteCategoryEvent;
 
         public ManageCategoryForm(List<Category> categories)
@@ -47,7 +47,7 @@ namespace CHEMLINK.Views
                 MessageBox.Show("Nama kategori tidak boleh kosong.", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            AddCategoryEvent?.Invoke(this, new CategoryEventArgs { Name = txtNama.Text.Trim() });
+            AddCategoryEvent?.Invoke(this, new Category { Name = txtNama.Text.Trim() });
         }
 
         private void BtnUbah_Click(object? sender, EventArgs e)
@@ -59,7 +59,7 @@ namespace CHEMLINK.Views
                     MessageBox.Show("Nama kategori tidak boleh kosong.", "ChemLink Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
-                UpdateCategoryEvent?.Invoke(this, new CategoryEventArgs { Id = cat.Id, Name = txtNama.Text.Trim() });
+                UpdateCategoryEvent?.Invoke(this, new Category { Id = cat.Id, Name = txtNama.Text.Trim() });
             }
             else
             {

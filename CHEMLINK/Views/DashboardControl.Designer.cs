@@ -35,9 +35,14 @@ namespace CHEMLINK.Views
         private System.Windows.Forms.Label lblStatusKritis;
         private System.Windows.Forms.Label lblStatusKategori;
 
-        // Notification
+        // Side-by-side grids section
+        private System.Windows.Forms.TableLayoutPanel tblGrids;
         private System.Windows.Forms.Label lblNotifTitle;
         public System.Windows.Forms.DataGridView dgvMain;
+        private System.Windows.Forms.Panel pnlNotifGrid;
+        private System.Windows.Forms.Label lblLogTitle;
+        public System.Windows.Forms.DataGridView dgvLogStok;
+        private System.Windows.Forms.Panel pnlLogGrid;
 
         private void InitializeComponent()
         {
@@ -64,8 +69,13 @@ namespace CHEMLINK.Views
             this.lblStatusStok = new System.Windows.Forms.Label();
             this.lblStatusKritis = new System.Windows.Forms.Label();
             this.lblStatusKategori = new System.Windows.Forms.Label();
+            this.tblGrids = new System.Windows.Forms.TableLayoutPanel();
             this.lblNotifTitle = new System.Windows.Forms.Label();
             this.dgvMain = new System.Windows.Forms.DataGridView();
+            this.pnlNotifGrid = new System.Windows.Forms.Panel();
+            this.lblLogTitle = new System.Windows.Forms.Label();
+            this.dgvLogStok = new System.Windows.Forms.DataGridView();
+            this.pnlLogGrid = new System.Windows.Forms.Panel();
             this.tblMaster.SuspendLayout();
             this.tblKPI.SuspendLayout();
             this.cardTotalProduk.SuspendLayout();
@@ -73,23 +83,25 @@ namespace CHEMLINK.Views
             this.cardStokKritis.SuspendLayout();
             this.cardKategori.SuspendLayout();
             this.pnlBanner.SuspendLayout();
+            this.tblGrids.SuspendLayout();
+            this.pnlNotifGrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
+            this.pnlLogGrid.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLogStok)).BeginInit();
             this.SuspendLayout();
 
             // ===================== MASTER TABLE (responsive root) =====================
             this.tblMaster.ColumnCount = 1;
-            this.tblMaster.RowCount = 4;
+            this.tblMaster.RowCount = 3;
             this.tblMaster.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tblMaster.AutoScroll = true;
             this.tblMaster.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 155F));   // banner
             this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));   // KPI cards
-            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));          // notif title
-            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));    // grid fills rest
+            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));    // grids fill rest
             this.tblMaster.Controls.Add(this.pnlBanner, 0, 0);
             this.tblMaster.Controls.Add(this.tblKPI, 0, 1);
-            this.tblMaster.Controls.Add(this.lblNotifTitle, 0, 2);
-            this.tblMaster.Controls.Add(this.dgvMain, 0, 3);
+            this.tblMaster.Controls.Add(this.tblGrids, 0, 2);
 
             // ===================== BANNER =====================
             this.pnlBanner.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -278,15 +290,34 @@ namespace CHEMLINK.Views
             this.lblStatusKategori.Location = new System.Drawing.Point(12, 64);
             this.lblStatusKategori.Text = "\u25CF  Jenis produk aktif";
 
-            // ===================== NOTIFICATION TITLE =====================
+            // ===================== SIDE-BY-SIDE GRID TABLE =====================
+            this.tblGrids.ColumnCount = 2;
+            this.tblGrids.RowCount = 2;
+            this.tblGrids.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tblGrids.Padding = new System.Windows.Forms.Padding(0, 8, 0, 0);
+            this.tblGrids.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblGrids.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblGrids.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
+            this.tblGrids.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblGrids.Controls.Add(this.lblNotifTitle, 0, 0);
+            this.tblGrids.Controls.Add(this.pnlNotifGrid, 0, 1);
+            this.tblGrids.Controls.Add(this.lblLogTitle, 1, 0);
+            this.tblGrids.Controls.Add(this.pnlLogGrid, 1, 1);
+
+            // ===================== NOTIFICATION TITLE (LEFT) =====================
             this.lblNotifTitle.AutoSize = true;
-            this.lblNotifTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNotifTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold);
+            this.lblNotifTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
             this.lblNotifTitle.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblNotifTitle.Padding = new System.Windows.Forms.Padding(0, 20, 0, 8);
+            this.lblNotifTitle.Padding = new System.Windows.Forms.Padding(0, 8, 0, 4);
             this.lblNotifTitle.Text = "  Notifikasi & Peringatan Stok";
 
-            // ===================== DATAGRIDVIEW =====================
+            // ===================== NOTIF GRID WRAPPER (LEFT) =====================
+            this.pnlNotifGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlNotifGrid.BackColor = System.Drawing.Color.White;
+            this.pnlNotifGrid.Margin = new System.Windows.Forms.Padding(0, 0, 8, 0);
+            this.pnlNotifGrid.Controls.Add(this.dgvMain);
+
+            // ===================== DATAGRIDVIEW MAIN (Critical Stock) =====================
             this.dgvMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMain.AllowUserToAddRows = false;
             this.dgvMain.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -296,7 +327,36 @@ namespace CHEMLINK.Views
             this.dgvMain.MultiSelect = false;
             this.dgvMain.ReadOnly = true;
             this.dgvMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMain.RowTemplate.Height = 36;
+            this.dgvMain.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(22, 163, 74);
+            this.dgvMain.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
+            this.dgvMain.Margin = new System.Windows.Forms.Padding(0, 0, 8, 0);
+
+            // ===================== LOG TITLE (RIGHT) =====================
+            this.lblLogTitle.AutoSize = true;
+            this.lblLogTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.lblLogTitle.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
+            this.lblLogTitle.Padding = new System.Windows.Forms.Padding(0, 8, 0, 4);
+            this.lblLogTitle.Text = "  Aktivitas Pergerakan Stok";
+
+            // ===================== LOG GRID WRAPPER (RIGHT) =====================
+            this.pnlLogGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlLogGrid.BackColor = System.Drawing.Color.White;
+            this.pnlLogGrid.Margin = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.pnlLogGrid.Controls.Add(this.dgvLogStok);
+
+            // ===================== DATAGRIDVIEW LOG STOK =====================
+            this.dgvLogStok.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvLogStok.AllowUserToAddRows = false;
+            this.dgvLogStok.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvLogStok.BackgroundColor = System.Drawing.Color.White;
+            this.dgvLogStok.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvLogStok.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvLogStok.MultiSelect = false;
+            this.dgvLogStok.ReadOnly = true;
+            this.dgvLogStok.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvLogStok.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(22, 163, 74);
+            this.dgvLogStok.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
+            this.dgvLogStok.Margin = new System.Windows.Forms.Padding(8, 0, 0, 0);
 
             // ===================== DASHBOARD CONTROL =====================
             this.Controls.Add(this.tblMaster);
@@ -321,11 +381,14 @@ namespace CHEMLINK.Views
             this.pnlBanner.ResumeLayout(false);
             this.pnlBanner.PerformLayout();
             this.pnlBadge.ResumeLayout(false);
+            this.tblGrids.ResumeLayout(false);
+            this.tblGrids.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).EndInit();
+            this.pnlNotifGrid.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLogStok)).EndInit();
+            this.pnlLogGrid.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
         }
-
-        private DataGridView dgvMain;
     }
 }

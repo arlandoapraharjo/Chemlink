@@ -10,6 +10,7 @@ namespace CHEMLINK.Views
     public partial class POSControl : UserControl
     {
         public event EventHandler<CartItemEventArgs>? AddCartEvent;
+        public event EventHandler<CartItem>? DeleteCartEvent;
         public event EventHandler? CheckoutEvent;
         public event EventHandler<string>? SearchProductEvent;
         public event EventHandler<string>? FilterCategoryEvent;
@@ -51,7 +52,6 @@ namespace CHEMLINK.Views
 
                 // Sembunyikan kolom detail yang tidak diperlukan untuk transaksi POS
                 if (dgvMain.Columns["Description"] != null) dgvMain.Columns["Description"]!.Visible = false;
-                if (dgvMain.Columns["ExpiryDate"] != null) dgvMain.Columns["ExpiryDate"]!.Visible = false;
                 if (dgvMain.Columns["SupplierName"] != null) dgvMain.Columns["SupplierName"]!.Visible = false;
                 if (dgvMain.Columns["CategoryId"] != null) dgvMain.Columns["CategoryId"]!.Visible = false;
                 if (dgvMain.Columns["SupplierId"] != null) dgvMain.Columns["SupplierId"]!.Visible = false;
@@ -81,6 +81,7 @@ namespace CHEMLINK.Views
             if (cbCategoryFilter.Items.Count > 0 && cbCategoryFilter.SelectedIndex == -1)
             {
                 cbCategoryFilter.SelectedIndex = 0;
+            }
         }
 
         private void CbCategoryFilter_SelectedIndexChanged(object? sender, EventArgs e)
@@ -121,6 +122,14 @@ namespace CHEMLINK.Views
         private void BtnCheckout_Click(object? sender, EventArgs e)
         {
             CheckoutEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void BtnDelCart_Click(object? sender, EventArgs e)
+        {
+            if (dgvCart.CurrentRow?.DataBoundItem is CartItem item)
+            {
+                DeleteCartEvent?.Invoke(this, item);
+            }
         }
     }
 }

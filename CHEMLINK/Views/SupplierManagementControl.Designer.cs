@@ -3,13 +3,13 @@ namespace CHEMLINK.Views
     partial class SupplierManagementControl
     {
         private System.ComponentModel.IContainer components = null;
+        private System.Windows.Forms.Panel pnlGrid;
         public System.Windows.Forms.DataGridView dgvMain;
-        private System.Windows.Forms.Panel pnlCrud;
-        // input moved to dialog; inline textboxes removed
-        public System.Windows.Forms.Button btnAddSup;
-        public System.Windows.Forms.Button btnEditSup;
-        public System.Windows.Forms.Button btnDeleteSup;
-        public System.Windows.Forms.Button btnToggleEdit;
+        private System.Windows.Forms.Panel pnlToolbar;
+        private System.Windows.Forms.Label lblToolbar;
+        public System.Windows.Forms.Button btnTambah;
+        public System.Windows.Forms.Button btnUbah;
+        public System.Windows.Forms.Button btnHapus;
 
         protected override void Dispose(bool disposing)
         {
@@ -22,156 +22,121 @@ namespace CHEMLINK.Views
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            dgvMain = new DataGridView();
-            pnlCrud = new Panel();
-            lblKelola = new Label();
-            btnDelSup1 = new Button();
-            btnEditSup1 = new Button();
-            btnAddSup = new Button();
-            btnEditSup = new Button();
-            btnDeleteSup = new Button();
-            btnToggleEdit = new Button();
-            ((System.ComponentModel.ISupportInitialize)dgvMain).BeginInit();
-            pnlCrud.SuspendLayout();
-            SuspendLayout();
+            this.pnlGrid = new System.Windows.Forms.Panel();
+            this.dgvMain = new System.Windows.Forms.DataGridView();
+            this.pnlToolbar = new System.Windows.Forms.Panel();
+            this.lblToolbar = new System.Windows.Forms.Label();
+            this.btnTambah = new System.Windows.Forms.Button();
+            this.btnUbah = new System.Windows.Forms.Button();
+            this.btnHapus = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
+            this.pnlGrid.SuspendLayout();
+            this.pnlToolbar.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // pnlGrid
+            // 
+            this.pnlGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlGrid.BackColor = System.Drawing.Color.White;
+            this.pnlGrid.Controls.Add(this.dgvMain);
+            this.pnlGrid.Location = new System.Drawing.Point(20, 20);
+            this.pnlGrid.Name = "pnlGrid";
+            this.pnlGrid.Size = new System.Drawing.Size(1070, 520);
+            this.pnlGrid.TabIndex = 0;
             // 
             // dgvMain
             // 
-            dgvMain.AllowUserToAddRows = false;
-            dgvMain.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgvMain.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvMain.BackgroundColor = Color.White;
-            dgvMain.BorderStyle = BorderStyle.None;
-            dgvMain.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10F);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(72, 161, 17);
-            dataGridViewCellStyle1.SelectionForeColor = Color.White;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
-            dgvMain.DefaultCellStyle = dataGridViewCellStyle1;
-            dgvMain.Location = new Point(20, 20);
-            dgvMain.MultiSelect = false;
-            dgvMain.Name = "dgvMain";
-            dgvMain.ReadOnly = true;
-            dgvMain.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvMain.Size = new Size(1070, 540);
-            dgvMain.TabIndex = 0;
+            this.dgvMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvMain.AllowUserToAddRows = false;
+            this.dgvMain.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvMain.BackgroundColor = System.Drawing.Color.White;
+            this.dgvMain.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(161)))), ((int)(((byte)(17)))));
+            this.dgvMain.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
+            this.dgvMain.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMain.MultiSelect = false;
+            this.dgvMain.Name = "dgvMain";
+            this.dgvMain.ReadOnly = true;
+            this.dgvMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvMain.TabIndex = 0;
             // 
-            // pnlCrud
+            // pnlToolbar
             // 
-            pnlCrud.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            pnlCrud.BackColor = Color.White;
-            pnlCrud.Controls.Add(lblKelola);
-            pnlCrud.Controls.Add(btnDelSup1);
-            pnlCrud.Controls.Add(btnEditSup1);
-            pnlCrud.Controls.Add(btnAddSup);
-            pnlCrud.Location = new Point(20, 580);
-            pnlCrud.Name = "pnlCrud";
-            pnlCrud.Size = new Size(1070, 60);
-            pnlCrud.TabIndex = 1;
+            this.pnlToolbar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlToolbar.BackColor = System.Drawing.Color.White;
+            this.pnlToolbar.Controls.Add(this.lblToolbar);
+            this.pnlToolbar.Controls.Add(this.btnTambah);
+            this.pnlToolbar.Controls.Add(this.btnUbah);
+            this.pnlToolbar.Controls.Add(this.btnHapus);
+            this.pnlToolbar.Location = new System.Drawing.Point(20, 560);
+            this.pnlToolbar.Name = "pnlToolbar";
+            this.pnlToolbar.Size = new System.Drawing.Size(1070, 60);
+            this.pnlToolbar.TabIndex = 1;
             // 
-            // lblKelola
+            // lblToolbar
             // 
-            lblKelola.AutoSize = true;
-            lblKelola.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblKelola.Location = new Point(13, 21);
-            lblKelola.Name = "lblKelola";
-            lblKelola.Size = new Size(116, 19);
-            lblKelola.TabIndex = 6;
-            lblKelola.Text = "Kelola Supplier:";
+            this.lblToolbar.AutoSize = true;
+            this.lblToolbar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblToolbar.Location = new System.Drawing.Point(15, 20);
+            this.lblToolbar.Name = "lblToolbar";
+            this.lblToolbar.Size = new System.Drawing.Size(118, 19);
+            this.lblToolbar.TabIndex = 0;
+            this.lblToolbar.Text = "Kelola Supplier:";
             // 
-            // btnDelSup1
+            // btnTambah
             // 
-            btnDelSup1.BackColor = Color.FromArgb(244, 67, 54);
-            btnDelSup1.FlatStyle = FlatStyle.Flat;
-            btnDelSup1.ForeColor = Color.White;
-            btnDelSup1.Location = new Point(905, 12);
-            btnDelSup1.Name = "btnDelSup1";
-            btnDelSup1.Size = new Size(142, 35);
-            btnDelSup1.TabIndex = 5;
-            btnDelSup1.Text = "Hapus Supplier";
-            btnDelSup1.UseVisualStyleBackColor = false;
+            this.btnTambah.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(72)))), ((int)(((byte)(161)))), ((int)(((byte)(17)))));
+            this.btnTambah.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTambah.ForeColor = System.Drawing.Color.White;
+            this.btnTambah.Location = new System.Drawing.Point(145, 14);
+            this.btnTambah.Name = "btnTambah";
+            this.btnTambah.Size = new System.Drawing.Size(140, 30);
+            this.btnTambah.TabIndex = 1;
+            this.btnTambah.Text = "+ Tambah Supplier";
+            this.btnTambah.UseVisualStyleBackColor = false;
             // 
-            // btnEditSup1
+            // btnUbah
             // 
-            btnEditSup1.BackColor = Color.FromArgb(33, 150, 243);
-            btnEditSup1.FlatStyle = FlatStyle.Flat;
-            btnEditSup1.ForeColor = Color.White;
-            btnEditSup1.Location = new Point(752, 12);
-            btnEditSup1.Name = "btnEditSup1";
-            btnEditSup1.Size = new Size(142, 35);
-            btnEditSup1.TabIndex = 4;
-            btnEditSup1.Text = "Edit Supplier";
-            btnEditSup1.UseVisualStyleBackColor = false;
+            this.btnUbah.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(118)))), ((int)(((byte)(210)))));
+            this.btnUbah.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUbah.ForeColor = System.Drawing.Color.White;
+            this.btnUbah.Location = new System.Drawing.Point(295, 14);
+            this.btnUbah.Name = "btnUbah";
+            this.btnUbah.Size = new System.Drawing.Size(140, 30);
+            this.btnUbah.TabIndex = 2;
+            this.btnUbah.Text = "✏ Edit Supplier";
+            this.btnUbah.UseVisualStyleBackColor = false;
             // 
-            // btnAddSup
+            // btnHapus
             // 
-            btnAddSup.BackColor = Color.FromArgb(72, 161, 17);
-            btnAddSup.FlatStyle = FlatStyle.Flat;
-            btnAddSup.ForeColor = Color.White;
-            btnAddSup.Location = new Point(20, 12);
-            btnAddSup.Name = "btnAddSup";
-            btnAddSup.Size = new Size(142, 35);
-            btnAddSup.TabIndex = 3;
-            btnAddSup.Text = "+ Tambah Supplier";
-            btnAddSup.UseVisualStyleBackColor = false;
-            // 
-            // btnEditSup
-            // 
-            btnEditSup.BackColor = Color.FromArgb(33, 150, 243);
-            btnEditSup.FlatStyle = FlatStyle.Flat;
-            btnEditSup.ForeColor = Color.White;
-            btnEditSup.Location = new Point(690, 12);
-            btnEditSup.Name = "btnEditSup";
-            btnEditSup.Size = new Size(110, 35);
-            btnEditSup.TabIndex = 4;
-            btnEditSup.Text = "Edit Supplier";
-            btnEditSup.UseVisualStyleBackColor = false;
-            // 
-            // btnDeleteSup
-            // 
-            btnDeleteSup.BackColor = Color.FromArgb(244, 67, 54);
-            btnDeleteSup.FlatStyle = FlatStyle.Flat;
-            btnDeleteSup.ForeColor = Color.White;
-            btnDeleteSup.Location = new Point(810, 12);
-            btnDeleteSup.Name = "btnDeleteSup";
-            btnDeleteSup.Size = new Size(110, 35);
-            btnDeleteSup.TabIndex = 5;
-            btnDeleteSup.Text = "Hapus Supplier";
-            btnDeleteSup.UseVisualStyleBackColor = false;
-            // 
-            // btnToggleEdit
-            // 
-            btnToggleEdit.BackColor = Color.Gray;
-            btnToggleEdit.FlatStyle = FlatStyle.Flat;
-            btnToggleEdit.ForeColor = Color.White;
-            btnToggleEdit.Location = new Point(930, 12);
-            btnToggleEdit.Name = "btnToggleEdit";
-            btnToggleEdit.Size = new Size(120, 35);
-            btnToggleEdit.TabIndex = 6;
-            btnToggleEdit.Text = "Toggle Edit/Delete";
-            btnToggleEdit.UseVisualStyleBackColor = false;
+            this.btnHapus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(67)))), ((int)(((byte)(54)))));
+            this.btnHapus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnHapus.ForeColor = System.Drawing.Color.White;
+            this.btnHapus.Location = new System.Drawing.Point(445, 14);
+            this.btnHapus.Name = "btnHapus";
+            this.btnHapus.Size = new System.Drawing.Size(140, 30);
+            this.btnHapus.TabIndex = 3;
+            this.btnHapus.Text = "🗑 Hapus Supplier";
+            this.btnHapus.UseVisualStyleBackColor = false;
             // 
             // SupplierManagementControl
             // 
-            AutoScaleMode = AutoScaleMode.None;
-            BackColor = Color.FromArgb(240, 243, 246);
-            Controls.Add(pnlCrud);
-            Controls.Add(dgvMain);
-            Font = new Font("Segoe UI", 10F);
-            Name = "SupplierManagementControl";
-            Size = new Size(1110, 670);
-            ((System.ComponentModel.ISupportInitialize)dgvMain).EndInit();
-            pnlCrud.ResumeLayout(false);
-            pnlCrud.PerformLayout();
-            ResumeLayout(false);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(243)))), ((int)(((byte)(246)))));
+            this.Controls.Add(this.pnlToolbar);
+            this.Controls.Add(this.pnlGrid);
+            this.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Name = "SupplierManagementControl";
+            this.Size = new System.Drawing.Size(1110, 670);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).EndInit();
+            this.pnlGrid.ResumeLayout(false);
+            this.pnlToolbar.ResumeLayout(false);
+            this.pnlToolbar.PerformLayout();
+            this.ResumeLayout(false);
 
         }
-
-        public Button btnEditSup1;
-        public Button btnDelSup1;
     }
 }

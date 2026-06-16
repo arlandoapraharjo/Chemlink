@@ -18,7 +18,6 @@ namespace CHEMLINK.Views
         public int Stock => int.TryParse(txtStok.Text, out int s) ? s : 0;
         public decimal Price => decimal.TryParse(txtHarga.Text, out decimal p) ? p : 0m;
         public string Description => txtKeterangan.Text.Trim();
-        public DateTime? ExpiryDate => dtpTglExp.Checked ? dtpTglExp.Value : (DateTime?)null;
 
         /// <summary>
         /// Unified Add/Edit product form.
@@ -55,7 +54,6 @@ namespace CHEMLINK.Views
 
                 // Sembunyikan detail lainnya yang tidak diperlukan untuk referensi cepat
                 if (dgvReference.Columns["Description"] != null) dgvReference.Columns["Description"]!.Visible = false;
-                if (dgvReference.Columns["ExpiryDate"] != null) dgvReference.Columns["ExpiryDate"]!.Visible = false;
                 if (dgvReference.Columns["SupplierName"] != null) dgvReference.Columns["SupplierName"]!.Visible = false;
                 if (dgvReference.Columns["CategoryId"] != null) dgvReference.Columns["CategoryId"]!.Visible = false;
                 if (dgvReference.Columns["SupplierId"] != null) dgvReference.Columns["SupplierId"]!.Visible = false;
@@ -73,8 +71,6 @@ namespace CHEMLINK.Views
                 txtStok.Text = selectedProduct.Stock.ToString();
                 txtHarga.Text = selectedProduct.Price.ToString();
                 txtKeterangan.Text = selectedProduct.Description;
-                if (selectedProduct.ExpiryDate.HasValue)
-                    dtpTglExp.Value = selectedProduct.ExpiryDate.Value;
 
                 foreach (var cat in categories)
                 {
@@ -100,8 +96,6 @@ namespace CHEMLINK.Views
                 txtStok.Text = p.Stock.ToString();
                 txtHarga.Text = p.Price.ToString();
                 txtKeterangan.Text = p.Description;
-                if (p.ExpiryDate.HasValue)
-                    dtpTglExp.Value = p.ExpiryDate.Value;
                 foreach (var cat in (cbKategori.DataSource as List<Category>) ?? new List<Category>())
                 {
                     if (cat.Name == p.Category)

@@ -1,4 +1,3 @@
-   
 using System;
 
 namespace CHEMLINK.Models
@@ -11,5 +10,11 @@ namespace CHEMLINK.Models
         public int Qty { get; set; }
         public decimal Price { get; set; }
         public decimal Total => Qty * Price;
+    }
+
+    public class CartItemEventArgs : EventArgs
+    {
+        public Product SelectedProduct { get; set; } = null!;
+        public int Qty { get; set; }
     }
 }

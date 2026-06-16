@@ -46,6 +46,7 @@ namespace CHEMLINK.Views
 
             // Dark green border paint handlers
             dgvMain.Paint += DgvBorder_Paint;
+            dgvLogStok.Paint += DgvBorder_Paint;
 
             // Responsive: reflow banner description width on resize
             this.Resize += (s, e) =>
@@ -73,10 +74,10 @@ namespace CHEMLINK.Views
             dgvMain.DataSource = dtNotif;
 
             // Style the DataGridView
-            StyleDataGridView();
+            StyleDataGridView(dgvMain);
         }
 
-        public void SetData(List<Models.Product> products, DataTable dtNotif)
+        public void SetData(List<Models.Product> products, DataTable dtNotif, DataTable? dtLogStok = null)
         {
             int totalProduk = products.Count;
             int totalStok = products.Sum(p => p.Stock);
@@ -89,26 +90,44 @@ namespace CHEMLINK.Views
             lblKategoriVal.Text = totalKategori.ToString();
 
             dgvMain.DataSource = dtNotif;
-            ApplyDataGridViewStyling();
+            StyleDataGridView(dgvMain);
+
+            if (dtLogStok != null)
+            {
+                dgvLogStok.DataSource = dtLogStok;
+                StyleDataGridView(dgvLogStok);
+                RenameLogColumns();
+            }
         }
 
-        private void StyleDataGridView()
+        private void RenameLogColumns()
         {
-            dgvMain.EnableHeadersVisualStyles = false;
-            dgvMain.ColumnHeadersDefaultCellStyle.BackColor = Agro950;
-            dgvMain.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvMain.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            dgvMain.ColumnHeadersDefaultCellStyle.Padding = new Padding(8);
-            dgvMain.ColumnHeadersHeight = 40;
-            dgvMain.RowTemplate.Height = 36;
-            dgvMain.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
-            dgvMain.DefaultCellStyle.Padding = new Padding(8, 4, 8, 4);
-            dgvMain.DefaultCellStyle.SelectionBackColor = Agro600;
-            dgvMain.DefaultCellStyle.SelectionForeColor = Color.White;
-            dgvMain.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
-            dgvMain.GridColor = Color.FromArgb(226, 232, 240);
-            dgvMain.BorderStyle = BorderStyle.None;
-            dgvMain.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            if (dgvLogStok.Columns.Contains("tipe_aktivitas")) dgvLogStok.Columns["tipe_aktivitas"]!.HeaderText = "Tipe";
+            if (dgvLogStok.Columns.Contains("nama_user")) dgvLogStok.Columns["nama_user"]!.HeaderText = "User";
+            if (dgvLogStok.Columns.Contains("nama_produk")) dgvLogStok.Columns["nama_produk"]!.HeaderText = "Produk";
+            if (dgvLogStok.Columns.Contains("jumlah")) dgvLogStok.Columns["jumlah"]!.HeaderText = "Jumlah";
+            if (dgvLogStok.Columns.Contains("time_stamp")) dgvLogStok.Columns["time_stamp"]!.HeaderText = "Waktu";
+            if (dgvLogStok.Columns.Contains("id_log")) dgvLogStok.Columns["id_log"]!.Visible = false;
+            if (dgvLogStok.Columns.Contains("id_user")) dgvLogStok.Columns["id_user"]!.Visible = false;
+        }
+
+        private void StyleDataGridView(DataGridView dgv)
+        {
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Agro950;
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            dgv.ColumnHeadersDefaultCellStyle.Padding = new Padding(6);
+            dgv.ColumnHeadersHeight = 36;
+            dgv.RowTemplate.Height = 32;
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
+            dgv.DefaultCellStyle.Padding = new Padding(6, 2, 6, 2);
+            dgv.DefaultCellStyle.SelectionBackColor = Agro600;
+            dgv.DefaultCellStyle.SelectionForeColor = Color.White;
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
+            dgv.GridColor = Color.FromArgb(226, 232, 240);
+            dgv.BorderStyle = BorderStyle.None;
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
         }
 
         public void LoadCriticalStockData()
@@ -130,7 +149,7 @@ namespace CHEMLINK.Views
                 }
 
                 dgvMain.DataSource = dt;
-                ApplyDataGridViewStyling();
+                StyleDataGridView(dgvMain);
             }
             catch (Exception ex)
             {

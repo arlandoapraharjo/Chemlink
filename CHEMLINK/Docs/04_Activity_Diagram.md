@@ -1,0 +1,101 @@
+# Activity Diagram — ChemLink Application Flow
+
+```mermaid
+flowchart TD
+    Start([Aplikasi Dimulai]) --> InitDB[Inisialisasi Database Objects]
+    InitDB --> ShowLogin[Tampilkan Form Login]
+    ShowLogin --> InputLogin{User memasukkan\nusername & password}
+    
+    InputLogin -->|Submit| ValidateLogin{Validasi\nLogin}
+    InputLogin -->|Tutup Form| EndClose([Aplikasi Selesai])
+    
+    ValidateLogin -->|Gagal| ShowError[Tampilkan Error]
+    ShowError --> ShowLogin
+    
+    ValidateLogin -->|Berhasil| LoadDashboard[Load Dashboard\n+ Data Stok Kritis\n+ Log Aktivitas Stok]
+    
+    LoadDashboard --> MainMenu{Pilih Menu}
+    
+    MainMenu -->|Dashboard| RefreshDash[Refresh Data\nStok Kritis & Log Stok]
+    RefreshDash --> MainMenu
+    
+    MainMenu -->|Katalog Produk| ShowProduct[Tampilkan Grid Produk]
+    ShowProduct --> ProductAction{Aksi Produk}
+    ProductAction -->|Tambah| AddProduct[Popup Form Tambah\nsp_tambah_produk_baru]
+    ProductAction -->|Edit| EditProduct[Popup Form Edit\nUPDATE Produk + Stocks]
+    ProductAction -->|Hapus| DeleteProduct[DELETE Stocks\nDELETE Produk]
+    ProductAction -->|Kelola Kategori| ManageCat[CRUD Kategori]
+    ProductAction -->|Kembali| MainMenu
+    AddProduct --> ShowProduct
+    EditProduct --> ShowProduct
+    DeleteProduct --> ShowProduct
+    ManageCat --> ShowProduct
+    
+    MainMenu -->|Transaksi POS| ShowPOS[Tampilkan POS\n+ Load Produk\n+ Reset Keranjang]
+    ShowPOS --> POSAction{Aksi POS}
+    
+    POSAction -->|Pilih Produk\n+ Input Qty| AddCart[Tambah ke Keranjang\nStok Tampil Berkurang]
+    AddCart --> ShowPOS
+    
+    POSAction -->|Hapus Item\nKeranjang| DelCart[Hapus dari Keranjang\nStok Tampil Kembali]
+    DelCart --> ShowPOS
+    
+    POSAction -->|Checkout| ProcessCheckout{Proses Checkout}
+    ProcessCheckout -->|Cart Kosong| ShowEmptyCart[Info: Keranjang Kosong]
+    ShowEmptyCart --> ShowPOS
+    
+    ProcessCheckout -->|Cart Ada| ExecCheckout[Eksekusi Transaksi]
+    ExecCheckout --> InsertSelling[INSERT selling header]
+    InsertSelling --> InsertDetail[INSERT selling_details\nper item]
+    InsertDetail --> UpdateStock[UPDATE Stocks\nkurangi stok]
+    UpdateStock --> InsertLog[INSERT log_stok\ncatat aktivitas OUT]
+    InsertLog --> CommitTX[COMMIT Transaksi]
+    CommitTX --> PrintReceipt[Cetak Struk]
+    PrintReceipt --> ClearCart[Kosongkan Keranjang\nReload Produk dari DB]
+    ClearCart --> ShowPOS
+    
+    ExecCheckout -->|Error| RollbackTX[ROLLBACK\nTampilkan Error]
+    RollbackTX --> ShowPOS
+    
+    POSAction -->|Kembali| MainMenu
+    
+    MainMenu -->|Laporan Keuangan| ShowReport[Load Laporan Keuangan\n+ Breakdown Kategori]
+    ShowReport --> MainMenu
+    
+    MainMenu -->|Kelola Supplier| ShowSupplier[Tampilkan Grid Supplier]
+    ShowSupplier --> SupAction{Aksi Supplier}
+    SupAction -->|Tambah| AddSup[Popup Dialog Tambah]
+    SupAction -->|Edit| EditSup[Popup Dialog Edit]
+    SupAction -->|Hapus| DeleteSup[DELETE Supplier]
+    SupAction -->|Kembali| MainMenu
+    AddSup --> ShowSupplier
+    EditSup --> ShowSupplier
+    DeleteSup --> ShowSupplier
+    
+    MainMenu -->|Kelola User| ShowUser[Tampilkan Grid User]
+    ShowUser --> UserAction{Aksi User}
+    UserAction -->|Tambah| AddUser[Popup Form Tambah]
+    UserAction -->|Edit| EditUser[Popup Form Edit]
+    UserAction -->|Hapus| DeleteUser[Soft Delete\nstatus = Inactive]
+    UserAction -->|Kembali| MainMenu
+    AddUser --> ShowUser
+    EditUser --> ShowUser
+    DeleteUser --> ShowUser
+    
+    MainMenu -->|Logout| ConfirmLogout{Konfirmasi\nLogout?}
+    ConfirmLogout -->|Ya| ShowLogin
+    ConfirmLogout -->|Tidak| MainMenu
+    
+    MainMenu -->|Tutup Aplikasi| EndClose
+```
+
+## Ringkasan Alur Aplikasi
+
+1. **Startup** — Aplikasi menginisialisasi objek database (views, stored procedures)
+2. **Login** — User memasukkan username & password, divalidasi terhadap DB
+3. **Dashboard** — Menampilkan stok kritis dan log aktivitas stok
+4. **Navigasi Menu** — User memilih modul yang ingin diakses
+5. **CRUD Operations** — Popup form untuk tambah/edit, konfirmasi untuk hapus
+6. **POS Checkout** — Transaksi atomik: insert selling → detail → update stock → log
+7. **Logout** — Kembali ke form login (loop), aplikasi tetap berjalan
+8. **Close** — Jika form login ditutup tanpa login, aplikasi berakhir

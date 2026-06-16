@@ -62,6 +62,7 @@ namespace CHEMLINK.Controllers
             _view.DeleteProductEvent += HandleDeleteProduct;
             _view.ManageCategoryEvent += HandleManageCategory;
             _view.AddCartEvent += HandleAddCart;
+            _view.DeleteCartEvent += HandleDeleteCart;
             _view.CheckoutEvent += HandleCheckout;
             _view.AddSupplierEvent += HandleAddSupplier;
             _view.UpdateSupplierEvent += HandleUpdateSupplier;
@@ -82,12 +83,11 @@ namespace CHEMLINK.Controllers
             ShowDashboard();
         }
 
-        private void HandleUpdateSupplier(object? sender, SupplierEventArgs e)
+        private void HandleUpdateSupplier(object? sender, Supplier e)
         {
             try
             {
-                var updated = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address, KontakPerson = e.KontakPerson, Email = e.Email, Kota = e.Kota, Status = e.Status };
-                _supplierContext.Update(e.Id, updated);
+                _supplierContext.Update(e.Id, e);
                 _view.ShowMessage("Data supplier berhasil diupdate!");
                 ShowSupplierManagement();
             }
@@ -125,7 +125,10 @@ namespace CHEMLINK.Controllers
                 if (dtNotif.Columns.Contains("jumlah_stock")) dtNotif.Columns["jumlah_stock"]!.ColumnName = "Jumlah Stock";
             }
 
-            _view.ShowDashboardData(_products, dtNotif!);
+            // Fetch stock activity log
+            var dtLogStok = _orderContext.GetStockLog();
+
+            _view.ShowDashboardData(_products, dtNotif!, dtLogStok);
         }
 
         private void ShowProductCatalog()
@@ -135,7 +138,7 @@ namespace CHEMLINK.Controllers
             _view.ShowProductCatalog(_products, _currentUser.Role == "Admin", _categories);
         }
 
-        private void HandleAddProduct(object? sender, ProductEventArgs e)
+        private void HandleAddProduct(object? sender, Product e)
         {
             int idKategori = 0;
             foreach (var cat in _categories)
@@ -146,12 +149,12 @@ namespace CHEMLINK.Controllers
                     break;
                 }
             }
-            _productContext.Create(e.Name, idKategori, e.Stock, e.Price, e.Description, e.ExpiryDate);
+            _productContext.Create(e.Name, idKategori, e.Stock, e.Price, e.Description, _currentUser.Id);
             _view.ShowMessage("Obat pertanian berhasil ditambahkan!");
             ShowProductCatalog();
         }
 
-        private void HandleEditProduct(object? sender, ProductEventArgs e)
+        private void HandleEditProduct(object? sender, Product e)
         {
             int idKategori = 0;
             foreach (var cat in _categories)
@@ -162,7 +165,7 @@ namespace CHEMLINK.Controllers
                     break;
                 }
             }
-            _productContext.Update(e.Id, e.Name, idKategori, e.Stock, e.Price, e.Description, e.ExpiryDate);
+            _productContext.Update(e.Id, e.Name, idKategori, e.Stock, e.Price, e.Description);
             _view.ShowMessage("Data obat berhasil diupdate!");
             ShowProductCatalog();
         }
@@ -205,23 +208,30 @@ namespace CHEMLINK.Controllers
         private string _currentCategoryFilter = "";
         private string _currentSearchQuery = "";
 
+        /// <summary>Compute display stock = DB stock minus items reserved in cart.</summary>
+        private List<Product> GetDisplayProducts(IEnumerable<Product> source)
+        {
+            return source.Select(p => new Product
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Category = p.Category,
+                Price = p.Price,
+                Stock = p.Stock - _cart.Where(ci => ci.ProductId == p.Id).Sum(ci => ci.Qty),
+                Description = p.Description,
+                SupplierName = p.SupplierName,
+                CategoryId = p.CategoryId,
+                SupplierId = p.SupplierId
+            }).ToList();
+        }
+
         private void ShowPOS()
         {
             _products = _productContext.Read();
             _cart.Clear();
             _currentCategoryFilter = "";
             _currentSearchQuery = "";
-            // When showing products for POS, display available stock = db stock minus items already in cart
-            var display = _products.Select(p => new Product
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Category = p.Category,
-                Price = p.Price,
-                Stock = p.Stock - _cart.Where(ci => ci.ProductId == p.Id).Sum(ci => ci.Qty)
-            }).ToList();
-
-            _view.ShowPOS(display, _cart);
+            _view.ShowPOS(GetDisplayProducts(_products), _cart);
         }
 
         private void HandleFilterCategory(object? sender, string category)
@@ -239,29 +249,19 @@ namespace CHEMLINK.Controllers
         private void ApplyPOSFilters()
         {
             _products = _productContext.Read();
-            var searchResults = _products.AsEnumerable();
+            var filtered = _products.AsEnumerable();
 
             if (!string.IsNullOrWhiteSpace(_currentCategoryFilter) && _currentCategoryFilter != "Semua Kategori")
             {
-                searchResults = searchResults.Where(p => string.Equals(p.Category, _currentCategoryFilter, StringComparison.OrdinalIgnoreCase));
+                filtered = filtered.Where(p => string.Equals(p.Category, _currentCategoryFilter, StringComparison.OrdinalIgnoreCase));
             }
 
             if (!string.IsNullOrWhiteSpace(_currentSearchQuery))
             {
-                searchResults = searchResults.Where(p => p.Name.Contains(_currentSearchQuery, StringComparison.OrdinalIgnoreCase));
+                filtered = filtered.Where(p => p.Name.Contains(_currentSearchQuery, StringComparison.OrdinalIgnoreCase));
             }
 
-            _view.ShowPOS(searchResults.ToList(), _cart);
-            // Also ensure displayed stock accounts for items reserved in cart
-            var displayList = searchResults.Select(p => new Product
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Category = p.Category,
-                Price = p.Price,
-                Stock = p.Stock - _cart.Where(ci => ci.ProductId == p.Id).Sum(ci => ci.Qty)
-            }).ToList();
-            _view.ShowPOS(displayList, _cart);
+            _view.ShowPOS(GetDisplayProducts(filtered), _cart);
         }
 
         private void HandleAddCart(object? sender, CartItemEventArgs e)
@@ -272,16 +272,35 @@ namespace CHEMLINK.Controllers
                 return;
             }
 
-            if (e.Qty > e.SelectedProduct.Stock)
+            // Check available stock from DB minus what's already in cart
+            var dbProduct = _products.FirstOrDefault(p => p.Id == e.SelectedProduct.Id);
+            if (dbProduct == null) return;
+
+            int inCart = _cart.Where(ci => ci.ProductId == e.SelectedProduct.Id).Sum(ci => ci.Qty);
+            int available = dbProduct.Stock - inCart;
+
+            if (e.Qty > available)
             {
-                _view.ShowMessage($"Stok tidak mencukupi! Sisa stok {e.SelectedProduct.Name} hanya {e.SelectedProduct.Stock}.");
+                _view.ShowMessage($"Stok tidak mencukupi! Sisa stok {e.SelectedProduct.Name} hanya {available}.");
                 return;
             }
 
             _cart.Add(new CartItem { ProductId = e.SelectedProduct.Id, ProductName = e.SelectedProduct.Name, Qty = e.Qty, Price = e.SelectedProduct.Price });
-            e.SelectedProduct.Stock -= e.Qty; // Potong Stok (simulasi)
 
-            _view.ShowPOS(_products, _cart);
+            // Refresh display — stock shown = DB stock minus cart qty (no mutation needed)
+            _view.ShowPOS(GetDisplayProducts(_products), _cart);
+        }
+
+        private void HandleDeleteCart(object? sender, CartItem e)
+        {
+            // Remove from cart — display stock auto-recalculates via GetDisplayProducts
+            var cartItem = _cart.FirstOrDefault(c => c.ProductId == e.ProductId && c.Qty == e.Qty);
+            if (cartItem != null)
+            {
+                _cart.Remove(cartItem);
+            }
+
+            _view.ShowPOS(GetDisplayProducts(_products), _cart);
         }
 
         private void HandleCheckout(object? sender, EventArgs e)
@@ -327,12 +346,11 @@ namespace CHEMLINK.Controllers
             _view.ShowSupplierManagement(_suppliers);
         }
 
-        private void HandleAddSupplier(object? sender, SupplierEventArgs e)
+        private void HandleAddSupplier(object? sender, Supplier e)
         {
             try
             {
-                var supplier = new Supplier { Name = e.Name, Phone = e.Phone, Address = e.Address, KontakPerson = e.KontakPerson, Email = e.Email, Kota = e.Kota, Status = e.Status };
-                _supplierContext.Create(supplier);
+                _supplierContext.Create(e);
                 _view.ShowMessage("Supplier baru berhasil dicatat!");
                 ShowSupplierManagement();
             }
@@ -361,23 +379,11 @@ namespace CHEMLINK.Controllers
             _view.ShowUserManagement(_users, _currentUser.Role == "Admin");
         }
 
-        private void HandleAddUser(object? sender, UserEventArgs e)
+        private void HandleAddUser(object? sender, User e)
         {
             try
             {
-                var newUser = new User
-                {
-                    Username = e.Username,
-                    Password = e.Password,
-                    Role = e.Role,
-                    FullName = e.FullName,
-                    Status = e.Status,
-                    Alamat = e.Alamat,
-                    NoTelp = e.NoTelp,
-                    Email = e.Email,
-                    Kecamatan = e.Kecamatan
-                };
-                _userContext.Create(newUser);
+                _userContext.Create(e);
                 _view.ShowMessage("User berhasil ditambahkan!");
                 ShowUserManagement();
             }
@@ -391,7 +397,7 @@ namespace CHEMLINK.Controllers
             }
         }
 
-        private void HandleUpdateUser(object? sender, UserEventArgs e)
+        private void HandleUpdateUser(object? sender, User e)
         {
             // Cegah perubahan role admin terakhir menjadi non-admin
             var existingUser = _users.FirstOrDefault(u => u.Id == e.Id);
@@ -405,20 +411,7 @@ namespace CHEMLINK.Controllers
                 }
             }
 
-            var updatedUser = new User
-            {
-                Id = e.Id,
-                Username = e.Username,
-                Password = e.Password,
-                Role = e.Role,
-                FullName = e.FullName,
-                Status = e.Status,
-                Alamat = e.Alamat,
-                NoTelp = e.NoTelp,
-                Email = e.Email,
-                Kecamatan = e.Kecamatan
-            };
-            _userContext.Update(updatedUser);
+            _userContext.Update(e);
             _view.ShowMessage("User berhasil diupdate!");
             ShowUserManagement();
         }
@@ -430,13 +423,13 @@ namespace CHEMLINK.Controllers
             ShowUserManagement();
         }
 
-        private void HandleAddCategory(object? sender, CategoryEventArgs e)
+        private void HandleAddCategory(object? sender, Category e)
         {
             _categoryContext.Create(e.Name);
             _categories = _categoryContext.Read();
         }
 
-        private void HandleUpdateCategory(object? sender, CategoryEventArgs e)
+        private void HandleUpdateCategory(object? sender, Category e)
         {
             _categoryContext.Update(e.Id, e.Name);
             _categories = _categoryContext.Read();

@@ -1,11 +1,18 @@
+-- Use chemlink_sch schema
+SET search_path TO chemlink_sch, public;
+
+-- Drop views first (CREATE OR REPLACE cannot drop columns)
+DROP VIEW IF EXISTS v_detail_produk CASCADE;
+DROP VIEW IF EXISTS v_stok_kritis CASCADE;
+DROP VIEW IF EXISTS v_laporan_keuangan CASCADE;
+DROP VIEW IF EXISTS v_show_supplier CASCADE;
+DROP VIEW IF EXISTS v_log_stok CASCADE;
+
 CREATE OR REPLACE VIEW v_detail_produk AS
 SELECT 
     p.id_produk, 
     p.nama_produk, 
-    p.merek, 
-    p.satuan, 
     p.harga, 
-    p.tanggal_exp, 
     p.keterangan,
     k.nama_kategori,
     s.nama_perusahaan AS nama_supplier,
@@ -14,16 +21,6 @@ FROM Produk p
 JOIN Kategori k ON p.id_kategori = k.id_kategori
 JOIN Supplier s ON p.id_supplier = s.id_supplier
 LEFT JOIN Stocks st ON p.id_produk = st.id_produk;
-
-CREATE OR REPLACE VIEW v_ringkasan_pesanan AS
-SELECT 
-    o.id_order,
-    o.tanggal,
-    o.jumlah AS total_item_pesanan,
-    o.keterangan_order,
-    u.username AS diinput_oleh
-FROM orders o
-JOIN Users u ON o.input_by = u.id_user;
 
 CREATE OR REPLACE VIEW v_stok_kritis AS
 SELECT 
@@ -37,25 +34,25 @@ WHERE st.jumlah_stock < 10;
 CREATE OR REPLACE VIEW v_laporan_keuangan AS
 WITH bulanan AS (
     SELECT 
-        TO_CHAR(o.tanggal, 'YYYY-MM') AS bulan_group,
-        COUNT(DISTINCT o.id_order)::varchar AS total_transaksi,
-        SUM(od.jumlah_masuk * p.harga)::varchar AS omzet_bersih
-    FROM orders o
-    JOIN order_details od ON o.id_order = od.id_order
-    JOIN Produk p ON od.id_produk = p.id_produk
-    GROUP BY TO_CHAR(o.tanggal, 'YYYY-MM')
+        TO_CHAR(s.tanggal_selling, 'YYYY-MM') AS bulan_group,
+        COUNT(DISTINCT s.id_selling)::varchar AS total_transaksi,
+        SUM(sd.jumlah_keluar * p.harga)::varchar AS omzet_bersih
+    FROM selling s
+    JOIN selling_details sd ON s.id_selling = sd.id_selling
+    JOIN Produk p ON sd.id_produk = p.id_produk
+    GROUP BY TO_CHAR(s.tanggal_selling, 'YYYY-MM')
 ),
 kategori_bulanan AS (
     SELECT 
-        TO_CHAR(o.tanggal, 'YYYY-MM') AS bulan_group,
+        TO_CHAR(s.tanggal_selling, 'YYYY-MM') AS bulan_group,
         k.nama_kategori,
-        SUM(od.jumlah_masuk) AS total_qty,
-        ROW_NUMBER() OVER (PARTITION BY TO_CHAR(o.tanggal, 'YYYY-MM') ORDER BY SUM(od.jumlah_masuk) DESC) as rn
-    FROM orders o
-    JOIN order_details od ON o.id_order = od.id_order
-    JOIN Produk p ON od.id_produk = p.id_produk
+        SUM(sd.jumlah_keluar) AS total_qty,
+        ROW_NUMBER() OVER (PARTITION BY TO_CHAR(s.tanggal_selling, 'YYYY-MM') ORDER BY SUM(sd.jumlah_keluar) DESC) as rn
+    FROM selling s
+    JOIN selling_details sd ON s.id_selling = sd.id_selling
+    JOIN Produk p ON sd.id_produk = p.id_produk
     JOIN Kategori k ON p.id_kategori = k.id_kategori
-    GROUP BY TO_CHAR(o.tanggal, 'YYYY-MM'), k.nama_kategori
+    GROUP BY TO_CHAR(s.tanggal_selling, 'YYYY-MM'), k.nama_kategori
 )
 SELECT 
     b.bulan_group AS "Bulan",
@@ -70,14 +67,14 @@ ORDER BY b.bulan_group DESC;
 -- 2. FUNCTIONS
 -- =========================================================================
 
-CREATE OR REPLACE FUNCTION fn_hitung_total_pesanan(p_id_order INT)
+CREATE OR REPLACE FUNCTION fn_hitung_total_pesanan(p_id_selling INT)
 RETURNS INTEGER AS $$
 DECLARE
     total_jumlah INTEGER;
 BEGIN
-    SELECT COALESCE(SUM(jumlah_masuk), 0) INTO total_jumlah
-    FROM order_details
-    WHERE id_order = p_id_order;
+    SELECT COALESCE(SUM(jumlah_keluar), 0) INTO total_jumlah
+    FROM selling_details
+    WHERE id_selling = p_id_selling;
     
     RETURN total_jumlah;
 END;
@@ -117,12 +114,15 @@ $$ LANGUAGE plpgsql;
 -- 3. STORED PROCEDURES
 -- =========================================================================
 
+-- Drop procedures with changed signatures (CREATE OR REPLACE can't change param count)
+DROP PROCEDURE IF EXISTS sp_tambah_produk_baru(VARCHAR, INTEGER, DATE, TEXT, INTEGER, INTEGER, INTEGER);
+DROP PROCEDURE IF EXISTS sp_tambah_produk_baru(VARCHAR, VARCHAR, VARCHAR, INTEGER, DATE, TEXT, INTEGER, INTEGER, INTEGER);
+DROP PROCEDURE IF EXISTS sp_transaksi_selling(VARCHAR, DATE, TEXT, INTEGER, INTEGER, INTEGER, TEXT);
+DROP PROCEDURE IF EXISTS sp_catat_pesanan_masuk(DATE, TEXT, INTEGER, INTEGER, INTEGER, VARCHAR, TEXT);
+
 CREATE OR REPLACE PROCEDURE sp_tambah_produk_baru(
     p_nama_produk VARCHAR,
-    p_merek VARCHAR,
-    p_satuan VARCHAR,
     p_harga INTEGER,
-    p_tanggal_exp DATE,
     p_keterangan TEXT,
     p_id_kategori INTEGER,
     p_id_supplier INTEGER,
@@ -133,8 +133,8 @@ AS $$
 DECLARE
     v_id_produk INTEGER;
 BEGIN
-    INSERT INTO Produk (nama_produk, merek, satuan, harga, tanggal_exp, keterangan, id_kategori, id_supplier, id_user)
-    VALUES (p_nama_produk, p_merek, p_satuan, p_harga, p_tanggal_exp, p_keterangan, p_id_kategori, p_id_supplier, p_id_user)
+    INSERT INTO Produk (nama_produk, harga, keterangan, id_kategori, id_supplier, id_user)
+    VALUES (p_nama_produk, p_harga, p_keterangan, p_id_kategori, p_id_supplier, p_id_user)
     RETURNING id_produk INTO v_id_produk;
 
     INSERT INTO Stocks (jumlah_stock, id_produk)
@@ -164,13 +164,18 @@ $$;
 CREATE OR REPLACE PROCEDURE sp_tambah_user(
     p_username VARCHAR,
     p_password VARCHAR,
-    p_role VARCHAR
+    p_role VARCHAR,
+    p_fullname VARCHAR DEFAULT NULL,
+    p_alamat TEXT DEFAULT NULL,
+    p_kecamatan VARCHAR DEFAULT NULL,
+    p_no_telp VARCHAR DEFAULT NULL,
+    p_email VARCHAR DEFAULT NULL
 )
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    INSERT INTO Users (username, password, Role, status)
-    VALUES (p_username, p_password, p_role, 'Active');
+    INSERT INTO Users (username, password, Role, fullname, status, alamat, kecamatan, no_telp, email)
+    VALUES (p_username, p_password, p_role, COALESCE(p_fullname, p_username), 'Active', p_alamat, p_kecamatan, p_no_telp, p_email);
     COMMIT;
 END;
 $$;
@@ -190,47 +195,12 @@ BEGIN
 END;
 $$;
 
-CREATE OR REPLACE PROCEDURE sp_catat_pesanan_masuk(
-    p_tanggal DATE,
-    p_keterangan TEXT,
-    p_input_by INTEGER,
-    p_id_produk INTEGER,
-    p_jumlah_masuk INTEGER,
-    p_no_faktur VARCHAR,
-    p_catatan_detail TEXT
-)
-LANGUAGE plpgsql
-AS $$
-DECLARE
-    v_id_order INTEGER;
-BEGIN
-    INSERT INTO orders (tanggal, jumlah, keterangan_order, input_by)
-    VALUES (p_tanggal, 1, p_keterangan, p_input_by)
-    RETURNING id_order INTO v_id_order;
-
-    -- Trigger trg_log_stok_masuk otomatis jalan setelah INSERT ini
-    INSERT INTO order_details (jumlah_masuk, catatan, id_order, id_produk)
-    VALUES (p_jumlah_masuk, p_catatan_detail, v_id_order, p_id_produk);
-
-    RAISE NOTICE 'Transaksi masuk berhasil. ID Order: %, Stok produk % bertambah % unit.',
-        v_id_order, p_id_produk, p_jumlah_masuk;
-
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE EXCEPTION 'Transaksi gagal dan di-rollback. Error: %', SQLERRM;
-END;
-$$;
-
--- -------------------------------------------------------------------------
-
 CREATE OR REPLACE PROCEDURE sp_transaksi_selling(
-    p_no_faktur VARCHAR,
     p_tanggal_selling DATE,
     p_keterangan TEXT,
     p_id_kasir INTEGER,
     p_id_produk INTEGER,
-    p_jumlah_keluar INTEGER,
-    p_catatan_detail TEXT
+    p_jumlah_keluar INTEGER
 )
 LANGUAGE plpgsql
 AS $$
@@ -241,7 +211,7 @@ BEGIN
         RAISE EXCEPTION 'Produk dengan id % tidak ditemukan.', p_id_produk;
     END IF;
 
-    IF NOT EXISTS (SELECT 1 FROM Users WHERE id_user = p_id_kasir AND Role IN ('Kasir', 'Admin') AND status = 'Active') THEN
+    IF NOT EXISTS (SELECT 1 FROM Users WHERE id_user = p_id_kasir AND role IN ('Kasir', 'Admin') AND status = 'Active') THEN
         RAISE EXCEPTION 'Kasir/Admin dengan id % tidak ditemukan.', p_id_kasir;
     END IF;
 
@@ -253,12 +223,27 @@ BEGIN
         RAISE EXCEPTION 'Stok produk id % tidak mencukupi.', p_id_produk;
     END IF;
 
-    UPDATE Stocks 
-    SET jumlah_stock = jumlah_stock - p_jumlah_masuk,
-        timestamp = CURRENT_TIMESTAMP
-    WHERE id_produk = p_id_produk;
+    -- Insert selling header
+    INSERT INTO selling (tanggal_selling, keterangan, id_kasir)
+    VALUES (p_tanggal_selling, p_keterangan, p_id_kasir)
+    RETURNING id_selling INTO v_id_selling;
+
+    -- Insert selling detail (triggers auto-decrement stock + auto-log)
+    INSERT INTO selling_details (jumlah_keluar, id_selling, id_produk)
+    VALUES (p_jumlah_keluar, v_id_selling, p_id_produk);
 END;
 $$;
 
 CREATE OR REPLACE VIEW v_show_supplier AS
 SELECT id_supplier, nama_perusahaan, no_telp, kota_supplier FROM Supplier ORDER BY id_supplier ASC;
+
+CREATE OR REPLACE VIEW v_log_stok AS
+SELECT 
+    ls.id_log,
+    ls.tipe_aktivitas,
+    ls.nama_user,
+    ls.nama_produk,
+    ls.jumlah,
+    ls.time_stamp
+FROM log_stok ls
+ORDER BY ls.time_stamp DESC;

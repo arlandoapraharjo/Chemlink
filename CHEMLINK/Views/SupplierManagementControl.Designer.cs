@@ -26,7 +26,6 @@ namespace CHEMLINK.Views
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             dgvMain = new DataGridView();
             pnlCrud = new Panel();
-            lblKelola = new Label();
             btnDelSup1 = new Button();
             btnEditSup1 = new Button();
             btnAddSup = new Button();
@@ -65,7 +64,6 @@ namespace CHEMLINK.Views
             // 
             pnlCrud.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnlCrud.BackColor = Color.White;
-            pnlCrud.Controls.Add(lblKelola);
             pnlCrud.Controls.Add(btnDelSup1);
             pnlCrud.Controls.Add(btnEditSup1);
             pnlCrud.Controls.Add(btnAddSup);
@@ -74,22 +72,13 @@ namespace CHEMLINK.Views
             pnlCrud.Size = new Size(1070, 60);
             pnlCrud.TabIndex = 1;
             // 
-            // lblKelola
-            // 
-            lblKelola.AutoSize = true;
-            lblKelola.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblKelola.Location = new Point(13, 21);
-            lblKelola.Name = "lblKelola";
-            lblKelola.Size = new Size(116, 19);
-            lblKelola.TabIndex = 6;
-            lblKelola.Text = "Kelola Supplier:";
-            // 
             // btnDelSup1
             // 
             btnDelSup1.BackColor = Color.FromArgb(244, 67, 54);
             btnDelSup1.FlatStyle = FlatStyle.Flat;
+            btnDelSup1.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnDelSup1.ForeColor = Color.White;
-            btnDelSup1.Location = new Point(905, 12);
+            btnDelSup1.Location = new Point(323, 11);
             btnDelSup1.Name = "btnDelSup1";
             btnDelSup1.Size = new Size(142, 35);
             btnDelSup1.TabIndex = 5;
@@ -100,8 +89,9 @@ namespace CHEMLINK.Views
             // 
             btnEditSup1.BackColor = Color.FromArgb(33, 150, 243);
             btnEditSup1.FlatStyle = FlatStyle.Flat;
+            btnEditSup1.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEditSup1.ForeColor = Color.White;
-            btnEditSup1.Location = new Point(752, 12);
+            btnEditSup1.Location = new Point(170, 11);
             btnEditSup1.Name = "btnEditSup1";
             btnEditSup1.Size = new Size(142, 35);
             btnEditSup1.TabIndex = 4;
@@ -112,6 +102,7 @@ namespace CHEMLINK.Views
             // 
             btnAddSup.BackColor = Color.FromArgb(72, 161, 17);
             btnAddSup.FlatStyle = FlatStyle.Flat;
+            btnAddSup.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAddSup.ForeColor = Color.White;
             btnAddSup.Location = new Point(20, 12);
             btnAddSup.Name = "btnAddSup";
@@ -167,7 +158,6 @@ namespace CHEMLINK.Views
             Size = new Size(1110, 670);
             ((System.ComponentModel.ISupportInitialize)dgvMain).EndInit();
             pnlCrud.ResumeLayout(false);
-            pnlCrud.PerformLayout();
             ResumeLayout(false);
 
         }

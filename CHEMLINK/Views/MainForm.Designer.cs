@@ -188,36 +188,41 @@ namespace CHEMLINK
             this.mainContentPanel.Controls.Add(this.lblTitle);
 
             // lblTitle
-            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTitle.Height = 45;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59); // TextDark #1E293B
-            this.lblTitle.Padding = new System.Windows.Forms.Padding(24, 10, 0, 0);
-            this.lblTitle.Text = "Dashboard";
-
-            // ===================== MAIN FORM =====================
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoScroll = true;
-            this.BackColor = System.Drawing.Color.FromArgb(248, 250, 252); // #F8FAFC
-            this.ClientSize = new System.Drawing.Size(1200, 750);
-            this.MinimumSize = new System.Drawing.Size(1000, 650);
-            this.Controls.Add(this.mainContentPanel);
-            this.Controls.Add(this.topbarPanel);
-            this.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.Name = "MainForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ChemLink - Manajemen Kios Pertanian v2.0";
-
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
-            this.topbarPanel.ResumeLayout(false);
-            this.brandPanel.ResumeLayout(false);
-            this.brandPanel.PerformLayout();
-            this.navPanel.ResumeLayout(false);
-            this.userPanel.ResumeLayout(false);
-            this.userPanel.PerformLayout();
-            this.pnlAvatar.ResumeLayout(false);
-            this.mainContentPanel.ResumeLayout(false);
-            this.ResumeLayout(false);
+            // 
+            lblTitle.Dock = DockStyle.Top;
+            lblTitle.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.FromArgb(30, 41, 59);
+            lblTitle.Location = new Point(0, 0);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Padding = new Padding(24, 10, 0, 0);
+            lblTitle.Size = new Size(1200, 45);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "Dashboard";
+            // 
+            // MainForm
+            // 
+            AutoScaleDimensions = new SizeF(8F, 17F);
+            AutoScaleMode = AutoScaleMode.Font;
+            AutoScroll = true;
+            BackColor = Color.FromArgb(248, 250, 252);
+            ClientSize = new Size(1200, 749);
+            Controls.Add(mainContentPanel);
+            Controls.Add(topbarPanel);
+            Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            MinimumSize = new Size(1000, 650);
+            Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "ChemLink - Manajemen Kios Pertanian v2.0";
+            topbarPanel.ResumeLayout(false);
+            navPanel.ResumeLayout(false);
+            brandPanel.ResumeLayout(false);
+            brandPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
+            userPanel.ResumeLayout(false);
+            userPanel.PerformLayout();
+            pnlAvatar.ResumeLayout(false);
+            mainContentPanel.ResumeLayout(false);
+            ResumeLayout(false);
         }
 
         private void NavButtonStyle(System.Windows.Forms.Button btn, string text)

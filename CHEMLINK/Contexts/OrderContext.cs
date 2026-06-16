@@ -12,7 +12,6 @@ namespace CHEMLINK.Contexts
         public void Checkout(List<CartItem> cart, int inputByUserId, string keterangan)
         {
             if (cart == null || cart.Count == 0) return;
-
             using (NpgsqlConnection conn = ConnectDB.GetConn())
             {
                 if (conn != null && conn.State == ConnectionState.Open)
@@ -21,19 +20,34 @@ namespace CHEMLINK.Contexts
                     string noFaktur = "INV-" + DateTime.Now.ToString("yyyyMMddHHmmss");
                     DateTime today = DateTime.Now;
 
-                    foreach (var item in cart)
+                    using (var tx = conn.BeginTransaction())
                     {
-                        string sql = "CALL sp_catat_pesanan_masuk(@tanggal::DATE, @keterangan, @inputBy, @idProduk, @jumlahMasuk, @noFaktur, @catatan)";
-                        using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
+                        try
                         {
-                            cmd.Parameters.AddWithValue("@tanggal", today.Date);
-                            cmd.Parameters.AddWithValue("@keterangan", keterangan);
-                            cmd.Parameters.AddWithValue("@inputBy", inputByUserId);
-                            cmd.Parameters.AddWithValue("@idProduk", item.ProductId);
-                            cmd.Parameters.AddWithValue("@jumlahMasuk", item.Qty);
-                            cmd.Parameters.AddWithValue("@noFaktur", noFaktur);
-                            cmd.Parameters.AddWithValue("@catatan", $"Pesanan produk {item.ProductName}");
-                            cmd.ExecuteNonQuery();
+                            foreach (var item in cart)
+                            {
+                                // Record order detail. The stored procedure sp_catat_pesanan_masuk
+                                // is expected to insert order/order_details and update Stocks accordingly.
+                                string sql = "CALL sp_catat_pesanan_masuk(@tanggal::DATE, @keterangan, @inputBy, @idProduk, @jumlahMasuk, @noFaktur, @catatan)";
+                                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn, tx))
+                                {
+                                    cmd.Parameters.AddWithValue("@tanggal", today.Date);
+                                    cmd.Parameters.AddWithValue("@keterangan", keterangan);
+                                    cmd.Parameters.AddWithValue("@inputBy", inputByUserId);
+                                    cmd.Parameters.AddWithValue("@idProduk", item.ProductId);
+                                    cmd.Parameters.AddWithValue("@jumlahMasuk", item.Qty);
+                                    cmd.Parameters.AddWithValue("@noFaktur", noFaktur);
+                                    cmd.Parameters.AddWithValue("@catatan", $"Pesanan produk {item.ProductName}");
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+
+                            tx.Commit();
+                        }
+                        catch
+                        {
+                            try { tx.Rollback(); } catch { }
+                            throw;
                         }
                     }
                 }

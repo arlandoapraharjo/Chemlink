@@ -37,7 +37,34 @@ namespace CHEMLINK.Views
             _suppliers = suppliers;
             dgvMain.DataSource = null;
             dgvMain.Columns.Clear();
-            dgvMain.DataSource = suppliers;
+            dgvMain.DataSource = new BindingList<Supplier>(suppliers);
+
+            // Atur ulang kolom untuk menampilkan data lengkap dari database
+            try
+            {
+                dgvMain.Columns["Id"]!.HeaderText = "ID Supplier";
+                dgvMain.Columns["Name"]!.HeaderText = "Nama Perusahaan";
+                dgvMain.Columns["ContactPerson"]!.HeaderText = "Kontak Person";
+                dgvMain.Columns["Phone"]!.HeaderText = "Nomor Telepon";
+                dgvMain.Columns["Email"]!.HeaderText = "Email";
+                dgvMain.Columns["Address"]!.HeaderText = "Alamat Supplier";
+                dgvMain.Columns["City"]!.HeaderText = "Kota";
+                dgvMain.Columns["Status"]!.HeaderText = "Status";
+
+                // Atur lebar kolom
+                dgvMain.Columns["Id"]!.Width = 50;
+                dgvMain.Columns["Name"]!.Width = 120;
+                dgvMain.Columns["ContactPerson"]!.Width = 120;
+                dgvMain.Columns["Phone"]!.Width = 100;
+                dgvMain.Columns["Email"]!.Width = 120;
+                dgvMain.Columns["Address"]!.Width = 150;
+                dgvMain.Columns["City"]!.Width = 100;
+                dgvMain.Columns["Status"]!.Width = 70;
+            }
+            catch
+            {
+                // Jika kolom tidak ada, lanjutkan dengan default display
+            }
         }
 
         private void BtnAddSup_Click(object? sender, EventArgs e)

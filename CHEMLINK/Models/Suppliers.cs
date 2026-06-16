@@ -2,7 +2,7 @@ using System;
 
 namespace CHEMLINK.Models
 {
-    // Model untuk Supplier dengan kolom lengkap
+    // Model untuk Supplier
     public class Supplier
     {
         public int Id { get; set; }

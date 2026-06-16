@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.DirectoryServices.ActiveDirectory;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -71,10 +70,10 @@ namespace CHEMLINK.Views
         {
             lblTotalProdukVal.Text = totalProduk.ToString();
             lblStokKritisVal.Text = stokKritis.ToString();
-            dataGridView1.DataSource = dtNotif;
+            dgvMain.DataSource = dtNotif;
 
-            // Apply styling to the DataGridView
-            ApplyDataGridViewStyling();
+            // Style the DataGridView
+            StyleDataGridView();
         }
 
         public void SetData(List<Models.Product> products, DataTable dtNotif)
@@ -89,57 +88,28 @@ namespace CHEMLINK.Views
             lblStokKritisVal.Text = stokKritis.ToString();
             lblKategoriVal.Text = totalKategori.ToString();
 
-            dataGridView1.DataSource = dtNotif;
-            ApplyDataGridViewStyling();
+            dgvMain.DataSource = dtNotif;
+            StyleDataGridView();
         }
 
-        private void ApplyDataGridViewStyling()
+        private void StyleDataGridView()
         {
-            dataGridView1.EnableHeadersVisualStyles = false;
-            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Agro950;
-            dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            dataGridView1.ColumnHeadersDefaultCellStyle.Padding = new Padding(8);
-            dataGridView1.ColumnHeadersHeight = 40;
-            dataGridView1.RowTemplate.Height = 36;
-            dataGridView1.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
-            dataGridView1.DefaultCellStyle.Padding = new Padding(8, 4, 8, 4);
-            dataGridView1.DefaultCellStyle.SelectionBackColor = Agro600;
-            dataGridView1.DefaultCellStyle.SelectionForeColor = Color.White;
-            dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
-            dataGridView1.GridColor = Color.FromArgb(226, 232, 240);
-            dataGridView1.BorderStyle = BorderStyle.None;
-            dataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvMain.EnableHeadersVisualStyles = false;
+            dgvMain.ColumnHeadersDefaultCellStyle.BackColor = Agro950;
+            dgvMain.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvMain.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            dgvMain.ColumnHeadersDefaultCellStyle.Padding = new Padding(8);
+            dgvMain.ColumnHeadersHeight = 40;
+            dgvMain.RowTemplate.Height = 36;
+            dgvMain.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
+            dgvMain.DefaultCellStyle.Padding = new Padding(8, 4, 8, 4);
+            dgvMain.DefaultCellStyle.SelectionBackColor = Agro600;
+            dgvMain.DefaultCellStyle.SelectionForeColor = Color.White;
+            dgvMain.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
+            dgvMain.GridColor = Color.FromArgb(226, 232, 240);
+            dgvMain.BorderStyle = BorderStyle.None;
+            dgvMain.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
         }
-
-        public void LoadCriticalStockData()
-        {
-            try
-            {
-                var productContext = new Contexts.ProductContext();
-                var criticalStocks = productContext.ReadCriticalStock();
-
-                // Convert List<StockKritis> to DataTable
-                DataTable dt = new DataTable();
-                dt.Columns.Add("ID Produk", typeof(int));
-                dt.Columns.Add("Nama Produk", typeof(string));
-                dt.Columns.Add("Jumlah Stock", typeof(int));
-
-                foreach (var stock in criticalStocks)
-                {
-                    dt.Rows.Add(stock.IdProduk, stock.NamaProduk, stock.JumlahStock);
-                }
-
-                dataGridView1.DataSource = dt;
-                ApplyDataGridViewStyling();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading critical stock data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-
 
         private void PnlBanner_Paint(object? sender, PaintEventArgs e)
         {

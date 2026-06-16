@@ -154,39 +154,5 @@ namespace CHEMLINK.Contexts
             }
             return dt;
         }
-
-        public List<StockKritis> ReadCriticalStock()
-        {
-            List<StockKritis> listStokKritis = new List<StockKritis>();
-
-            using (NpgsqlConnection conn = ConnectDB.GetConn())
-            {
-                if (conn != null && conn.State == System.Data.ConnectionState.Open)
-                {
-                    string sql = @"
-                        SELECT id_produk, nama_produk, jumlah_stock 
-                        FROM v_stok_kritis 
-                        ORDER BY jumlah_stock ASC, id_produk ASC";
-
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
-                    {
-                        using (NpgsqlDataReader dr = cmd.ExecuteReader())
-                        {
-                            while (dr.Read())
-                            {
-                                StockKritis stok = new StockKritis();
-                                stok.IdProduk = Convert.ToInt32(dr["id_produk"]);
-                                stok.NamaProduk = dr["nama_produk"].ToString() ?? "";
-                                stok.JumlahStock = dr["jumlah_stock"] != DBNull.Value ? Convert.ToInt32(dr["jumlah_stock"]) : 0;
-
-                                listStokKritis.Add(stok);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return listStokKritis;
-        }
     }
 }

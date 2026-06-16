@@ -20,7 +20,7 @@ namespace CHEMLINK.Contexts
                     string noFaktur = "INV-" + DateTime.Now.ToString("yyyyMMddHHmmss");
                     DateTime today = DateTime.Now;
 
-                    using (var tx = conn.BeginTransaction())
+                    foreach (var item in cart)
                     {
                         try
                         {
@@ -46,8 +46,14 @@ namespace CHEMLINK.Contexts
                         }
                         catch
                         {
-                            try { tx.Rollback(); } catch { }
-                            throw;
+                            cmd.Parameters.AddWithValue("@tanggal", today.Date);
+                            cmd.Parameters.AddWithValue("@keterangan", keterangan);
+                            cmd.Parameters.AddWithValue("@inputBy", inputByUserId);
+                            cmd.Parameters.AddWithValue("@idProduk", item.ProductId);
+                            cmd.Parameters.AddWithValue("@jumlahMasuk", item.Qty);
+                            cmd.Parameters.AddWithValue("@noFaktur", noFaktur);
+                            cmd.Parameters.AddWithValue("@catatan", $"Pesanan produk {item.ProductName}");
+                            cmd.ExecuteNonQuery();
                         }
                     }
                 }

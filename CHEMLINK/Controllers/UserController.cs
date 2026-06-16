@@ -271,27 +271,16 @@ namespace CHEMLINK.Controllers
                 _view.ShowMessage("Masukkan produk dan kuantitas dengan benar!");
                 return;
             }
-            // Ensure total quantity requested (existing in cart + new) does not exceed available stock
-            int existingQtyInCart = _cart.Where(ci => ci.ProductId == e.SelectedProduct.Id).Sum(ci => ci.Qty);
-            if (existingQtyInCart + e.Qty > e.SelectedProduct.Stock)
+
+            if (e.Qty > e.SelectedProduct.Stock)
             {
-                int available = e.SelectedProduct.Stock - existingQtyInCart;
-                _view.ShowMessage($"Stok tidak mencukupi! Sisa stok {e.SelectedProduct.Name} hanya {available}.");
+                _view.ShowMessage($"Stok tidak mencukupi! Sisa stok {e.SelectedProduct.Name} hanya {e.SelectedProduct.Stock}.");
                 return;
             }
 
-            // If same product already in cart, increment quantity; otherwise add new cart item
-            var existing = _cart.FirstOrDefault(ci => ci.ProductId == e.SelectedProduct.Id);
-            if (existing != null)
-            {
-                existing.Qty += e.Qty;
-            }
-            else
-            {
-                _cart.Add(new CartItem { ProductId = e.SelectedProduct.Id, ProductName = e.SelectedProduct.Name, Qty = e.Qty, Price = e.SelectedProduct.Price });
-            }
+            _cart.Add(new CartItem { ProductId = e.SelectedProduct.Id, ProductName = e.SelectedProduct.Name, Qty = e.Qty, Price = e.SelectedProduct.Price });
+            e.SelectedProduct.Stock -= e.Qty; // Potong Stok (simulasi)
 
-            // Do not modify in-memory product stock here. Persist stock changes only on Checkout.
             _view.ShowPOS(_products, _cart);
         }
 

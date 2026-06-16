@@ -2,7 +2,7 @@ using System;
 
 namespace CHEMLINK.Models
 {
-    // Model untuk Pengguna Sistem (Admin & Kasir) dengan kolom lengkap
+    // Model untuk Pengguna Sistem (Admin & Kasir)
     public class User
     {
         public int Id { get; set; }

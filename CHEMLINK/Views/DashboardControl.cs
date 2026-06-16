@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.DirectoryServices.ActiveDirectory;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
@@ -73,8 +72,8 @@ namespace CHEMLINK.Views
             lblStokKritisVal.Text = stokKritis.ToString();
             dgvMain.DataSource = dtNotif;
 
-            // Apply styling to the DataGridView
-            ApplyDataGridViewStyling();
+            // Style the DataGridView
+            StyleDataGridView();
         }
 
         public void SetData(List<Models.Product> products, DataTable dtNotif)
@@ -93,7 +92,7 @@ namespace CHEMLINK.Views
             ApplyDataGridViewStyling();
         }
 
-        private void ApplyDataGridViewStyling()
+        private void StyleDataGridView()
         {
             dgvMain.EnableHeadersVisualStyles = false;
             dgvMain.ColumnHeadersDefaultCellStyle.BackColor = Agro950;

@@ -37,293 +37,393 @@ namespace CHEMLINK.Views
 
         // Notification
         private System.Windows.Forms.Label lblNotifTitle;
-        public System.Windows.Forms.DataGridView dgvMain;
 
         private void InitializeComponent()
         {
-            this.tblMaster = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlBanner = new System.Windows.Forms.Panel();
-            this.pnlBadge = new System.Windows.Forms.Panel();
-            this.lblBadge = new System.Windows.Forms.Label();
-            this.lblBannerTitle = new System.Windows.Forms.Label();
-            this.lblBannerDesc = new System.Windows.Forms.Label();
-            this.tblKPI = new System.Windows.Forms.TableLayoutPanel();
-            this.cardTotalProduk = new System.Windows.Forms.Panel();
-            this.cardTotalStok = new System.Windows.Forms.Panel();
-            this.cardStokKritis = new System.Windows.Forms.Panel();
-            this.cardKategori = new System.Windows.Forms.Panel();
-            this.lblTotalProdukVal = new System.Windows.Forms.Label();
-            this.lblTotalProdukLbl = new System.Windows.Forms.Label();
-            this.lblTotalStokVal = new System.Windows.Forms.Label();
-            this.lblTotalStokLbl = new System.Windows.Forms.Label();
-            this.lblStokKritisVal = new System.Windows.Forms.Label();
-            this.lblStokKritisLbl = new System.Windows.Forms.Label();
-            this.lblKategoriVal = new System.Windows.Forms.Label();
-            this.lblKategoriLbl = new System.Windows.Forms.Label();
-            this.lblStatusProduk = new System.Windows.Forms.Label();
-            this.lblStatusStok = new System.Windows.Forms.Label();
-            this.lblStatusKritis = new System.Windows.Forms.Label();
-            this.lblStatusKategori = new System.Windows.Forms.Label();
-            this.lblNotifTitle = new System.Windows.Forms.Label();
-            this.dgvMain = new System.Windows.Forms.DataGridView();
-            this.tblMaster.SuspendLayout();
-            this.tblKPI.SuspendLayout();
-            this.cardTotalProduk.SuspendLayout();
-            this.cardTotalStok.SuspendLayout();
-            this.cardStokKritis.SuspendLayout();
-            this.cardKategori.SuspendLayout();
-            this.pnlBanner.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).BeginInit();
-            this.SuspendLayout();
-
-            // ===================== MASTER TABLE (responsive root) =====================
-            this.tblMaster.ColumnCount = 1;
-            this.tblMaster.RowCount = 4;
-            this.tblMaster.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tblMaster.AutoScroll = true;
-            this.tblMaster.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));   // banner
-            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 105F));   // KPI cards
-            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));          // notif title
-            this.tblMaster.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));    // grid fills rest
-            this.tblMaster.Controls.Add(this.pnlBanner, 0, 0);
-            this.tblMaster.Controls.Add(this.tblKPI, 0, 1);
-            this.tblMaster.Controls.Add(this.lblNotifTitle, 0, 2);
-            this.tblMaster.Controls.Add(this.dgvMain, 0, 3);
-
-            // ===================== BANNER =====================
-            this.pnlBanner.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlBanner.BackColor = System.Drawing.Color.FromArgb(2, 44, 34);
-            this.pnlBanner.Controls.Add(this.lblBannerDesc);
-            this.pnlBanner.Controls.Add(this.lblBannerTitle);
-            this.pnlBanner.Controls.Add(this.pnlBadge);
-
-            // pnlBadge
-            this.pnlBadge.BackColor = System.Drawing.Color.FromArgb(48, 255, 255, 255);
-            this.pnlBadge.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.pnlBadge.Location = new System.Drawing.Point(32, 16);
-            this.pnlBadge.Size = new System.Drawing.Size(210, 22);
-            this.pnlBadge.Controls.Add(this.lblBadge);
-
-            // lblBadge
-            this.lblBadge.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblBadge.BackColor = System.Drawing.Color.Transparent;
-            this.lblBadge.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.lblBadge.ForeColor = System.Drawing.Color.FromArgb(167, 243, 208);
-            this.lblBadge.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblBadge.Text = "SISTEM MONITORING UTAMA";
-
-            // lblBannerTitle
-            this.lblBannerTitle.AutoSize = true;
-            this.lblBannerTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblBannerTitle.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
-            this.lblBannerTitle.ForeColor = System.Drawing.Color.White;
-            this.lblBannerTitle.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblBannerTitle.Location = new System.Drawing.Point(32, 44);
-            this.lblBannerTitle.Text = "Manajemen Inventaris";
-
+            tblMaster = new TableLayoutPanel();
+            pnlBanner = new Panel();
+            lblBannerDesc = new Label();
+            lblBannerTitle = new Label();
+            pnlBadge = new Panel();
+            lblBadge = new Label();
+            tblKPI = new TableLayoutPanel();
+            cardTotalProduk = new Panel();
+            lblTotalProdukLbl = new Label();
+            lblTotalProdukVal = new Label();
+            lblStatusProduk = new Label();
+            cardTotalStok = new Panel();
+            lblTotalStokLbl = new Label();
+            lblTotalStokVal = new Label();
+            lblStatusStok = new Label();
+            cardStokKritis = new Panel();
+            lblStokKritisLbl = new Label();
+            lblStokKritisVal = new Label();
+            lblStatusKritis = new Label();
+            cardKategori = new Panel();
+            lblKategoriLbl = new Label();
+            lblKategoriVal = new Label();
+            lblStatusKategori = new Label();
+            lblNotifTitle = new Label();
+            dataGridView1 = new DataGridView();
+            tblMaster.SuspendLayout();
+            pnlBanner.SuspendLayout();
+            pnlBadge.SuspendLayout();
+            tblKPI.SuspendLayout();
+            cardTotalProduk.SuspendLayout();
+            cardTotalStok.SuspendLayout();
+            cardStokKritis.SuspendLayout();
+            cardKategori.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            SuspendLayout();
+            // 
+            // tblMaster
+            // 
+            tblMaster.AutoScroll = true;
+            tblMaster.ColumnCount = 1;
+            tblMaster.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tblMaster.Controls.Add(pnlBanner, 0, 0);
+            tblMaster.Controls.Add(tblKPI, 0, 1);
+            tblMaster.Controls.Add(lblNotifTitle, 0, 2);
+            tblMaster.Controls.Add(dataGridView1, 0, 3);
+            tblMaster.Dock = DockStyle.Fill;
+            tblMaster.Location = new Point(24, 16);
+            tblMaster.Name = "tblMaster";
+            tblMaster.RowCount = 4;
+            tblMaster.RowStyles.Add(new RowStyle(SizeType.Absolute, 130F));
+            tblMaster.RowStyles.Add(new RowStyle(SizeType.Absolute, 105F));
+            tblMaster.RowStyles.Add(new RowStyle());
+            tblMaster.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tblMaster.Size = new Size(1152, 668);
+            tblMaster.TabIndex = 0;
+            // 
+            // pnlBanner
+            // 
+            pnlBanner.BackColor = Color.FromArgb(2, 44, 34);
+            pnlBanner.Controls.Add(lblBannerDesc);
+            pnlBanner.Controls.Add(lblBannerTitle);
+            pnlBanner.Controls.Add(pnlBadge);
+            pnlBanner.Dock = DockStyle.Fill;
+            pnlBanner.Location = new Point(3, 3);
+            pnlBanner.Name = "pnlBanner";
+            pnlBanner.Size = new Size(1146, 124);
+            pnlBanner.TabIndex = 0;
+            // 
             // lblBannerDesc
-            this.lblBannerDesc.BackColor = System.Drawing.Color.Transparent;
-            this.lblBannerDesc.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.lblBannerDesc.ForeColor = System.Drawing.Color.FromArgb(226, 232, 240);
-            this.lblBannerDesc.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            this.lblBannerDesc.Location = new System.Drawing.Point(32, 76);
-            this.lblBannerDesc.AutoSize = false;
-            this.lblBannerDesc.Size = new System.Drawing.Size(650, 36);
-            this.lblBannerDesc.Text = "Pantau pergerakan stok obat pertanian, pupuk, pestisida, dan peralatan tani Anda secara real-time untuk produktivitas optimal.";
-
-            // ===================== KPI TABLE (4 equal columns) =====================
-            this.tblKPI.ColumnCount = 4;
-            this.tblKPI.RowCount = 1;
-            this.tblKPI.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tblKPI.Padding = new System.Windows.Forms.Padding(0, 8, 0, 0);
-            this.tblKPI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tblKPI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tblKPI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tblKPI.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tblKPI.Controls.Add(this.cardTotalProduk, 0, 0);
-            this.tblKPI.Controls.Add(this.cardTotalStok, 1, 0);
-            this.tblKPI.Controls.Add(this.cardStokKritis, 2, 0);
-            this.tblKPI.Controls.Add(this.cardKategori, 3, 0);
-
-            // ===================== CARD 1: TOTAL PRODUK (#E8F5BD) =====================
-            this.cardTotalProduk.BackColor = System.Drawing.Color.FromArgb(232, 245, 189);
-            this.cardTotalProduk.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.cardTotalProduk.Padding = new System.Windows.Forms.Padding(12);
-            this.cardTotalProduk.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cardTotalProduk.Controls.Add(this.lblTotalProdukLbl);
-            this.cardTotalProduk.Controls.Add(this.lblTotalProdukVal);
-            this.cardTotalProduk.Controls.Add(this.lblStatusProduk);
-
-            this.lblTotalProdukLbl.AutoSize = true;
-            this.lblTotalProdukLbl.BackColor = System.Drawing.Color.Transparent;
-            this.lblTotalProdukLbl.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.lblTotalProdukLbl.ForeColor = System.Drawing.Color.FromArgb(100, 116, 139);
-            this.lblTotalProdukLbl.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblTotalProdukLbl.Location = new System.Drawing.Point(12, 8);
-            this.lblTotalProdukLbl.Text = "JUMLAH PRODUK";
-
-            this.lblTotalProdukVal.AutoSize = true;
-            this.lblTotalProdukVal.BackColor = System.Drawing.Color.Transparent;
-            this.lblTotalProdukVal.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
-            this.lblTotalProdukVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblTotalProdukVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblTotalProdukVal.Location = new System.Drawing.Point(12, 28);
-            this.lblTotalProdukVal.Text = "0";
-
-            this.lblStatusProduk.AutoSize = true;
-            this.lblStatusProduk.BackColor = System.Drawing.Color.Transparent;
-            this.lblStatusProduk.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblStatusProduk.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblStatusProduk.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStatusProduk.Location = new System.Drawing.Point(12, 64);
-            this.lblStatusProduk.Text = "\u25CF  Aktif dalam katalog";
-
-            // ===================== CARD 2: TOTAL STOK (#C7EABB) =====================
-            this.cardTotalStok.BackColor = System.Drawing.Color.FromArgb(199, 234, 187);
-            this.cardTotalStok.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.cardTotalStok.Padding = new System.Windows.Forms.Padding(12);
-            this.cardTotalStok.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cardTotalStok.Controls.Add(this.lblTotalStokLbl);
-            this.cardTotalStok.Controls.Add(this.lblTotalStokVal);
-            this.cardTotalStok.Controls.Add(this.lblStatusStok);
-
-            this.lblTotalStokLbl.AutoSize = true;
-            this.lblTotalStokLbl.BackColor = System.Drawing.Color.Transparent;
-            this.lblTotalStokLbl.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.lblTotalStokLbl.ForeColor = System.Drawing.Color.FromArgb(100, 116, 139);
-            this.lblTotalStokLbl.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblTotalStokLbl.Location = new System.Drawing.Point(12, 8);
-            this.lblTotalStokLbl.Text = "TOTAL STOK ITEM";
-
-            this.lblTotalStokVal.AutoSize = true;
-            this.lblTotalStokVal.BackColor = System.Drawing.Color.Transparent;
-            this.lblTotalStokVal.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
-            this.lblTotalStokVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblTotalStokVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblTotalStokVal.Location = new System.Drawing.Point(12, 28);
-            this.lblTotalStokVal.Text = "0";
-
-            this.lblStatusStok.AutoSize = true;
-            this.lblStatusStok.BackColor = System.Drawing.Color.Transparent;
-            this.lblStatusStok.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblStatusStok.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblStatusStok.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStatusStok.Location = new System.Drawing.Point(12, 64);
-            this.lblStatusStok.Text = "\u25CF  Tersedia di gudang";
-
-            // ===================== CARD 3: STOK KRITIS (#E8F5BD) =====================
-            this.cardStokKritis.BackColor = System.Drawing.Color.FromArgb(232, 245, 189);
-            this.cardStokKritis.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.cardStokKritis.Padding = new System.Windows.Forms.Padding(12);
-            this.cardStokKritis.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cardStokKritis.Controls.Add(this.lblStokKritisLbl);
-            this.cardStokKritis.Controls.Add(this.lblStokKritisVal);
-            this.cardStokKritis.Controls.Add(this.lblStatusKritis);
-
-            this.lblStokKritisLbl.AutoSize = true;
-            this.lblStokKritisLbl.BackColor = System.Drawing.Color.Transparent;
-            this.lblStokKritisLbl.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.lblStokKritisLbl.ForeColor = System.Drawing.Color.FromArgb(100, 116, 139);
-            this.lblStokKritisLbl.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStokKritisLbl.Location = new System.Drawing.Point(12, 8);
-            this.lblStokKritisLbl.Text = "STOK KRITIS";
-
-            this.lblStokKritisVal.AutoSize = true;
-            this.lblStokKritisVal.BackColor = System.Drawing.Color.Transparent;
-            this.lblStokKritisVal.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
-            this.lblStokKritisVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblStokKritisVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStokKritisVal.Location = new System.Drawing.Point(12, 28);
-            this.lblStokKritisVal.Text = "0";
-
-            this.lblStatusKritis.AutoSize = true;
-            this.lblStatusKritis.BackColor = System.Drawing.Color.Transparent;
-            this.lblStatusKritis.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblStatusKritis.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblStatusKritis.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStatusKritis.Location = new System.Drawing.Point(12, 64);
-            this.lblStatusKritis.Text = "\u25CF  Perlu restok segera";
-
-            // ===================== CARD 4: KATEGORI (#C7EABB) =====================
-            this.cardKategori.BackColor = System.Drawing.Color.FromArgb(199, 234, 187);
-            this.cardKategori.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.cardKategori.Padding = new System.Windows.Forms.Padding(12);
-            this.cardKategori.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cardKategori.Controls.Add(this.lblKategoriLbl);
-            this.cardKategori.Controls.Add(this.lblKategoriVal);
-            this.cardKategori.Controls.Add(this.lblStatusKategori);
-
-            this.lblKategoriLbl.AutoSize = true;
-            this.lblKategoriLbl.BackColor = System.Drawing.Color.Transparent;
-            this.lblKategoriLbl.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.lblKategoriLbl.ForeColor = System.Drawing.Color.FromArgb(100, 116, 139);
-            this.lblKategoriLbl.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblKategoriLbl.Location = new System.Drawing.Point(12, 8);
-            this.lblKategoriLbl.Text = "TOTAL KATEGORI";
-
-            this.lblKategoriVal.AutoSize = true;
-            this.lblKategoriVal.BackColor = System.Drawing.Color.Transparent;
-            this.lblKategoriVal.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
-            this.lblKategoriVal.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblKategoriVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblKategoriVal.Location = new System.Drawing.Point(12, 28);
-            this.lblKategoriVal.Text = "0";
-
-            this.lblStatusKategori.AutoSize = true;
-            this.lblStatusKategori.BackColor = System.Drawing.Color.Transparent;
-            this.lblStatusKategori.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblStatusKategori.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblStatusKategori.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
-            this.lblStatusKategori.Location = new System.Drawing.Point(12, 64);
-            this.lblStatusKategori.Text = "\u25CF  Jenis produk aktif";
-
-            // ===================== NOTIFICATION TITLE =====================
-            this.lblNotifTitle.AutoSize = true;
-            this.lblNotifTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblNotifTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold);
-            this.lblNotifTitle.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblNotifTitle.Padding = new System.Windows.Forms.Padding(0, 20, 0, 8);
-            this.lblNotifTitle.Text = "  Notifikasi & Peringatan Stok";
-
-            // ===================== DATAGRIDVIEW =====================
-            this.dgvMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvMain.AllowUserToAddRows = false;
-            this.dgvMain.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvMain.BackgroundColor = System.Drawing.Color.White;
-            this.dgvMain.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMain.MultiSelect = false;
-            this.dgvMain.ReadOnly = true;
-            this.dgvMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMain.RowTemplate.Height = 36;
-
-            // ===================== DASHBOARD CONTROL =====================
-            this.Controls.Add(this.tblMaster);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(248, 250, 252);
-            this.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.Name = "DashboardControl";
-            this.Size = new System.Drawing.Size(1200, 700);
-            this.Padding = new System.Windows.Forms.Padding(24, 16, 24, 16);
-
-            this.tblMaster.ResumeLayout(false);
-            this.tblMaster.PerformLayout();
-            this.tblKPI.ResumeLayout(false);
-            this.cardTotalProduk.ResumeLayout(false);
-            this.cardTotalProduk.PerformLayout();
-            this.cardTotalStok.ResumeLayout(false);
-            this.cardTotalStok.PerformLayout();
-            this.cardStokKritis.ResumeLayout(false);
-            this.cardStokKritis.PerformLayout();
-            this.cardKategori.ResumeLayout(false);
-            this.cardKategori.PerformLayout();
-            this.pnlBanner.ResumeLayout(false);
-            this.pnlBanner.PerformLayout();
-            this.pnlBadge.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMain)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            // 
+            lblBannerDesc.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lblBannerDesc.BackColor = Color.Transparent;
+            lblBannerDesc.Font = new Font("Segoe UI", 9.5F);
+            lblBannerDesc.ForeColor = Color.FromArgb(226, 232, 240);
+            lblBannerDesc.Location = new Point(32, 76);
+            lblBannerDesc.Name = "lblBannerDesc";
+            lblBannerDesc.Size = new Size(1596, 36);
+            lblBannerDesc.TabIndex = 0;
+            lblBannerDesc.Text = "Pantau pergerakan stok obat pertanian, pupuk, pestisida, dan peralatan tani Anda secara real-time untuk produktivitas optimal.";
+            // 
+            // lblBannerTitle
+            // 
+            lblBannerTitle.AutoSize = true;
+            lblBannerTitle.BackColor = Color.Transparent;
+            lblBannerTitle.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            lblBannerTitle.ForeColor = Color.White;
+            lblBannerTitle.Location = new Point(32, 44);
+            lblBannerTitle.Name = "lblBannerTitle";
+            lblBannerTitle.Size = new Size(303, 37);
+            lblBannerTitle.TabIndex = 1;
+            lblBannerTitle.Text = "Manajemen Inventaris";
+            // 
+            // pnlBadge
+            // 
+            pnlBadge.BackColor = Color.FromArgb(48, 255, 255, 255);
+            pnlBadge.Controls.Add(lblBadge);
+            pnlBadge.Location = new Point(32, 16);
+            pnlBadge.Name = "pnlBadge";
+            pnlBadge.Size = new Size(210, 22);
+            pnlBadge.TabIndex = 2;
+            // 
+            // lblBadge
+            // 
+            lblBadge.BackColor = Color.Transparent;
+            lblBadge.Dock = DockStyle.Fill;
+            lblBadge.Font = new Font("Segoe UI Semibold", 8F, FontStyle.Bold);
+            lblBadge.ForeColor = Color.FromArgb(167, 243, 208);
+            lblBadge.Location = new Point(0, 0);
+            lblBadge.Name = "lblBadge";
+            lblBadge.Size = new Size(210, 22);
+            lblBadge.TabIndex = 0;
+            lblBadge.Text = "SISTEM MONITORING UTAMA";
+            lblBadge.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // tblKPI
+            // 
+            tblKPI.ColumnCount = 4;
+            tblKPI.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tblKPI.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tblKPI.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tblKPI.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tblKPI.Controls.Add(cardTotalProduk, 0, 0);
+            tblKPI.Controls.Add(cardTotalStok, 1, 0);
+            tblKPI.Controls.Add(cardStokKritis, 2, 0);
+            tblKPI.Controls.Add(cardKategori, 3, 0);
+            tblKPI.Dock = DockStyle.Fill;
+            tblKPI.Location = new Point(3, 133);
+            tblKPI.Name = "tblKPI";
+            tblKPI.Padding = new Padding(0, 8, 0, 0);
+            tblKPI.RowCount = 1;
+            tblKPI.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tblKPI.Size = new Size(1146, 99);
+            tblKPI.TabIndex = 1;
+            // 
+            // cardTotalProduk
+            // 
+            cardTotalProduk.BackColor = Color.FromArgb(232, 245, 189);
+            cardTotalProduk.Controls.Add(lblTotalProdukLbl);
+            cardTotalProduk.Controls.Add(lblTotalProdukVal);
+            cardTotalProduk.Controls.Add(lblStatusProduk);
+            cardTotalProduk.Dock = DockStyle.Fill;
+            cardTotalProduk.Location = new Point(6, 8);
+            cardTotalProduk.Margin = new Padding(6, 0, 6, 0);
+            cardTotalProduk.Name = "cardTotalProduk";
+            cardTotalProduk.Padding = new Padding(12);
+            cardTotalProduk.Size = new Size(274, 91);
+            cardTotalProduk.TabIndex = 0;
+            // 
+            // lblTotalProdukLbl
+            // 
+            lblTotalProdukLbl.AutoSize = true;
+            lblTotalProdukLbl.BackColor = Color.Transparent;
+            lblTotalProdukLbl.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblTotalProdukLbl.ForeColor = Color.FromArgb(100, 116, 139);
+            lblTotalProdukLbl.Location = new Point(12, 8);
+            lblTotalProdukLbl.Name = "lblTotalProdukLbl";
+            lblTotalProdukLbl.Size = new Size(104, 15);
+            lblTotalProdukLbl.TabIndex = 0;
+            lblTotalProdukLbl.Text = "JUMLAH PRODUK";
+            // 
+            // lblTotalProdukVal
+            // 
+            lblTotalProdukVal.AutoSize = true;
+            lblTotalProdukVal.BackColor = Color.Transparent;
+            lblTotalProdukVal.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+            lblTotalProdukVal.ForeColor = Color.FromArgb(30, 41, 59);
+            lblTotalProdukVal.Location = new Point(12, 28);
+            lblTotalProdukVal.Name = "lblTotalProdukVal";
+            lblTotalProdukVal.Size = new Size(35, 41);
+            lblTotalProdukVal.TabIndex = 1;
+            lblTotalProdukVal.Text = "0";
+            // 
+            // lblStatusProduk
+            // 
+            lblStatusProduk.AutoSize = true;
+            lblStatusProduk.BackColor = Color.Transparent;
+            lblStatusProduk.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
+            lblStatusProduk.ForeColor = Color.FromArgb(30, 41, 59);
+            lblStatusProduk.Location = new Point(12, 64);
+            lblStatusProduk.Name = "lblStatusProduk";
+            lblStatusProduk.Size = new Size(123, 15);
+            lblStatusProduk.TabIndex = 2;
+            lblStatusProduk.Text = "●  Aktif dalam katalog";
+            // 
+            // cardTotalStok
+            // 
+            cardTotalStok.BackColor = Color.FromArgb(199, 234, 187);
+            cardTotalStok.Controls.Add(lblTotalStokLbl);
+            cardTotalStok.Controls.Add(lblTotalStokVal);
+            cardTotalStok.Controls.Add(lblStatusStok);
+            cardTotalStok.Dock = DockStyle.Fill;
+            cardTotalStok.Location = new Point(292, 8);
+            cardTotalStok.Margin = new Padding(6, 0, 6, 0);
+            cardTotalStok.Name = "cardTotalStok";
+            cardTotalStok.Padding = new Padding(12);
+            cardTotalStok.Size = new Size(274, 91);
+            cardTotalStok.TabIndex = 1;
+            // 
+            // lblTotalStokLbl
+            // 
+            lblTotalStokLbl.AutoSize = true;
+            lblTotalStokLbl.BackColor = Color.Transparent;
+            lblTotalStokLbl.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblTotalStokLbl.ForeColor = Color.FromArgb(100, 116, 139);
+            lblTotalStokLbl.Location = new Point(12, 8);
+            lblTotalStokLbl.Name = "lblTotalStokLbl";
+            lblTotalStokLbl.Size = new Size(106, 15);
+            lblTotalStokLbl.TabIndex = 0;
+            lblTotalStokLbl.Text = "TOTAL STOK ITEM";
+            // 
+            // lblTotalStokVal
+            // 
+            lblTotalStokVal.AutoSize = true;
+            lblTotalStokVal.BackColor = Color.Transparent;
+            lblTotalStokVal.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+            lblTotalStokVal.ForeColor = Color.FromArgb(30, 41, 59);
+            lblTotalStokVal.Location = new Point(12, 28);
+            lblTotalStokVal.Name = "lblTotalStokVal";
+            lblTotalStokVal.Size = new Size(35, 41);
+            lblTotalStokVal.TabIndex = 1;
+            lblTotalStokVal.Text = "0";
+            // 
+            // lblStatusStok
+            // 
+            lblStatusStok.AutoSize = true;
+            lblStatusStok.BackColor = Color.Transparent;
+            lblStatusStok.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
+            lblStatusStok.ForeColor = Color.FromArgb(30, 41, 59);
+            lblStatusStok.Location = new Point(12, 64);
+            lblStatusStok.Name = "lblStatusStok";
+            lblStatusStok.Size = new Size(120, 15);
+            lblStatusStok.TabIndex = 2;
+            lblStatusStok.Text = "●  Tersedia di gudang";
+            // 
+            // cardStokKritis
+            // 
+            cardStokKritis.BackColor = Color.FromArgb(232, 245, 189);
+            cardStokKritis.Controls.Add(lblStokKritisLbl);
+            cardStokKritis.Controls.Add(lblStokKritisVal);
+            cardStokKritis.Controls.Add(lblStatusKritis);
+            cardStokKritis.Dock = DockStyle.Fill;
+            cardStokKritis.Location = new Point(578, 8);
+            cardStokKritis.Margin = new Padding(6, 0, 6, 0);
+            cardStokKritis.Name = "cardStokKritis";
+            cardStokKritis.Padding = new Padding(12);
+            cardStokKritis.Size = new Size(274, 91);
+            cardStokKritis.TabIndex = 2;
+            // 
+            // lblStokKritisLbl
+            // 
+            lblStokKritisLbl.AutoSize = true;
+            lblStokKritisLbl.BackColor = Color.Transparent;
+            lblStokKritisLbl.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblStokKritisLbl.ForeColor = Color.FromArgb(100, 116, 139);
+            lblStokKritisLbl.Location = new Point(12, 8);
+            lblStokKritisLbl.Name = "lblStokKritisLbl";
+            lblStokKritisLbl.Size = new Size(76, 15);
+            lblStokKritisLbl.TabIndex = 0;
+            lblStokKritisLbl.Text = "STOK KRITIS";
+            // 
+            // lblStokKritisVal
+            // 
+            lblStokKritisVal.AutoSize = true;
+            lblStokKritisVal.BackColor = Color.Transparent;
+            lblStokKritisVal.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+            lblStokKritisVal.ForeColor = Color.FromArgb(30, 41, 59);
+            lblStokKritisVal.Location = new Point(12, 28);
+            lblStokKritisVal.Name = "lblStokKritisVal";
+            lblStokKritisVal.Size = new Size(35, 41);
+            lblStokKritisVal.TabIndex = 1;
+            lblStokKritisVal.Text = "0";
+            // 
+            // lblStatusKritis
+            // 
+            lblStatusKritis.AutoSize = true;
+            lblStatusKritis.BackColor = Color.Transparent;
+            lblStatusKritis.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
+            lblStatusKritis.ForeColor = Color.FromArgb(30, 41, 59);
+            lblStatusKritis.Location = new Point(12, 64);
+            lblStatusKritis.Name = "lblStatusKritis";
+            lblStatusKritis.Size = new Size(119, 15);
+            lblStatusKritis.TabIndex = 2;
+            lblStatusKritis.Text = "●  Perlu restok segera";
+            // 
+            // cardKategori
+            // 
+            cardKategori.BackColor = Color.FromArgb(199, 234, 187);
+            cardKategori.Controls.Add(lblKategoriLbl);
+            cardKategori.Controls.Add(lblKategoriVal);
+            cardKategori.Controls.Add(lblStatusKategori);
+            cardKategori.Dock = DockStyle.Fill;
+            cardKategori.Location = new Point(864, 8);
+            cardKategori.Margin = new Padding(6, 0, 6, 0);
+            cardKategori.Name = "cardKategori";
+            cardKategori.Padding = new Padding(12);
+            cardKategori.Size = new Size(276, 91);
+            cardKategori.TabIndex = 3;
+            // 
+            // lblKategoriLbl
+            // 
+            lblKategoriLbl.AutoSize = true;
+            lblKategoriLbl.BackColor = Color.Transparent;
+            lblKategoriLbl.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            lblKategoriLbl.ForeColor = Color.FromArgb(100, 116, 139);
+            lblKategoriLbl.Location = new Point(12, 8);
+            lblKategoriLbl.Name = "lblKategoriLbl";
+            lblKategoriLbl.Size = new Size(100, 15);
+            lblKategoriLbl.TabIndex = 0;
+            lblKategoriLbl.Text = "TOTAL KATEGORI";
+            // 
+            // lblKategoriVal
+            // 
+            lblKategoriVal.AutoSize = true;
+            lblKategoriVal.BackColor = Color.Transparent;
+            lblKategoriVal.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+            lblKategoriVal.ForeColor = Color.FromArgb(30, 41, 59);
+            lblKategoriVal.Location = new Point(12, 28);
+            lblKategoriVal.Name = "lblKategoriVal";
+            lblKategoriVal.Size = new Size(35, 41);
+            lblKategoriVal.TabIndex = 1;
+            lblKategoriVal.Text = "0";
+            // 
+            // lblStatusKategori
+            // 
+            lblStatusKategori.AutoSize = true;
+            lblStatusKategori.BackColor = Color.Transparent;
+            lblStatusKategori.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
+            lblStatusKategori.ForeColor = Color.FromArgb(30, 41, 59);
+            lblStatusKategori.Location = new Point(12, 64);
+            lblStatusKategori.Name = "lblStatusKategori";
+            lblStatusKategori.Size = new Size(113, 15);
+            lblStatusKategori.TabIndex = 2;
+            lblStatusKategori.Text = "●  Jenis produk aktif";
+            // 
+            // lblNotifTitle
+            // 
+            lblNotifTitle.AutoSize = true;
+            lblNotifTitle.Dock = DockStyle.Fill;
+            lblNotifTitle.Font = new Font("Segoe UI Semibold", 13F, FontStyle.Bold);
+            lblNotifTitle.ForeColor = Color.FromArgb(30, 41, 59);
+            lblNotifTitle.Location = new Point(3, 235);
+            lblNotifTitle.Name = "lblNotifTitle";
+            lblNotifTitle.Padding = new Padding(0, 20, 0, 8);
+            lblNotifTitle.Size = new Size(1146, 53);
+            lblNotifTitle.TabIndex = 2;
+            lblNotifTitle.Text = "  Notifikasi & Peringatan Stok";
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(3, 291);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.Size = new Size(1146, 166);
+            dataGridView1.TabIndex = 3;
+            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            // 
+            // DashboardControl
+            // 
+            AutoScaleDimensions = new SizeF(8F, 17F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(248, 250, 252);
+            Controls.Add(tblMaster);
+            Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            Name = "DashboardControl";
+            Padding = new Padding(24, 16, 24, 16);
+            Size = new Size(1200, 700);
+            tblMaster.ResumeLayout(false);
+            tblMaster.PerformLayout();
+            pnlBanner.ResumeLayout(false);
+            pnlBanner.PerformLayout();
+            pnlBadge.ResumeLayout(false);
+            tblKPI.ResumeLayout(false);
+            cardTotalProduk.ResumeLayout(false);
+            cardTotalProduk.PerformLayout();
+            cardTotalStok.ResumeLayout(false);
+            cardTotalStok.PerformLayout();
+            cardStokKritis.ResumeLayout(false);
+            cardStokKritis.PerformLayout();
+            cardKategori.ResumeLayout(false);
+            cardKategori.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ResumeLayout(false);
         }
+
+        private DataGridView dataGridView1;
     }
 }

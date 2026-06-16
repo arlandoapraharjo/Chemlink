@@ -92,6 +92,38 @@ namespace CHEMLINK.Views
             dgvMain.DataSource = null;
             dgvMain.Columns.Clear();
             dgvMain.DataSource = new System.ComponentModel.BindingList<Product>(products);
+
+            // Atur ulang kolom untuk menampilkan data lengkap dari database
+            try
+            {
+                dgvMain.Columns["Id"]!.HeaderText = "ID Produk";
+                dgvMain.Columns["Name"]!.HeaderText = "Nama Produk";
+                dgvMain.Columns["Category"]!.HeaderText = "Kategori";
+                dgvMain.Columns["Description"]!.HeaderText = "Keterangan";
+                dgvMain.Columns["Price"]!.HeaderText = "Harga";
+                dgvMain.Columns["Stock"]!.HeaderText = "Stok";
+                dgvMain.Columns["ExpiryDate"]!.HeaderText = "Tanggal Expired";
+                dgvMain.Columns["SupplierName"]!.HeaderText = "Supplier";
+
+                // Sembunyikan kolom ID internal yang tidak perlu ditampilkan
+                dgvMain.Columns["CategoryId"]!.Visible = false;
+                dgvMain.Columns["SupplierId"]!.Visible = false;
+
+                // Atur lebar kolom
+                dgvMain.Columns["Id"]!.Width = 60;
+                dgvMain.Columns["Name"]!.Width = 150;
+                dgvMain.Columns["Category"]!.Width = 100;
+                dgvMain.Columns["Description"]!.Width = 150;
+                dgvMain.Columns["Price"]!.Width = 80;
+                dgvMain.Columns["Stock"]!.Width = 60;
+                dgvMain.Columns["ExpiryDate"]!.Width = 120;
+                dgvMain.Columns["SupplierName"]!.Width = 120;
+            }
+            catch
+            {
+                // Jika kolom tidak ada, lanjutkan dengan default display
+            }
+
             pnlToolbar.Visible = isAdmin;
         }
 

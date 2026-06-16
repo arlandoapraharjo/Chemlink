@@ -28,6 +28,39 @@ namespace CHEMLINK.Views
             dgvMain.DataSource = null;
             dgvMain.Columns.Clear();
             dgvMain.DataSource = new System.ComponentModel.BindingList<User>(users);
+
+            // Atur ulang kolom untuk menampilkan data lengkap dari database
+            try
+            {
+                dgvMain.Columns["Id"]!.HeaderText = "ID User";
+                dgvMain.Columns["Username"]!.HeaderText = "Username";
+                dgvMain.Columns["FullName"]!.HeaderText = "Nama Lengkap";
+                dgvMain.Columns["Role"]!.HeaderText = "Role";
+                dgvMain.Columns["Phone"]!.HeaderText = "Nomor Telepon";
+                dgvMain.Columns["Email"]!.HeaderText = "Email";
+                dgvMain.Columns["Address"]!.HeaderText = "Alamat";
+                dgvMain.Columns["District"]!.HeaderText = "Kecamatan";
+                dgvMain.Columns["Status"]!.HeaderText = "Status";
+
+                // Sembunyikan password karena tidak perlu ditampilkan
+                dgvMain.Columns["Password"]!.Visible = false;
+
+                // Atur lebar kolom
+                dgvMain.Columns["Id"]!.Width = 50;
+                dgvMain.Columns["Username"]!.Width = 80;
+                dgvMain.Columns["FullName"]!.Width = 120;
+                dgvMain.Columns["Role"]!.Width = 60;
+                dgvMain.Columns["Phone"]!.Width = 100;
+                dgvMain.Columns["Email"]!.Width = 120;
+                dgvMain.Columns["Address"]!.Width = 150;
+                dgvMain.Columns["District"]!.Width = 100;
+                dgvMain.Columns["Status"]!.Width = 70;
+            }
+            catch
+            {
+                // Jika kolom tidak ada, lanjutkan dengan default display
+            }
+
             pnlActions.Visible = isAdmin;
         }
 

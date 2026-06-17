@@ -45,14 +45,10 @@ namespace CHEMLINK.Views
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string Status
+        public bool Status
         {
-            get => cbStatus.SelectedItem?.ToString() ?? "Active";
-            set
-            {
-                int idx = cbStatus.Items.IndexOf(value);
-                cbStatus.SelectedIndex = idx >= 0 ? idx : 0;
-            }
+            get => cbStatus.SelectedIndex == 0; // 0 = "Active" = true
+            set => cbStatus.SelectedIndex = value ? 0 : 1;
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]

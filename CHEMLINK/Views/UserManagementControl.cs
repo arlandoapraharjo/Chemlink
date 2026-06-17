@@ -52,9 +52,12 @@ namespace CHEMLINK.Views
                 dgvMain.Columns["NoTelp"]!.HeaderText = "Nomor Telepon";
                 dgvMain.Columns["Email"]!.HeaderText = "Email";
                 dgvMain.Columns["Kecamatan"]!.HeaderText = "Kecamatan";
-
+                
                 // Sembunyikan kolom password
                 if (dgvMain.Columns["Password"] != null) dgvMain.Columns["Password"]!.Visible = false;
+                
+                // Format bool Status → "Active" / "Inactive"
+                dgvMain.CellFormatting += DgvMain_CellFormatting;
             }
             catch
             {
@@ -62,6 +65,15 @@ namespace CHEMLINK.Views
             }
 
             pnlToolbar.Visible = isAdmin;
+        }
+
+        private void DgvMain_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dgvMain.Columns[e.ColumnIndex].Name == "Status" && e.Value is bool b)
+            {
+                e.Value = b ? "Active" : "Inactive";
+                e.FormattingApplied = true;
+            }
         }
 
         private void BtnTambah_Click(object? sender, EventArgs e)
@@ -97,7 +109,7 @@ namespace CHEMLINK.Views
             string currentUsername = dgvMain.CurrentRow.Cells["Username"].Value?.ToString() ?? "";
             string currentRole = dgvMain.CurrentRow.Cells["Role"].Value?.ToString() ?? "Kasir";
             string currentFullName = dgvMain.CurrentRow.Cells["FullName"].Value?.ToString() ?? "";
-            string currentStatus = dgvMain.CurrentRow.Cells["Status"].Value?.ToString() ?? "Active";
+            bool currentStatus = dgvMain.CurrentRow.Cells["Status"].Value is bool b && b;
             string currentAlamat = dgvMain.CurrentRow.Cells["Alamat"].Value?.ToString() ?? "";
             string currentNoTelp = dgvMain.CurrentRow.Cells["NoTelp"].Value?.ToString() ?? "";
             string currentEmail = dgvMain.CurrentRow.Cells["Email"].Value?.ToString() ?? "";

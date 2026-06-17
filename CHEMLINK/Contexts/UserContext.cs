@@ -97,7 +97,7 @@ namespace CHEMLINK.Contexts
                         cmd.Parameters.AddWithValue("@pass", string.IsNullOrWhiteSpace(user.Password) ? (object)DBNull.Value : user.Password);
                         cmd.Parameters.AddWithValue("@role", user.Role);
                         cmd.Parameters.AddWithValue("@fullname", string.IsNullOrWhiteSpace(user.FullName) ? user.Username : user.FullName);
-                        cmd.Parameters.AddWithValue("@status", string.IsNullOrWhiteSpace(user.Status) ? "Active" : user.Status);
+                        cmd.Parameters.AddWithValue("@status", user.Status);
                         cmd.Parameters.AddWithValue("@alamat", string.IsNullOrWhiteSpace(user.Alamat) ? DBNull.Value : user.Alamat);
                         cmd.Parameters.AddWithValue("@telp", string.IsNullOrWhiteSpace(user.NoTelp) ? DBNull.Value : user.NoTelp);
                         cmd.Parameters.AddWithValue("@email", string.IsNullOrWhiteSpace(user.Email) ? DBNull.Value : user.Email);
@@ -148,7 +148,7 @@ namespace CHEMLINK.Contexts
                 Password = !dr.IsDBNull(idxPass) ? dr.GetString(idxPass) : "",
                 FullName = !dr.IsDBNull(idxFull) ? dr.GetString(idxFull) : (!dr.IsDBNull(idxUser) ? dr.GetString(idxUser) : ""),
                 Role = !dr.IsDBNull(idxRole) ? dr.GetString(idxRole) : "",
-                Status = !dr.IsDBNull(idxStat) ? dr.GetString(idxStat) : "",
+                Status = !dr.IsDBNull(idxStat) ? dr.GetBoolean(idxStat) : false,
                 Alamat = !dr.IsDBNull(idxAlamat) ? dr.GetString(idxAlamat) : "",
                 NoTelp = !dr.IsDBNull(idxTelp) ? dr.GetString(idxTelp) : "",
                 Email = !dr.IsDBNull(idxEmail) ? dr.GetString(idxEmail) : "",

@@ -37,11 +37,10 @@ CREATE TABLE Users (
     password VARCHAR(255) NOT NULL,
     Role VARCHAR(50),
     fullname VARCHAR(150),
-    status VARCHAR(50),
+    status BOOLEAN DEFAULT TRUE,
     alamat TEXT,
     no_telp VARCHAR(20) UNIQUE,
     email VARCHAR(100) UNIQUE,
-    kota VARCHAR(100),
     kecamatan VARCHAR(100)
 );
 
@@ -109,9 +108,9 @@ INSERT INTO Kategori (nama_kategori) VALUES
 ('Insektisida'),
 ('Pupuk');
 
-INSERT INTO Users (username, password, Role, fullname, status, alamat, no_telp, email, kota, kecamatan) VALUES
-('admin', 'admin123', 'Admin', 'Administrator', 'Active', 'Jl. Merdeka No.1', '08111111111', 'admin@chemlink.com', 'Surabaya', 'Gubeng'),
-('kasir', 'kasir123', 'Kasir', 'Kasir Utama', 'Active', 'Jl. Pemuda No.5', '08222222222', 'kasir@chemlink.com', 'Surabaya', 'Tegalsari');
+INSERT INTO Users (username, password, Role, fullname, status, alamat, no_telp, email, kecamatan) VALUES
+('admin', 'admin123', 'Admin', 'Administrator', TRUE, 'Jl. Merdeka No.1', '08111111111', 'admin@chemlink.com', 'Gubeng'),
+('kasir', 'kasir123', 'Kasir', 'Kasir Utama', TRUE, 'Jl. Pemuda No.5', '08222222222', 'kasir@chemlink.com', 'Tegalsari');
 
 INSERT INTO Supplier (nama_perusahaan, kontak_person, no_telp, email, alamat_supplier, kota_supplier, status) VALUES
 ('PT Agro Sentosa', 'Budi Santoso', '08123456789', 'info@agrosentosa.com', 'Jl. Raya Industri No.10', 'Surabaya', 'Active'),

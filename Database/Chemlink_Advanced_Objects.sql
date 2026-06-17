@@ -87,7 +87,7 @@ CREATE OR REPLACE VIEW v_user_aktif AS
 SELECT id_user, username, password, role, fullname, status,
        alamat, no_telp, email, kecamatan
 FROM Users
-WHERE status = 'Active'
+WHERE status = TRUE
 ORDER BY id_user ASC;
 
 -- Full supplier listing
@@ -169,7 +169,7 @@ RETURNS TABLE (
     password TEXT,
     role TEXT,
     fullname TEXT,
-    status TEXT,
+    status BOOLEAN,
     alamat TEXT,
     no_telp TEXT,
     email TEXT,
@@ -178,9 +178,9 @@ RETURNS TABLE (
 BEGIN
     RETURN QUERY
     SELECT u.id_user, u.username::TEXT, u.password::TEXT, u.role::TEXT, u.fullname::TEXT,
-           u.status::TEXT, u.alamat, u.no_telp::TEXT, u.email::TEXT, u.kecamatan::TEXT
+           u.status, u.alamat, u.no_telp::TEXT, u.email::TEXT, u.kecamatan::TEXT
     FROM Users u
-    WHERE u.username = p_username AND u.status = 'Active';
+    WHERE u.username = p_username AND u.status = TRUE;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -341,7 +341,7 @@ BEGIN
     -- Check if an inactive user with the same username exists
     SELECT id_user INTO v_existing_id
     FROM Users
-    WHERE username = p_username AND status = 'Inactive'
+    WHERE username = p_username AND status = FALSE
     LIMIT 1;
 
     IF v_existing_id IS NOT NULL THEN
@@ -350,7 +350,7 @@ BEGIN
         SET password = p_password,
             role = p_role,
             fullname = COALESCE(p_fullname, p_username),
-            status = 'Active',
+            status = TRUE,
             alamat = p_alamat,
             no_telp = p_no_telp,
             email = p_email,
@@ -363,7 +363,7 @@ BEGIN
         INSERT INTO Users (username, password, role, fullname, status,
                            alamat, kecamatan, no_telp, email)
         VALUES (p_username, p_password, p_role,
-                COALESCE(p_fullname, p_username), 'Active',
+                COALESCE(p_fullname, p_username), TRUE,
                 p_alamat, p_kecamatan, p_no_telp, p_email)
         RETURNING id_user INTO v_id_user;
     END IF;
@@ -379,7 +379,7 @@ CREATE OR REPLACE PROCEDURE sp_update_user(
     p_password TEXT,
     p_role TEXT,
     p_fullname TEXT,
-    p_status TEXT,
+    p_status BOOLEAN,
     p_alamat TEXT,
     p_no_telp TEXT,
     p_email TEXT,
@@ -435,14 +435,14 @@ BEGIN
     IF v_role = 'Admin' THEN
         SELECT COUNT(*) INTO v_admin_count
         FROM Users
-        WHERE role = 'Admin' AND status = 'Active';
+        WHERE role = 'Admin' AND status = TRUE;
 
         IF v_admin_count <= 1 THEN
             RETURN FALSE;
         END IF;
     END IF;
 
-    UPDATE Users SET status = 'Inactive' WHERE id_user = p_id_user;
+    UPDATE Users SET status = FALSE WHERE id_user = p_id_user;
     RETURN TRUE;
 END;
 $$;
@@ -564,7 +564,7 @@ BEGIN
         RAISE EXCEPTION 'Produk dengan id % tidak ditemukan.', p_id_produk;
     END IF;
 
-    IF NOT EXISTS (SELECT 1 FROM Users WHERE id_user = p_id_kasir AND role IN ('Kasir', 'Admin') AND status = 'Active') THEN
+    IF NOT EXISTS (SELECT 1 FROM Users WHERE id_user = p_id_kasir AND role IN ('Kasir', 'Admin') AND status = TRUE) THEN
         RAISE EXCEPTION 'Kasir/Admin dengan id % tidak ditemukan.', p_id_kasir;
     END IF;
 

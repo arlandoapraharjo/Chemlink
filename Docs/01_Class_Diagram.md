@@ -4,14 +4,17 @@
 classDiagram
     direction TB
 
-    %% ============ MODELS ============
+    %% ================================================================
+    %%  MODELS
+    %% ================================================================
+
     class User {
         +int Id
         +string Username
         +string Password
         +string Role
         +string FullName
-        +string Status
+        +bool Status
         +string Alamat
         +string NoTelp
         +string Email
@@ -39,6 +42,7 @@ classDiagram
     }
 
     class CartItemEventArgs {
+        <<EventArgs>>
         +Product SelectedProduct
         +int Qty
     }
@@ -65,7 +69,142 @@ classDiagram
         +int JumlahStock
     }
 
-    %% ============ CONTROLLERS ============
+    %% ================================================================
+    %%  VIEWS  (WinForms — Form & UserControl)
+    %% ================================================================
+
+    class LoginForm {
+        <<Form>>
+        +string Username
+        +string Password
+        +event LoginAttemptEvent
+        +CloseView()
+        +ShowError(string)
+    }
+
+    class MainForm {
+        <<Form>>
+        +event ShowDashboardEvent
+        +event ShowProductEvent
+        +event ShowTransactionEvent
+        +event ShowSupplierEvent
+        +event ShowReportEvent
+        +event ShowUserManagementEvent
+        +event LogoutEvent
+        +event AddProductEvent
+        +event EditProductEvent
+        +event DeleteProductEvent
+        +event ManageCategoryEvent
+        +event AddCartEvent
+        +event DeleteCartEvent
+        +event CheckoutEvent
+        +event SearchProductEvent
+        +event FilterCategoryEvent
+        +event AddSupplierEvent
+        +event UpdateSupplierEvent
+        +event DeleteSupplierEvent
+        +event AddUserEvent
+        +event UpdateUserEvent
+        +event DeleteUserEvent
+        +SetActiveUser(string, string)
+        +ApplyRoleRestrictions(bool)
+        +ShowDashboardData(List~Product~, DataTable, DataTable)
+        +ShowPOS(List~Product~, List~CartItem~)
+        +ShowProductCatalog(List~Product~, bool, List~Category~)
+        +ShowSupplierManagement(List~Supplier~)
+        +ShowFinancialReport(DataTable, DataTable)
+        +ShowUserManagement(List~User~, bool)
+        +PrintReceipt(string)
+        +ShowMessage(string)
+    }
+
+    class ProductForm {
+        <<Form>>
+        +int ProductId
+        +string ProductName
+        +string CategoryName
+        +int CategoryId
+        +string SupplierName
+        +int SupplierId
+        +int Stock
+        +decimal Price
+        +string Description
+        +ProductForm(List~Product~, List~Category~, List~Supplier~, Product)
+    }
+
+    class ManageCategoryForm {
+        <<Form>>
+        +event AddCategoryEvent
+        +event UpdateCategoryEvent
+        +event DeleteCategoryEvent
+        +LoadCategories(List~Category~)
+    }
+
+    class AddSupplierForm {
+        <<Form>>
+        +Supplier NewSupplier
+    }
+
+    class EditSupplierDialog {
+        <<Form>>
+        +Supplier UpdatedSupplier
+    }
+
+    class UserForm {
+        <<Form>>
+        +User NewUser
+    }
+
+    class DashboardControl {
+        <<UserControl>>
+        +SetData(List~Product~, DataTable, DataTable)
+    }
+
+    class ProductCatalogControl {
+        <<UserControl>>
+        +event AddProductEvent
+        +event EditProductEvent
+        +event DeleteProductEvent
+        +event ManageCategoryEvent
+        +SetData(List~Product~, bool)
+        +SetCategories(List~Category~)
+    }
+
+    class POSControl {
+        <<UserControl>>
+        +event AddCartEvent
+        +event DeleteCartEvent
+        +event CheckoutEvent
+        +event SearchProductEvent
+        +event FilterCategoryEvent
+        +SetData(List~Product~, List~CartItem~)
+    }
+
+    class SupplierManagementControl {
+        <<UserControl>>
+        +event AddSupplierEvent
+        +event UpdateSupplierEvent
+        +event DeleteSupplierEvent
+        +SetData(List~Supplier~)
+    }
+
+    class FinancialReportControl {
+        <<UserControl>>
+        +SetData(DataTable, DataTable)
+    }
+
+    class UserManagementControl {
+        <<UserControl>>
+        +event AddUserEvent
+        +event UpdateUserEvent
+        +event DeleteUserEvent
+        +SetData(List~User~, bool)
+    }
+
+    %% ================================================================
+    %%  CONTROLLERS
+    %% ================================================================
+
     class LoginController {
         -LoginForm _view
         +User AuthenticatedUser
@@ -147,11 +286,14 @@ classDiagram
         -HandleDeleteUser(sender, int)
     }
 
-    %% ============ CONTEXTS (DATA ACCESS) ============
+    %% ================================================================
+    %%  CONTEXTS  (Data Access Layer)
+    %% ================================================================
+
     class ProductContext {
         +Read() List~Product~
-        +Create(string, int, int, decimal, string, int)
-        +Update(int, string, int, int, decimal, string)
+        +Create(string, int, int, decimal, string, int, int)
+        +Update(int, string, int, int, decimal, string, int)
         +Delete(int)
         +GetCriticalStockTable() DataTable
         +ReadCriticalStock() List~StockKritis~
@@ -189,15 +331,22 @@ classDiagram
         +Delete(int)
     }
 
-    %% ============ HELPERS ============
+    %% ================================================================
+    %%  HELPERS
+    %% ================================================================
+
     class ConnectDB {
+        <<static>>
         -string connString$
         +GetConn()$ NpgsqlConnection
         +UpdateDatabaseObjects()$
         -FindSqlFile()$ string
     }
 
-    %% ============ DATABASE OBJECTS ============
+    %% ================================================================
+    %%  DATABASE OBJECTS  (PostgreSQL)
+    %% ================================================================
+
     class DBViews {
         <<PostgreSQL Views>>
         v_detail_produk
@@ -216,22 +365,21 @@ classDiagram
         fn_hitung_total_pesanan(id_selling)
         fn_cek_ketersediaan_stok(id_produk, jumlah)
         fn_get_harga_produk(id_produk)
+        fn_hapus_user(id_user)
     }
 
     class DBProcedures {
         <<PostgreSQL Stored Procedures>>
-        sp_tambah_produk_baru(...)
-        sp_update_produk(...)
+        sp_tambah_produk_baru(nama, harga, ket, idKat, idSup, idUser, stok)
+        sp_update_produk(id, nama, idKat, harga, ket, stok, idSup)
         sp_hapus_produk(id_produk)
         sp_checkout(tgl, ket, kasir, prods, qtys)
-        sp_tambah_user(...)
-        sp_update_user(...)
-        sp_hapus_user(id_user)
+        sp_tambah_user(user, pass, role, fullname, alamat, kec, telp, email)
+        sp_update_user(id, user, pass, role, fullname, status, alamat, telp, email, kec)
         sp_kategori_create / update / delete
-        sp_tambah_supplier(...)
-        sp_supplier_update(...)
+        sp_tambah_supplier(nama, kontak, telp, email, alamat, kota)
+        sp_supplier_update(id, nama, kontak, telp, email, alamat, kota, status)
         sp_supplier_delete(id_supplier)
-        sp_transaksi_selling(...)
     }
 
     class DBTriggers {
@@ -241,57 +389,16 @@ classDiagram
         fn_trg_produk_name_change()
     }
 
-    %% ============ VIEWS (WINFORMS) ============
-    class LoginForm {
-        +string Username
-        +string Password
-        +event LoginAttemptEvent
-        +CloseView()
-        +ShowError(string)
-    }
+    %% ================================================================
+    %%  RELATIONSHIPS
+    %% ================================================================
 
-    class MainForm {
-        +event ShowDashboardEvent
-        +event ShowProductEvent
-        +event ShowTransactionEvent
-        +event ShowSupplierEvent
-        +event ShowReportEvent
-        +event ShowUserManagementEvent
-        +event AddProductEvent
-        +event EditProductEvent
-        +event DeleteProductEvent
-        +event ManageCategoryEvent
-        +event AddCartEvent
-        +event DeleteCartEvent
-        +event CheckoutEvent
-        +event SearchProductEvent
-        +event FilterCategoryEvent
-        +event AddSupplierEvent
-        +event UpdateSupplierEvent
-        +event DeleteSupplierEvent
-        +event AddUserEvent
-        +event UpdateUserEvent
-        +event DeleteUserEvent
-        +SetActiveUser(string, string)
-        +ApplyRoleRestrictions(bool)
-        +ShowDashboardData(List~Product~, DataTable, DataTable)
-        +ShowPOS(List~Product~, List~CartItem~)
-        +ShowProductCatalog(List~Product~, bool, List~Category~)
-        +ShowSupplierManagement(List~Supplier~)
-        +ShowFinancialReport(DataTable, DataTable)
-        +ShowUserManagement(List~User~, bool)
-        +PrintReceipt(string)
-        +ShowMessage(string)
-    }
-
-    %% ============ RELATIONSHIPS ============
-
-    %% LoginController dependencies
+    %% ── LoginController ──
     LoginController --> LoginForm : controls
     LoginController --> UserContext : uses
     LoginController --> User : produces
 
-    %% MainController (coordinator) dependencies
+    %% ── MainController (coordinator) ──
     MainController --> MainForm : controls
     MainController --> ProductContext : uses
     MainController --> OrderContext : uses
@@ -300,61 +407,94 @@ classDiagram
     MainController --> SupplierController : creates
     MainController --> UserController : creates
 
-    %% ProductController dependencies
+    %% ── ProductController ──
     ProductController --> MainForm : subscribes to events
     ProductController --> ProductContext : uses
     ProductController --> CategoryContext : uses
     ProductController --> Product : manages
     ProductController --> Category : manages
 
-    %% OrderController dependencies
+    %% ── OrderController ──
     OrderController --> MainForm : subscribes to events
     OrderController --> ProductContext : uses
     OrderController --> OrderContext : uses
     OrderController --> CartItem : manages
     OrderController --> Product : reads
 
-    %% SupplierController dependencies
+    %% ── SupplierController ──
     SupplierController --> MainForm : subscribes to events
     SupplierController --> SupplierContext : uses
     SupplierController --> Supplier : manages
 
-    %% UserController dependencies
+    %% ── UserController ──
     UserController --> MainForm : subscribes to events
     UserController --> UserContext : uses
     UserController --> User : manages
 
-    %% Context → ConnectDB
+    %% ── MainForm ↔ UserControl event wiring ──
+    MainForm --> DashboardControl : hosts
+    MainForm --> ProductCatalogControl : hosts
+    MainForm --> POSControl : hosts
+    MainForm --> SupplierManagementControl : hosts
+    MainForm --> FinancialReportControl : hosts
+    MainForm --> UserManagementControl : hosts
+
+    %% ── UserControl → Dialog Forms ──
+    ProductCatalogControl --> ProductForm : opens
+    ProductCatalogControl --> ManageCategoryForm : opens
+    SupplierManagementControl --> AddSupplierForm : opens
+    SupplierManagementControl --> EditSupplierDialog : opens
+    UserManagementControl --> UserForm : opens
+
+    %% ── Context → ConnectDB ──
     ProductContext --> ConnectDB : uses
     UserContext --> ConnectDB : uses
     OrderContext --> ConnectDB : uses
     SupplierContext --> ConnectDB : uses
     CategoryContext --> ConnectDB : uses
 
-    %% Context → DB Views (read operations)
+    %% ── Context → DB Views (read) ──
     ProductContext --> DBViews : v_detail_produk, v_stok_kritis
     UserContext --> DBViews : v_user_aktif
     OrderContext --> DBViews : v_laporan_keuangan, v_log_stok, v_penjualan_per_kategori
     SupplierContext --> DBViews : v_supplier
     CategoryContext --> DBViews : v_kategori
 
-    %% Context → DB Functions (query operations)
-    UserContext --> DBFunctions : fn_autentikasi_user
+    %% ── Context → DB Functions (query) ──
+    UserContext --> DBFunctions : fn_autentikasi_user, fn_hapus_user
 
-    %% Context → DB Procedures (write operations)
+    %% ── Context → DB Procedures (write) ──
     ProductContext --> DBProcedures : sp_tambah/update/hapus_produk
     OrderContext --> DBProcedures : sp_checkout
-    UserContext --> DBProcedures : sp_tambah/update/hapus_user
+    UserContext --> DBProcedures : sp_tambah/update_user
     CategoryContext --> DBProcedures : sp_kategori_create/update/delete
     SupplierContext --> DBProcedures : sp_tambah/update/hapus_supplier
 
-    %% DB Procedures → DB Triggers (auto-fired)
+    %% ── DB Procedures → DB Triggers ──
     DBProcedures --> DBTriggers : fires on DML
     DBViews --> DBTriggers : fn_trg_produk_name_change cascades
 
-    %% Model associations
+    %% ── Model associations ──
     CartItemEventArgs --> Product : references
     CartItem ..> Product : ProductId maps to
     Product --> Category : CategoryId
     Product --> Supplier : SupplierId
+    ProductForm --> Category : binds cbKategori
+    ProductForm --> Supplier : binds cbSupplier
 ```
+
+---
+
+## Relasi Utama Arsitektur
+
+| Pola | Keterangan |
+|---|---|
+| **MVC Flow** | `Program → LoginForm/LoginController → MainForm/MainController` |
+| **Koordinator** | `MainController` membuat `ProductController`, `OrderController`, `SupplierController`, `UserController` |
+| **Event Wiring** | UserControl → MainForm events → Controller handlers → Context → Database |
+| **Inheritance** | `Form ← MainForm, LoginForm, ProductForm, ManageCategoryForm, AddSupplierForm, EditSupplierDialog, UserForm` · `UserControl ← DashboardControl, ProductCatalogControl, POSControl, SupplierManagementControl, FinancialReportControl, UserManagementControl` |
+| **Polymorphism** | Setiap controller override handler event masing-masing (HandleAdd/Edit/Delete) |
+| **Encapsulation** | Field private readonly di Controller dan Context; property model membungkus data domain |
+| **Database Abstraction** | Context memanggil Views (read), Procedures (write), Functions (query/auth) — tidak ada SQL langsung di Controller atau View |
+| **Trigger Automation** | `fn_trg_selling_detail` auto-decrement stok + log OUT · `fn_trg_stocks_update` auto-log IN saat stok > 0 · `fn_trg_produk_name_change` cascade nama ke log_stok |
+| **Last-Admin Protection** | `fn_hapus_user()` mengembalikan BOOLEAN — mencegah penghapusan admin terakhir |

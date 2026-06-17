@@ -59,6 +59,12 @@ classDiagram
         +string Name
     }
 
+    class StockKritis {
+        +int IdProduk
+        +string NamaProduk
+        +int JumlahStock
+    }
+
     %% ============ CONTROLLERS ============
     class LoginController {
         -LoginForm _view
@@ -67,42 +73,78 @@ classDiagram
         -HandleLogin(sender, e)
     }
 
-    class UserController {
+    class MainController {
         -MainForm _view
         -User _currentUser
         -List~Product~ _products
-        -List~Supplier~ _suppliers
-        -List~User~ _users
-        -List~Category~ _categories
-        -List~CartItem~ _cart
         -ProductContext _productContext
-        -SupplierContext _supplierContext
-        -UserContext _userContext
         -OrderContext _orderContext
-        -CategoryContext _categoryContext
-        +UserController(MainForm view, User user)
+        -ProductController _productController
+        -OrderController _orderController
+        -SupplierController _supplierController
+        -UserController _userController
+        +MainController(MainForm view, User user)
         -ShowDashboard()
-        -ShowProductCatalog()
-        -ShowPOS()
-        -ShowSupplierManagement()
-        -ShowFinancialReport()
-        -ShowUserManagement()
+    }
+
+    class ProductController {
+        -MainForm _view
+        -User _currentUser
+        -List~Product~ _products
+        -List~Category~ _categories
+        -ProductContext _productContext
+        -CategoryContext _categoryContext
+        +ProductController(MainForm view, User user)
+        +ShowProductCatalog()
         -HandleAddProduct(sender, Product)
         -HandleEditProduct(sender, Product)
         -HandleDeleteProduct(sender, int)
+        -HandleManageCategory(sender, EventArgs)
+    }
+
+    class OrderController {
+        -MainForm _view
+        -User _currentUser
+        -List~Product~ _products
+        -List~CartItem~ _cart
+        -string _currentCategoryFilter
+        -string _currentSearchQuery
+        -ProductContext _productContext
+        -OrderContext _orderContext
+        +OrderController(MainForm view, User user)
+        +ShowPOS()
+        +ShowFinancialReport()
+        -GetDisplayProducts(IEnumerable~Product~) List~Product~
+        -ApplyPOSFilters()
+        -HandleFilterCategory(sender, string)
+        -HandleSearchProduct(sender, string)
         -HandleAddCart(sender, CartItemEventArgs)
         -HandleDeleteCart(sender, CartItem)
         -HandleCheckout(sender, EventArgs)
+    }
+
+    class SupplierController {
+        -MainForm _view
+        -User _currentUser
+        -List~Supplier~ _suppliers
+        -SupplierContext _supplierContext
+        +SupplierController(MainForm view, User user)
+        +ShowSupplierManagement()
         -HandleAddSupplier(sender, Supplier)
         -HandleUpdateSupplier(sender, Supplier)
         -HandleDeleteSupplier(sender, int)
+    }
+
+    class UserController {
+        -MainForm _view
+        -User _currentUser
+        -List~User~ _users
+        -UserContext _userContext
+        +UserController(MainForm view, User user)
+        +ShowUserManagement()
         -HandleAddUser(sender, User)
         -HandleUpdateUser(sender, User)
         -HandleDeleteUser(sender, int)
-        -HandleAddCategory(sender, string)
-        -HandleUpdateCategory(sender, Category)
-        -HandleDeleteCategory(sender, int)
-        -GetDisplayProducts(IEnumerable~Product~) List~Product~
     }
 
     %% ============ CONTEXTS (DATA ACCESS) ============
@@ -122,7 +164,6 @@ classDiagram
         +Update(User)
         +Delete(int) bool
         -MapUser(NpgsqlDataReader) User
-        -AddDetailParams(NpgsqlCommand, User)
     }
 
     class OrderContext {
@@ -156,7 +197,51 @@ classDiagram
         -FindSqlFile()$ string
     }
 
-    %% ============ VIEWS ============
+    %% ============ DATABASE OBJECTS ============
+    class DBViews {
+        <<PostgreSQL Views>>
+        v_detail_produk
+        v_stok_kritis
+        v_laporan_keuangan
+        v_log_stok
+        v_user_aktif
+        v_supplier
+        v_kategori
+        v_penjualan_per_kategori
+    }
+
+    class DBFunctions {
+        <<PostgreSQL Functions>>
+        fn_autentikasi_user(username)
+        fn_hitung_total_pesanan(id_selling)
+        fn_cek_ketersediaan_stok(id_produk, jumlah)
+        fn_get_harga_produk(id_produk)
+    }
+
+    class DBProcedures {
+        <<PostgreSQL Stored Procedures>>
+        sp_tambah_produk_baru(...)
+        sp_update_produk(...)
+        sp_hapus_produk(id_produk)
+        sp_checkout(tgl, ket, kasir, prods, qtys)
+        sp_tambah_user(...)
+        sp_update_user(...)
+        sp_hapus_user(id_user)
+        sp_kategori_create / update / delete
+        sp_tambah_supplier(...)
+        sp_supplier_update(...)
+        sp_supplier_delete(id_supplier)
+        sp_transaksi_selling(...)
+    }
+
+    class DBTriggers {
+        <<PostgreSQL Triggers>>
+        fn_trg_selling_detail()
+        fn_trg_stocks_update()
+        fn_trg_produk_name_change()
+    }
+
+    %% ============ VIEWS (WINFORMS) ============
     class LoginForm {
         +string Username
         +string Password
@@ -175,9 +260,12 @@ classDiagram
         +event AddProductEvent
         +event EditProductEvent
         +event DeleteProductEvent
+        +event ManageCategoryEvent
         +event AddCartEvent
         +event DeleteCartEvent
         +event CheckoutEvent
+        +event SearchProductEvent
+        +event FilterCategoryEvent
         +event AddSupplierEvent
         +event UpdateSupplierEvent
         +event DeleteSupplierEvent
@@ -198,34 +286,71 @@ classDiagram
 
     %% ============ RELATIONSHIPS ============
 
-    %% Controller dependencies
+    %% LoginController dependencies
     LoginController --> LoginForm : controls
     LoginController --> UserContext : uses
     LoginController --> User : produces
 
-    UserController --> MainForm : controls
-    UserController --> ProductContext : uses
-    UserController --> UserContext : uses
-    UserController --> OrderContext : uses
-    UserController --> SupplierContext : uses
-    UserController --> CategoryContext : uses
-    UserController --> User : owns
-    UserController --> Product : manages
-    UserController --> CartItem : manages
-    UserController --> Supplier : manages
-    UserController --> Category : manages
+    %% MainController (coordinator) dependencies
+    MainController --> MainForm : controls
+    MainController --> ProductContext : uses
+    MainController --> OrderContext : uses
+    MainController --> ProductController : creates
+    MainController --> OrderController : creates
+    MainController --> SupplierController : creates
+    MainController --> UserController : creates
 
-    %% Context dependencies
-    ProductContext --> Product : creates
+    %% ProductController dependencies
+    ProductController --> MainForm : subscribes to events
+    ProductController --> ProductContext : uses
+    ProductController --> CategoryContext : uses
+    ProductController --> Product : manages
+    ProductController --> Category : manages
+
+    %% OrderController dependencies
+    OrderController --> MainForm : subscribes to events
+    OrderController --> ProductContext : uses
+    OrderController --> OrderContext : uses
+    OrderController --> CartItem : manages
+    OrderController --> Product : reads
+
+    %% SupplierController dependencies
+    SupplierController --> MainForm : subscribes to events
+    SupplierController --> SupplierContext : uses
+    SupplierController --> Supplier : manages
+
+    %% UserController dependencies
+    UserController --> MainForm : subscribes to events
+    UserController --> UserContext : uses
+    UserController --> User : manages
+
+    %% Context → ConnectDB
     ProductContext --> ConnectDB : uses
-    UserContext --> User : creates
     UserContext --> ConnectDB : uses
-    OrderContext --> CartItem : reads
     OrderContext --> ConnectDB : uses
-    SupplierContext --> Supplier : creates
     SupplierContext --> ConnectDB : uses
-    CategoryContext --> Category : creates
     CategoryContext --> ConnectDB : uses
+
+    %% Context → DB Views (read operations)
+    ProductContext --> DBViews : v_detail_produk, v_stok_kritis
+    UserContext --> DBViews : v_user_aktif
+    OrderContext --> DBViews : v_laporan_keuangan, v_log_stok, v_penjualan_per_kategori
+    SupplierContext --> DBViews : v_supplier
+    CategoryContext --> DBViews : v_kategori
+
+    %% Context → DB Functions (query operations)
+    UserContext --> DBFunctions : fn_autentikasi_user
+
+    %% Context → DB Procedures (write operations)
+    ProductContext --> DBProcedures : sp_tambah/update/hapus_produk
+    OrderContext --> DBProcedures : sp_checkout
+    UserContext --> DBProcedures : sp_tambah/update/hapus_user
+    CategoryContext --> DBProcedures : sp_kategori_create/update/delete
+    SupplierContext --> DBProcedures : sp_tambah/update/hapus_supplier
+
+    %% DB Procedures → DB Triggers (auto-fired)
+    DBProcedures --> DBTriggers : fires on DML
+    DBViews --> DBTriggers : fn_trg_produk_name_change cascades
 
     %% Model associations
     CartItemEventArgs --> Product : references

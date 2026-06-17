@@ -11,6 +11,8 @@ namespace CHEMLINK.Views
         public System.Windows.Forms.TextBox txtNama;
         private System.Windows.Forms.Label lblKategori;
         public System.Windows.Forms.ComboBox cbKategori;
+        private System.Windows.Forms.Label lblSupplier;
+        public System.Windows.Forms.ComboBox cbSupplier;
         private System.Windows.Forms.Label lblStok;
         public System.Windows.Forms.TextBox txtStok;
         private System.Windows.Forms.Label lblHarga;
@@ -38,6 +40,8 @@ namespace CHEMLINK.Views
             this.txtNama = new System.Windows.Forms.TextBox();
             this.lblKategori = new System.Windows.Forms.Label();
             this.cbKategori = new System.Windows.Forms.ComboBox();
+            this.lblSupplier = new System.Windows.Forms.Label();
+            this.cbSupplier = new System.Windows.Forms.ComboBox();
             this.lblStok = new System.Windows.Forms.Label();
             this.txtStok = new System.Windows.Forms.TextBox();
             this.lblHarga = new System.Windows.Forms.Label();
@@ -86,6 +90,8 @@ namespace CHEMLINK.Views
             this.pnlLeft.Controls.Add(this.txtNama);
             this.pnlLeft.Controls.Add(this.lblKategori);
             this.pnlLeft.Controls.Add(this.cbKategori);
+            this.pnlLeft.Controls.Add(this.lblSupplier);
+            this.pnlLeft.Controls.Add(this.cbSupplier);
             this.pnlLeft.Controls.Add(this.lblStok);
             this.pnlLeft.Controls.Add(this.txtStok);
             this.pnlLeft.Controls.Add(this.lblHarga);
@@ -135,11 +141,29 @@ namespace CHEMLINK.Views
             this.cbKategori.Size = new System.Drawing.Size(260, 25);
             this.cbKategori.TabIndex = 3;
             // 
+            // lblSupplier
+            // 
+            this.lblSupplier.AutoSize = true;
+            this.lblSupplier.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblSupplier.Location = new System.Drawing.Point(20, 115);
+            this.lblSupplier.Name = "lblSupplier";
+            this.lblSupplier.Size = new System.Drawing.Size(60, 17);
+            this.lblSupplier.TabIndex = 10;
+            this.lblSupplier.Text = "Supplier";
+            // 
+            // cbSupplier
+            // 
+            this.cbSupplier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSupplier.Location = new System.Drawing.Point(20, 135);
+            this.cbSupplier.Name = "cbSupplier";
+            this.cbSupplier.Size = new System.Drawing.Size(260, 25);
+            this.cbSupplier.TabIndex = 11;
+            // 
             // lblStok
             // 
             this.lblStok.AutoSize = true;
             this.lblStok.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblStok.Location = new System.Drawing.Point(20, 115);
+            this.lblStok.Location = new System.Drawing.Point(20, 165);
             this.lblStok.Name = "lblStok";
             this.lblStok.Size = new System.Drawing.Size(35, 17);
             this.lblStok.TabIndex = 4;
@@ -147,7 +171,7 @@ namespace CHEMLINK.Views
             // 
             // txtStok
             // 
-            this.txtStok.Location = new System.Drawing.Point(20, 135);
+            this.txtStok.Location = new System.Drawing.Point(20, 185);
             this.txtStok.Name = "txtStok";
             this.txtStok.PlaceholderText = "Jumlah stok";
             this.txtStok.Size = new System.Drawing.Size(260, 25);
@@ -157,7 +181,7 @@ namespace CHEMLINK.Views
             // 
             this.lblHarga.AutoSize = true;
             this.lblHarga.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblHarga.Location = new System.Drawing.Point(20, 165);
+            this.lblHarga.Location = new System.Drawing.Point(20, 215);
             this.lblHarga.Name = "lblHarga";
             this.lblHarga.Size = new System.Drawing.Size(45, 17);
             this.lblHarga.TabIndex = 6;
@@ -165,7 +189,7 @@ namespace CHEMLINK.Views
             // 
             // txtHarga
             // 
-            this.txtHarga.Location = new System.Drawing.Point(20, 185);
+            this.txtHarga.Location = new System.Drawing.Point(20, 235);
             this.txtHarga.Name = "txtHarga";
             this.txtHarga.PlaceholderText = "Harga satuan (Rp)";
             this.txtHarga.Size = new System.Drawing.Size(260, 25);
@@ -175,7 +199,7 @@ namespace CHEMLINK.Views
             // 
             this.lblKeterangan.AutoSize = true;
             this.lblKeterangan.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblKeterangan.Location = new System.Drawing.Point(20, 215);
+            this.lblKeterangan.Location = new System.Drawing.Point(20, 265);
             this.lblKeterangan.Name = "lblKeterangan";
             this.lblKeterangan.Size = new System.Drawing.Size(75, 17);
             this.lblKeterangan.TabIndex = 8;
@@ -183,7 +207,7 @@ namespace CHEMLINK.Views
             // 
             // txtKeterangan
             // 
-            this.txtKeterangan.Location = new System.Drawing.Point(20, 235);
+            this.txtKeterangan.Location = new System.Drawing.Point(20, 285);
             this.txtKeterangan.Name = "txtKeterangan";
             this.txtKeterangan.PlaceholderText = "Keterangan produk";
             this.txtKeterangan.Size = new System.Drawing.Size(260, 45);

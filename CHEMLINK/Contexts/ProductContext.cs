@@ -54,7 +54,7 @@ namespace CHEMLINK.Contexts
             return listproduct;
         }
 
-        public void Create(string nama, int idKategori, int stok, decimal harga, string keterangan = "", int idUser = 1)
+        public void Create(string nama, int idKategori, int stok, decimal harga, string keterangan = "", int idUser = 1, int idSupplier = 1)
         {
             using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
@@ -69,7 +69,7 @@ namespace CHEMLINK.Contexts
                         cmd.Parameters.AddWithValue("@harga", (int)harga);
                         cmd.Parameters.AddWithValue("@keterangan", string.IsNullOrWhiteSpace(keterangan) ? "" : keterangan);
                         cmd.Parameters.AddWithValue("@idKat", idKategori);
-                        cmd.Parameters.AddWithValue("@idSup", 1); // Default supplier ID 1
+                        cmd.Parameters.AddWithValue("@idSup", idSupplier);
                         cmd.Parameters.AddWithValue("@idUser", idUser);
                         cmd.Parameters.AddWithValue("@stok", stok);
                         cmd.ExecuteNonQuery();
@@ -78,7 +78,7 @@ namespace CHEMLINK.Contexts
             }
         }
 
-        public void Update(int id, string nama, int idKategori, int stok, decimal harga, string keterangan = "")
+        public void Update(int id, string nama, int idKategori, int stok, decimal harga, string keterangan = "", int idSupplier = 1)
         {
             using (NpgsqlConnection? conn = ConnectDB.GetConn())
             {
@@ -86,7 +86,7 @@ namespace CHEMLINK.Contexts
                 {
                     // Update product details + stock via stored procedure
                     // (trigger fn_trg_produk_name_change auto-cascades name to log_stok)
-                    string sql = "CALL sp_update_produk(@id, @nama, @idKat, @harga, @keterangan, @stok)";
+                    string sql = "CALL sp_update_produk(@id, @nama, @idKat, @harga, @keterangan, @stok, @idSup)";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
@@ -95,6 +95,7 @@ namespace CHEMLINK.Contexts
                         cmd.Parameters.AddWithValue("@harga", (int)harga);
                         cmd.Parameters.AddWithValue("@keterangan", string.IsNullOrWhiteSpace(keterangan) ? "" : keterangan);
                         cmd.Parameters.AddWithValue("@stok", stok);
+                        cmd.Parameters.AddWithValue("@idSup", idSupplier);
                         cmd.ExecuteNonQuery();
                     }
                 }

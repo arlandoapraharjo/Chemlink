@@ -114,18 +114,13 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    // Stored procedure handles last-admin protection internally
-                    string sql = "CALL sp_hapus_user(@id)";
+                    // Function handles last-admin protection internally, returns BOOLEAN
+                    string sql = "SELECT fn_hapus_user(@id)";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
-                        using (NpgsqlDataReader dr = cmd.ExecuteReader())
-                        {
-                            if (dr.Read())
-                            {
-                                return Convert.ToBoolean(dr[0]);
-                            }
-                        }
+                        var result = cmd.ExecuteScalar();
+                        return result != null && Convert.ToBoolean(result);
                     }
                 }
             }

@@ -22,16 +22,12 @@ namespace CHEMLINK.Views
         private System.Windows.Forms.Panel cardBestMonth;
         private System.Windows.Forms.Label lblOmzetLbl;
         private System.Windows.Forms.Label lblOmzetVal;
-        private System.Windows.Forms.Label lblOmzetStatus;
         private System.Windows.Forms.Label lblTransaksiLbl;
         private System.Windows.Forms.Label lblTransaksiVal;
-        private System.Windows.Forms.Label lblTransaksiStatus;
         private System.Windows.Forms.Label lblRataRataLbl;
         private System.Windows.Forms.Label lblRataRataVal;
-        private System.Windows.Forms.Label lblRataRataStatus;
         private System.Windows.Forms.Label lblBestMonthLbl;
         private System.Windows.Forms.Label lblBestMonthVal;
-        private System.Windows.Forms.Label lblBestMonthStatus;
 
         // Data grids section (side-by-side)
         private System.Windows.Forms.TableLayoutPanel tblGrids;
@@ -57,16 +53,12 @@ namespace CHEMLINK.Views
             this.cardBestMonth = new System.Windows.Forms.Panel();
             this.lblOmzetLbl = new System.Windows.Forms.Label();
             this.lblOmzetVal = new System.Windows.Forms.Label();
-            this.lblOmzetStatus = new System.Windows.Forms.Label();
             this.lblTransaksiLbl = new System.Windows.Forms.Label();
             this.lblTransaksiVal = new System.Windows.Forms.Label();
-            this.lblTransaksiStatus = new System.Windows.Forms.Label();
             this.lblRataRataLbl = new System.Windows.Forms.Label();
             this.lblRataRataVal = new System.Windows.Forms.Label();
-            this.lblRataRataStatus = new System.Windows.Forms.Label();
             this.lblBestMonthLbl = new System.Windows.Forms.Label();
             this.lblBestMonthVal = new System.Windows.Forms.Label();
-            this.lblBestMonthStatus = new System.Windows.Forms.Label();
             this.tblGrids = new System.Windows.Forms.TableLayoutPanel();
             this.lblMonthlyTitle = new System.Windows.Forms.Label();
             this.dgvMonthly = new System.Windows.Forms.DataGridView();
@@ -161,7 +153,6 @@ namespace CHEMLINK.Views
             this.cardOmzet.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.cardOmzet.Padding = new System.Windows.Forms.Padding(14);
             this.cardOmzet.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cardOmzet.Controls.Add(this.lblOmzetStatus);
             this.cardOmzet.Controls.Add(this.lblOmzetVal);
             this.cardOmzet.Controls.Add(this.lblOmzetLbl);
 
@@ -181,20 +172,11 @@ namespace CHEMLINK.Views
             this.lblOmzetVal.Location = new System.Drawing.Point(14, 36);
             this.lblOmzetVal.Text = "Rp 0";
 
-            this.lblOmzetStatus.AutoSize = true;
-            this.lblOmzetStatus.BackColor = System.Drawing.Color.Transparent;
-            this.lblOmzetStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblOmzetStatus.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblOmzetStatus.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            this.lblOmzetStatus.Location = new System.Drawing.Point(14, 70);
-            this.lblOmzetStatus.Text = "\u25CF  Akumulasi seluruh bulan";
-
             // ===================== CARD 2: TOTAL TRANSAKSI =====================
             this.cardTransaksi.BackColor = System.Drawing.Color.FromArgb(199, 234, 187);
             this.cardTransaksi.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.cardTransaksi.Padding = new System.Windows.Forms.Padding(14);
             this.cardTransaksi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cardTransaksi.Controls.Add(this.lblTransaksiStatus);
             this.cardTransaksi.Controls.Add(this.lblTransaksiVal);
             this.cardTransaksi.Controls.Add(this.lblTransaksiLbl);
 
@@ -214,20 +196,11 @@ namespace CHEMLINK.Views
             this.lblTransaksiVal.Location = new System.Drawing.Point(14, 36);
             this.lblTransaksiVal.Text = "0";
 
-            this.lblTransaksiStatus.AutoSize = true;
-            this.lblTransaksiStatus.BackColor = System.Drawing.Color.Transparent;
-            this.lblTransaksiStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblTransaksiStatus.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblTransaksiStatus.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            this.lblTransaksiStatus.Location = new System.Drawing.Point(14, 70);
-            this.lblTransaksiStatus.Text = "\u25CF  Keseluruhan periode";
-
             // ===================== CARD 3: RATA-RATA / BULAN =====================
             this.cardRataRata.BackColor = System.Drawing.Color.FromArgb(232, 245, 189);
             this.cardRataRata.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.cardRataRata.Padding = new System.Windows.Forms.Padding(14);
             this.cardRataRata.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cardRataRata.Controls.Add(this.lblRataRataStatus);
             this.cardRataRata.Controls.Add(this.lblRataRataVal);
             this.cardRataRata.Controls.Add(this.lblRataRataLbl);
 
@@ -247,20 +220,11 @@ namespace CHEMLINK.Views
             this.lblRataRataVal.Location = new System.Drawing.Point(14, 36);
             this.lblRataRataVal.Text = "Rp 0";
 
-            this.lblRataRataStatus.AutoSize = true;
-            this.lblRataRataStatus.BackColor = System.Drawing.Color.Transparent;
-            this.lblRataRataStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblRataRataStatus.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblRataRataStatus.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            this.lblRataRataStatus.Location = new System.Drawing.Point(14, 70);
-            this.lblRataRataStatus.Text = "\u25CF  Omzet rata-rata bulanan";
-
             // ===================== CARD 4: BULAN TERBAIK =====================
             this.cardBestMonth.BackColor = System.Drawing.Color.FromArgb(199, 234, 187);
             this.cardBestMonth.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.cardBestMonth.Padding = new System.Windows.Forms.Padding(14);
             this.cardBestMonth.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cardBestMonth.Controls.Add(this.lblBestMonthStatus);
             this.cardBestMonth.Controls.Add(this.lblBestMonthVal);
             this.cardBestMonth.Controls.Add(this.lblBestMonthLbl);
 
@@ -279,14 +243,6 @@ namespace CHEMLINK.Views
             this.lblBestMonthVal.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
             this.lblBestMonthVal.Location = new System.Drawing.Point(14, 36);
             this.lblBestMonthVal.Text = "-";
-
-            this.lblBestMonthStatus.AutoSize = true;
-            this.lblBestMonthStatus.BackColor = System.Drawing.Color.Transparent;
-            this.lblBestMonthStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblBestMonthStatus.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
-            this.lblBestMonthStatus.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            this.lblBestMonthStatus.Location = new System.Drawing.Point(14, 70);
-            this.lblBestMonthStatus.Text = "\u25CF  Omzet tertinggi";
 
             // ===================== SIDE-BY-SIDE GRID TABLE =====================
             this.tblGrids.ColumnCount = 2;

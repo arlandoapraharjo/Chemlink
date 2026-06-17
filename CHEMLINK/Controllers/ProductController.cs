@@ -57,7 +57,7 @@ namespace CHEMLINK.Controllers
                     break;
                 }
             }
-            _productContext.Create(e.Name, idKategori, e.Stock, e.Price, e.Description, _currentUser.Id);
+            _productContext.Create(e.Name, idKategori, e.Stock, e.Price, e.Description, _currentUser.Id, e.SupplierId);
             _view.ShowMessage("Obat pertanian berhasil ditambahkan!");
             ShowProductCatalog();
         }
@@ -73,7 +73,7 @@ namespace CHEMLINK.Controllers
                     break;
                 }
             }
-            _productContext.Update(e.Id, e.Name, idKategori, e.Stock, e.Price, e.Description);
+            _productContext.Update(e.Id, e.Name, idKategori, e.Stock, e.Price, e.Description, e.SupplierId);
             _view.ShowMessage("Data obat berhasil diupdate!");
             ShowProductCatalog();
         }

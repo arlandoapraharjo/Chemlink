@@ -174,8 +174,8 @@ namespace CHEMLINK
             this.btnLogout.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnLogout.ForeColor = System.Drawing.Color.FromArgb(134, 239, 172); // Agro300
             this.btnLogout.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnLogout.Location = new System.Drawing.Point(214, 23);
-            this.btnLogout.Size = new System.Drawing.Size(30, 28);
+            this.btnLogout.Location = new System.Drawing.Point(214, 18);
+            this.btnLogout.Size = new System.Drawing.Size(30, 38);
             this.btnLogout.Text = "⏻";
             this.btnLogout.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.btnLogout.UseVisualStyleBackColor = true;

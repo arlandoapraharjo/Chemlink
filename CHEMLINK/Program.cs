@@ -47,7 +47,7 @@ namespace CHEMLINK
                 try
                 {
                     MainForm mainForm = new MainForm();
-                    UserController mainController = new UserController(mainForm, loggedInUser);
+                    MainController mainController = new MainController(mainForm, loggedInUser);
                 
                     // Tampilkan Dashboard. Kode akan berhenti di sini sampai Dashboard ditutup/logout.
                     DialogResult mainResult = mainForm.ShowDialog();

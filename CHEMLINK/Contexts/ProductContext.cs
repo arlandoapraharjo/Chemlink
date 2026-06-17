@@ -88,6 +88,21 @@ namespace CHEMLINK.Contexts
                         cmd2.Parameters.AddWithValue("@stok", stok);
                         cmd2.ExecuteNonQuery();
                     }
+
+                    // Step 3: Log the stock-IN activity so it appears in v_log_stok
+                    string sqlLog = @"
+                        INSERT INTO log_stok (tipe_aktivitas, id_user, nama_user, nama_produk, jumlah)
+                        SELECT 'IN', @idUser, u.username, p.nama_produk, @stok
+                        FROM Users u, Produk p
+                        WHERE u.id_user = @idUser
+                          AND p.nama_produk = @nama";
+                    using (NpgsqlCommand cmd3 = new NpgsqlCommand(sqlLog, conn))
+                    {
+                        cmd3.Parameters.AddWithValue("@idUser", idUser);
+                        cmd3.Parameters.AddWithValue("@stok", stok);
+                        cmd3.Parameters.AddWithValue("@nama", nama);
+                        cmd3.ExecuteNonQuery();
+                    }
                 }
             }
         }
@@ -98,6 +113,14 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
+                    // Step 0: Capture old product name (needed to cascade rename to log_stok)
+                    string oldNama = "";
+                    using (var cmdOld = new NpgsqlCommand("SELECT nama_produk FROM Produk WHERE id_produk = @id", conn))
+                    {
+                        cmdOld.Parameters.AddWithValue("@id", id);
+                        oldNama = cmdOld.ExecuteScalar()?.ToString() ?? "";
+                    }
+
                     // Step 1: Update Produk table (no jumlah_stock column here)
                     string sqlProduk = @"UPDATE Produk 
                         SET nama_produk = @nama, id_kategori = @idKat, harga = @harga,
@@ -115,13 +138,25 @@ namespace CHEMLINK.Contexts
 
                     // Step 2: Update stock in Stocks table
                     string sqlStock = @"UPDATE Stocks 
-                        SET jumlah_stock = @stok, time_stamp = CURRENT_TIMESTAMP
+                        SET jumlah_stock = @stok, timestamp = CURRENT_TIMESTAMP
                         WHERE id_produk = @id";
                     using (NpgsqlCommand cmd2 = new NpgsqlCommand(sqlStock, conn))
                     {
                         cmd2.Parameters.AddWithValue("@stok", stok);
                         cmd2.Parameters.AddWithValue("@id", id);
                         cmd2.ExecuteNonQuery();
+                    }
+
+                    // Step 3: Cascade product rename to existing log_stok entries
+                    if (!string.IsNullOrEmpty(oldNama) && oldNama != nama)
+                    {
+                        string sqlLogRename = "UPDATE log_stok SET nama_produk = @newNama WHERE nama_produk = @oldNama";
+                        using (NpgsqlCommand cmd3 = new NpgsqlCommand(sqlLogRename, conn))
+                        {
+                            cmd3.Parameters.AddWithValue("@newNama", nama);
+                            cmd3.Parameters.AddWithValue("@oldNama", oldNama);
+                            cmd3.ExecuteNonQuery();
+                        }
                     }
                 }
             }

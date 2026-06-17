@@ -110,7 +110,7 @@ namespace CHEMLINK.Views
             // Populate kecamatan Jember
             cbKecamatan.Items.AddRange(new object[]
             {
-                "Arjasa", "Balung", "Bangsalsari", "Gumukmas", "Jelbuk",
+                "Ajung", "Ambulu", "Arjasa", "Balung", "Bangsalsari", "Gumukmas", "Jelbuk",
                 "Jenggawah", "Jombang", "Kalisat", "Kaliwates", "Kencong",
                 "Ledokombo", "Mayang", "Mumbulsari", "Pakusari", "Panti",
                 "Patrang", "Puger", "Rambipuji", "Semboro", "Silo",

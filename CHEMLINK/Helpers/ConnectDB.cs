@@ -13,7 +13,7 @@ namespace CHEMLINK.Helpers
             "Host=localhost;" +
             "Port=5432;" +
             "Username=postgres;" +
-            "Password=adminadmin;" + //pw kalian
+            "Password=manchmall123;" + //pw kalian
             "Database=ChemDB;" + //nama db kalian
             "Search Path=chemlink_sch;" +
             "Timeout=10;" +

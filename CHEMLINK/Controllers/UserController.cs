@@ -1,379 +1,42 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using Npgsql;
+using CHEMLINK.Contexts;
 using CHEMLINK.Models;
 using CHEMLINK.Views;
-using CHEMLINK.Contexts;
 
 namespace CHEMLINK.Controllers
 {
+    /// <summary>
+    /// Handles user management (CRUD) operations only.
+    /// </summary>
     public class UserController
     {
         private readonly MainForm _view;
         private readonly User _currentUser;
 
-        // Contexts
-        private readonly ProductContext _productContext;
-        private readonly SupplierContext _supplierContext;
+        // Context
         private readonly UserContext _userContext;
-        private readonly OrderContext _orderContext;
-        private readonly CategoryContext _categoryContext;
 
-        // In-Memory state for the active session (still useful for cart)
-        private List<Product> _products;
-        private List<Supplier> _suppliers;
+        // In-memory state
         private List<User> _users;
-        private List<Category> _categories;
-        private readonly List<CartItem> _cart;
 
         public UserController(MainForm view, User user)
         {
             _view = view;
             _currentUser = user;
 
-            _productContext = new ProductContext();
-            _supplierContext = new SupplierContext();
             _userContext = new UserContext();
-            _orderContext = new OrderContext();
-            _categoryContext = new CategoryContext();
-
-            _products = _productContext.Read();
-            _suppliers = _supplierContext.Read();
             _users = _userContext.Read();
-            _categories = _categoryContext.Read();
-            _cart = new List<CartItem>();
 
-            _view.SetActiveUser(_currentUser.Username, _currentUser.Role);
-            _view.ApplyRoleRestrictions(_currentUser.Role == "Admin");
-
-            // Wire Menu Navigations
-            _view.ShowDashboardEvent += (s, e) => ShowDashboard();
-            _view.ShowProductEvent += (s, e) => ShowProductCatalog();
-            _view.ShowTransactionEvent += (s, e) => ShowPOS();
-            _view.ShowSupplierEvent += (s, e) => ShowSupplierManagement();
-            _view.ShowReportEvent += (s, e) => ShowFinancialReport();
-            _view.ShowUserManagementEvent += (s, e) => ShowUserManagement();
-
-            // Wire Actions
-            _view.AddProductEvent += HandleAddProduct;
-            _view.EditProductEvent += HandleEditProduct;
-            _view.DeleteProductEvent += HandleDeleteProduct;
-            _view.ManageCategoryEvent += HandleManageCategory;
-            _view.AddCartEvent += HandleAddCart;
-            _view.DeleteCartEvent += HandleDeleteCart;
-            _view.CheckoutEvent += HandleCheckout;
-            _view.AddSupplierEvent += HandleAddSupplier;
-            _view.UpdateSupplierEvent += HandleUpdateSupplier;
-            _view.DeleteSupplierEvent += HandleDeleteSupplier;
-            _view.SearchProductEvent += HandleSearchProduct;
-            _view.FilterCategoryEvent += HandleFilterCategory;
-
-            // Category CRUD
-            _view.AddCategoryEvent += HandleAddCategory;
-            _view.UpdateCategoryEvent += HandleUpdateCategory;
-            _view.DeleteCategoryEvent += HandleDeleteCategory;
-
-            // User CRUD
+            // Wire user management events
             _view.AddUserEvent += HandleAddUser;
             _view.UpdateUserEvent += HandleUpdateUser;
             _view.DeleteUserEvent += HandleDeleteUser;
-
-            ShowDashboard();
         }
 
-        private void HandleUpdateSupplier(object? sender, Supplier e)
-        {
-            try
-            {
-                _supplierContext.Update(e.Id, e);
-                _view.ShowMessage("Data supplier berhasil diupdate!");
-                ShowSupplierManagement();
-            }
-            catch (Exception ex)
-            {
-                _view.ShowMessage("Gagal mengupdate supplier: " + ex.Message);
-            }
-        }
-
-        private void HandleDeleteSupplier(object? sender, int id)
-        {
-            try
-            {
-                _supplierContext.Delete(id);
-                _view.ShowMessage("Supplier berhasil dihapus.");
-                ShowSupplierManagement();
-            }
-            catch (Exception ex)
-            {
-                _view.ShowMessage("Gagal menghapus supplier: " + ex.Message);
-            }
-        }
-
-        private void ShowDashboard()
-        {
-            _products = _productContext.Read(); // Refresh
-
-            // Use DB view for critical stock to include id and name
-            var dtNotif = _productContext.GetCriticalStockTable();
-            // Rename columns for user-friendly headers
-            if (dtNotif != null)
-            {
-                if (dtNotif.Columns.Contains("id_produk")) dtNotif.Columns["id_produk"]!.ColumnName = "ID";
-                if (dtNotif.Columns.Contains("nama_produk")) dtNotif.Columns["nama_produk"]!.ColumnName = "Nama Produk";
-                if (dtNotif.Columns.Contains("jumlah_stock")) dtNotif.Columns["jumlah_stock"]!.ColumnName = "Jumlah Stock";
-            }
-
-            // Fetch stock activity log
-            var dtLogStok = _orderContext.GetStockLog();
-
-            _view.ShowDashboardData(_products, dtNotif!, dtLogStok);
-        }
-
-        private void ShowProductCatalog()
-        {
-            _products = _productContext.Read();
-            _categories = _categoryContext.Read();
-            _view.ShowProductCatalog(_products, _currentUser.Role == "Admin", _categories);
-        }
-
-        private void HandleAddProduct(object? sender, Product e)
-        {
-            int idKategori = 0;
-            foreach (var cat in _categories)
-            {
-                if (cat.Name == e.Category)
-                {
-                    idKategori = cat.Id;
-                    break;
-                }
-            }
-            _productContext.Create(e.Name, idKategori, e.Stock, e.Price, e.Description, _currentUser.Id);
-            _view.ShowMessage("Obat pertanian berhasil ditambahkan!");
-            ShowProductCatalog();
-        }
-
-        private void HandleEditProduct(object? sender, Product e)
-        {
-            int idKategori = 0;
-            foreach (var cat in _categories)
-            {
-                if (cat.Name == e.Category)
-                {
-                    idKategori = cat.Id;
-                    break;
-                }
-            }
-            _productContext.Update(e.Id, e.Name, idKategori, e.Stock, e.Price, e.Description);
-            _view.ShowMessage("Data obat berhasil diupdate!");
-            ShowProductCatalog();
-        }
-
-        private void HandleDeleteProduct(object? sender, int id)
-        {
-            _productContext.Delete(id);
-            _view.ShowMessage("Obat berhasil dihapus.");
-            ShowProductCatalog();
-        }
-
-        private void HandleManageCategory(object? sender, EventArgs e)
-        {
-            _categories = _categoryContext.Read();
-            using (var form = new ManageCategoryForm(_categories))
-            {
-                form.AddCategoryEvent += (s, args) =>
-                {
-                    _categoryContext.Create(args.Name);
-                    _categories = _categoryContext.Read();
-                    form.LoadCategories(_categories);
-                };
-                form.UpdateCategoryEvent += (s, args) =>
-                {
-                    _categoryContext.Update(args.Id, args.Name);
-                    _categories = _categoryContext.Read();
-                    form.LoadCategories(_categories);
-                };
-                form.DeleteCategoryEvent += (s, id) =>
-                {
-                    _categoryContext.Delete(id);
-                    _categories = _categoryContext.Read();
-                    form.LoadCategories(_categories);
-                };
-                form.ShowDialog(_view);
-            }
-            ShowProductCatalog(); // Refresh categories in product catalog
-        }
-
-        private string _currentCategoryFilter = "";
-        private string _currentSearchQuery = "";
-
-        /// <summary>Compute display stock = DB stock minus items reserved in cart.</summary>
-        private List<Product> GetDisplayProducts(IEnumerable<Product> source)
-        {
-            return source.Select(p => new Product
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Category = p.Category,
-                Price = p.Price,
-                Stock = p.Stock - _cart.Where(ci => ci.ProductId == p.Id).Sum(ci => ci.Qty),
-                Description = p.Description,
-                SupplierName = p.SupplierName,
-                CategoryId = p.CategoryId,
-                SupplierId = p.SupplierId
-            }).ToList();
-        }
-
-        private void ShowPOS()
-        {
-            _products = _productContext.Read();
-            _cart.Clear();
-            _currentCategoryFilter = "";
-            _currentSearchQuery = "";
-            _view.ShowPOS(GetDisplayProducts(_products), _cart);
-        }
-
-        private void HandleFilterCategory(object? sender, string category)
-        {
-            _currentCategoryFilter = category;
-            ApplyPOSFilters();
-        }
-
-        private void HandleSearchProduct(object? sender, string query)
-        {
-            _currentSearchQuery = query;
-            ApplyPOSFilters();
-        }
-
-        private void ApplyPOSFilters()
-        {
-            _products = _productContext.Read();
-            var filtered = _products.AsEnumerable();
-
-            if (!string.IsNullOrWhiteSpace(_currentCategoryFilter) && _currentCategoryFilter != "Semua Kategori")
-            {
-                filtered = filtered.Where(p => string.Equals(p.Category, _currentCategoryFilter, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (!string.IsNullOrWhiteSpace(_currentSearchQuery))
-            {
-                filtered = filtered.Where(p => p.Name.Contains(_currentSearchQuery, StringComparison.OrdinalIgnoreCase));
-            }
-
-            _view.ShowPOS(GetDisplayProducts(filtered), _cart);
-        }
-
-        private void HandleAddCart(object? sender, CartItemEventArgs e)
-        {
-            if (e.SelectedProduct == null || e.Qty <= 0)
-            {
-                _view.ShowMessage("Masukkan produk dan kuantitas dengan benar!");
-                return;
-            }
-
-            // Check available stock from DB minus what's already in cart
-            var dbProduct = _products.FirstOrDefault(p => p.Id == e.SelectedProduct.Id);
-            if (dbProduct == null) return;
-
-            int inCart = _cart.Where(ci => ci.ProductId == e.SelectedProduct.Id).Sum(ci => ci.Qty);
-            int available = dbProduct.Stock - inCart;
-
-            if (e.Qty > available)
-            {
-                _view.ShowMessage($"Stok tidak mencukupi! Sisa stok {e.SelectedProduct.Name} hanya {available}.");
-                return;
-            }
-
-            _cart.Add(new CartItem { ProductId = e.SelectedProduct.Id, ProductName = e.SelectedProduct.Name, Qty = e.Qty, Price = e.SelectedProduct.Price });
-
-            // Refresh display — stock shown = DB stock minus cart qty (no mutation needed)
-            _view.ShowPOS(GetDisplayProducts(_products), _cart);
-        }
-
-        private void HandleDeleteCart(object? sender, CartItem e)
-        {
-            // Remove from cart — display stock auto-recalculates via GetDisplayProducts
-            var cartItem = _cart.FirstOrDefault(c => c.ProductId == e.ProductId && c.Qty == e.Qty);
-            if (cartItem != null)
-            {
-                _cart.Remove(cartItem);
-            }
-
-            _view.ShowPOS(GetDisplayProducts(_products), _cart);
-        }
-
-        private void HandleCheckout(object? sender, EventArgs e)
-        {
-            if (_cart.Count == 0)
-            {
-                _view.ShowMessage("Keranjang belanja masih kosong!");
-                return;
-            }
-
-            try
-            {
-                _orderContext.Checkout(_cart, _currentUser.Id, "Penjualan Kasir");
-            }
-            catch (Exception ex)
-            {
-                _view.ShowMessage("Gagal memproses transaksi: " + ex.Message);
-                return;
-            }
-
-            decimal total = _cart.Sum(c => c.Total);
-            string struk = "============== STRUK CHEMLINK ==============\n";
-            struk += $"Kasir: {_currentUser.FullName}\n";
-            struk += $"Tanggal: {DateTime.Now:dd/MM/yyyy HH:mm}\n";
-            struk += "--------------------------------------------\n";
-            foreach (var item in _cart)
-            {
-                struk += $"{item.ProductName}\n   {item.Qty} x Rp{item.Price:N0} = Rp{item.Total:N0}\n";
-            }
-            struk += "--------------------------------------------\n";
-            struk += $"TOTAL BELANJA: Rp{total:N0}\n";
-            struk += "============================================\n";
-            struk += "Terima kasih telah berbelanja di Kios Kami!";
-
-            _cart.Clear();
-            _view.PrintReceipt(struk);
-            ShowPOS();
-        }
-
-        private void ShowSupplierManagement()
-        {
-            _suppliers = _supplierContext.Read();
-            _view.ShowSupplierManagement(_suppliers);
-        }
-
-        private void HandleAddSupplier(object? sender, Supplier e)
-        {
-            try
-            {
-                _supplierContext.Create(e);
-                _view.ShowMessage("Supplier baru berhasil dicatat!");
-                ShowSupplierManagement();
-            }
-            catch (PostgresException ex) when (ex.SqlState == "23505")
-            {
-                string message = ex.ConstraintName switch
-                {
-                    "supplier_email_key" => "Email supplier sudah terdaftar.",
-                    "supplier_no_telp_key" => "Nomor telepon supplier sudah terdaftar.",
-                    _ => "Data supplier sudah ada di sistem."
-                };
-                _view.ShowMessage(message);
-            }
-        }
-
-        private void ShowFinancialReport()
-        {
-            DataTable dtLaporan = _orderContext.GetFinancialReport();
-            DataTable dtKategori = _orderContext.GetCategoryBreakdown();
-            _view.ShowFinancialReport(dtLaporan, dtKategori);
-        }
-
-        private void ShowUserManagement()
+        public void ShowUserManagement()
         {
             _users = _userContext.Read();
             _view.ShowUserManagement(_users, _currentUser.Role == "Admin");
@@ -421,24 +84,6 @@ namespace CHEMLINK.Controllers
             _userContext.Delete(id);
             _view.ShowMessage("User berhasil dihapus!");
             ShowUserManagement();
-        }
-
-        private void HandleAddCategory(object? sender, Category e)
-        {
-            _categoryContext.Create(e.Name);
-            _categories = _categoryContext.Read();
-        }
-
-        private void HandleUpdateCategory(object? sender, Category e)
-        {
-            _categoryContext.Update(e.Id, e.Name);
-            _categories = _categoryContext.Read();
-        }
-
-        private void HandleDeleteCategory(object? sender, int id)
-        {
-            _categoryContext.Delete(id);
-            _categories = _categoryContext.Read();
         }
     }
 }

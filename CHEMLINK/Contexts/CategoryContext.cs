@@ -16,8 +16,7 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "SELECT id_kategori, nama_kategori FROM Kategori ORDER BY id_kategori ASC";
-
+                    string sql = "SELECT * FROM v_kategori";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         using (NpgsqlDataReader dr = cmd.ExecuteReader())
@@ -48,7 +47,7 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "INSERT INTO Kategori (nama_kategori) VALUES (@name)";
+                    string sql = "CALL sp_kategori_create(@name)";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@name", name);
@@ -64,11 +63,11 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "UPDATE Kategori SET nama_kategori = @name WHERE id_kategori = @id";
+                    string sql = "CALL sp_kategori_update(@id, @name)";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
-                        cmd.Parameters.AddWithValue("@name", name);
                         cmd.Parameters.AddWithValue("@id", id);
+                        cmd.Parameters.AddWithValue("@name", name);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -81,7 +80,7 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    string sql = "DELETE FROM Kategori WHERE id_kategori = @id";
+                    string sql = "CALL sp_kategori_delete(@id)";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@id", id);

@@ -60,8 +60,9 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    // Step 1: Insert product via stored procedure (creates Stocks row with 0)
-                    string sql = "CALL sp_tambah_produk_baru(@nama, @harga, @keterangan, @idKat, @idSup, @idUser)";
+                    // Insert product with initial stock via stored procedure
+                    // (trigger fn_trg_stocks_update auto-logs 'IN' when stock > 0)
+                    string sql = "CALL sp_tambah_produk_baru(@nama, @harga, @keterangan, @idKat, @idSup, @idUser, @stok)";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@nama", nama);
@@ -70,38 +71,8 @@ namespace CHEMLINK.Contexts
                         cmd.Parameters.AddWithValue("@idKat", idKategori);
                         cmd.Parameters.AddWithValue("@idSup", 1); // Default supplier ID 1
                         cmd.Parameters.AddWithValue("@idUser", idUser);
+                        cmd.Parameters.AddWithValue("@stok", stok);
                         cmd.ExecuteNonQuery();
-                    }
-
-                    // Step 2: Update the stock to the actual value for the newly created product
-                    string sqlUpdateStock = @"
-                        UPDATE Stocks 
-                        SET jumlah_stock = @stok 
-                        WHERE id_produk = (
-                            SELECT id_produk FROM Produk 
-                            WHERE nama_produk = @nama 
-                            ORDER BY id_produk DESC LIMIT 1
-                        )";
-                    using (NpgsqlCommand cmd2 = new NpgsqlCommand(sqlUpdateStock, conn))
-                    {
-                        cmd2.Parameters.AddWithValue("@nama", nama);
-                        cmd2.Parameters.AddWithValue("@stok", stok);
-                        cmd2.ExecuteNonQuery();
-                    }
-
-                    // Step 3: Log the stock-IN activity so it appears in v_log_stok
-                    string sqlLog = @"
-                        INSERT INTO log_stok (tipe_aktivitas, id_user, nama_user, nama_produk, jumlah)
-                        SELECT 'IN', @idUser, u.username, p.nama_produk, @stok
-                        FROM Users u, Produk p
-                        WHERE u.id_user = @idUser
-                          AND p.nama_produk = @nama";
-                    using (NpgsqlCommand cmd3 = new NpgsqlCommand(sqlLog, conn))
-                    {
-                        cmd3.Parameters.AddWithValue("@idUser", idUser);
-                        cmd3.Parameters.AddWithValue("@stok", stok);
-                        cmd3.Parameters.AddWithValue("@nama", nama);
-                        cmd3.ExecuteNonQuery();
                     }
                 }
             }
@@ -113,50 +84,18 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    // Step 0: Capture old product name (needed to cascade rename to log_stok)
-                    string oldNama = "";
-                    using (var cmdOld = new NpgsqlCommand("SELECT nama_produk FROM Produk WHERE id_produk = @id", conn))
+                    // Update product details + stock via stored procedure
+                    // (trigger fn_trg_produk_name_change auto-cascades name to log_stok)
+                    string sql = "CALL sp_update_produk(@id, @nama, @idKat, @harga, @keterangan, @stok)";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
-                        cmdOld.Parameters.AddWithValue("@id", id);
-                        oldNama = cmdOld.ExecuteScalar()?.ToString() ?? "";
-                    }
-
-                    // Step 1: Update Produk table (no jumlah_stock column here)
-                    string sqlProduk = @"UPDATE Produk 
-                        SET nama_produk = @nama, id_kategori = @idKat, harga = @harga,
-                            keterangan = @keterangan
-                        WHERE id_produk = @id";
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(sqlProduk, conn))
-                    {
+                        cmd.Parameters.AddWithValue("@id", id);
                         cmd.Parameters.AddWithValue("@nama", nama);
                         cmd.Parameters.AddWithValue("@idKat", idKategori);
                         cmd.Parameters.AddWithValue("@harga", (int)harga);
                         cmd.Parameters.AddWithValue("@keterangan", string.IsNullOrWhiteSpace(keterangan) ? "" : keterangan);
-                        cmd.Parameters.AddWithValue("@id", id);
+                        cmd.Parameters.AddWithValue("@stok", stok);
                         cmd.ExecuteNonQuery();
-                    }
-
-                    // Step 2: Update stock in Stocks table
-                    string sqlStock = @"UPDATE Stocks 
-                        SET jumlah_stock = @stok, timestamp = CURRENT_TIMESTAMP
-                        WHERE id_produk = @id";
-                    using (NpgsqlCommand cmd2 = new NpgsqlCommand(sqlStock, conn))
-                    {
-                        cmd2.Parameters.AddWithValue("@stok", stok);
-                        cmd2.Parameters.AddWithValue("@id", id);
-                        cmd2.ExecuteNonQuery();
-                    }
-
-                    // Step 3: Cascade product rename to existing log_stok entries
-                    if (!string.IsNullOrEmpty(oldNama) && oldNama != nama)
-                    {
-                        string sqlLogRename = "UPDATE log_stok SET nama_produk = @newNama WHERE nama_produk = @oldNama";
-                        using (NpgsqlCommand cmd3 = new NpgsqlCommand(sqlLogRename, conn))
-                        {
-                            cmd3.Parameters.AddWithValue("@newNama", nama);
-                            cmd3.Parameters.AddWithValue("@oldNama", oldNama);
-                            cmd3.ExecuteNonQuery();
-                        }
                     }
                 }
             }
@@ -168,20 +107,12 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == System.Data.ConnectionState.Open)
                 {
-                    // Step 1: Delete from Stocks first (FK constraint)
-                    string sqlStock = "DELETE FROM Stocks WHERE id_produk = @id";
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(sqlStock, conn))
+                    // Delete product + stock via stored procedure (handles FK order)
+                    string sql = "CALL sp_hapus_produk(@id)";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
                         cmd.ExecuteNonQuery();
-                    }
-
-                    // Step 2: Delete from Produk
-                    string sqlProduk = "DELETE FROM Produk WHERE id_produk = @id";
-                    using (NpgsqlCommand cmd2 = new NpgsqlCommand(sqlProduk, conn))
-                    {
-                        cmd2.Parameters.AddWithValue("@id", id);
-                        cmd2.ExecuteNonQuery();
                     }
                 }
             }

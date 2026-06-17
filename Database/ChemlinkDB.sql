@@ -2,11 +2,17 @@
 CREATE SCHEMA IF NOT EXISTS chemlink_sch;
 SET search_path TO chemlink_sch, public;
 
--- Drop triggers (stock/log handled explicitly in C# transaction)
+-- Drop triggers (managed by Chemlink_Advanced_Objects.sql)
+DROP TRIGGER IF EXISTS trg_selling_detail_after_insert ON selling_details;
 DROP TRIGGER IF EXISTS trg_stok_keluar ON selling_details;
 DROP TRIGGER IF EXISTS trg_log_stok_keluar ON selling_details;
+DROP TRIGGER IF EXISTS trg_stocks_after_update ON Stocks;
+DROP TRIGGER IF EXISTS trg_produk_name_change ON Produk;
+DROP FUNCTION IF EXISTS fn_trg_selling_detail() CASCADE;
 DROP FUNCTION IF EXISTS fn_trg_stok_keluar() CASCADE;
 DROP FUNCTION IF EXISTS fn_trg_log_stok_keluar() CASCADE;
+DROP FUNCTION IF EXISTS fn_trg_stocks_update() CASCADE;
+DROP FUNCTION IF EXISTS fn_trg_produk_name_change() CASCADE;
 DROP TABLE IF EXISTS log_stok CASCADE;
 DROP TABLE IF EXISTS selling_details CASCADE;
 DROP TABLE IF EXISTS selling CASCADE;
@@ -91,8 +97,7 @@ CREATE TABLE log_stok (
     time_stamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Trigger functions removed: stock decrement and log are now
--- handled explicitly in C# OrderContext.Checkout() transaction.
+-- Triggers are defined in Chemlink_Advanced_Objects.sql
 
 -- ============================================================
 -- SEED DATA

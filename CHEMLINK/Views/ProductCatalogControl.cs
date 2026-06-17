@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using CHEMLINK.Contexts;
 using CHEMLINK.Models;
 
 namespace CHEMLINK.Views
@@ -14,6 +15,7 @@ namespace CHEMLINK.Views
 
         private List<Category> _categories = new List<Category>();
         private List<Product> _products = new List<Product>();
+        private List<Supplier> _suppliers = new List<Supplier>();
 
         public ProductCatalogControl()
         {
@@ -23,6 +25,9 @@ namespace CHEMLINK.Views
             btnHapus.Click += BtnHapus_Click;
             btnKategori.Click += BtnKategori_Click;
             this.Paint += Control_Paint;
+
+            // Load suppliers once
+            _suppliers = new SupplierContext().Read();
         }
 
         private void Control_Paint(object? sender, PaintEventArgs e)
@@ -55,7 +60,8 @@ namespace CHEMLINK.Views
 
         private void BtnTambah_Click(object? sender, EventArgs e)
         {
-            using (var form = new ProductForm(_products, _categories, null))
+            _suppliers = new SupplierContext().Read();
+            using (var form = new ProductForm(_products, _categories, _suppliers, null))
             {
                 if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
@@ -63,6 +69,7 @@ namespace CHEMLINK.Views
                     {
                         Name = form.ProductName,
                         Category = form.CategoryName,
+                        SupplierId = form.SupplierId,
                         Stock = form.Stock,
                         Price = form.Price,
                         Description = form.Description
@@ -74,7 +81,8 @@ namespace CHEMLINK.Views
         private void BtnEdit_Click(object? sender, EventArgs e)
         {
             Product? selected = dgvMain.CurrentRow?.DataBoundItem as Product;
-            using (var form = new ProductForm(_products, _categories, selected))
+            _suppliers = new SupplierContext().Read();
+            using (var form = new ProductForm(_products, _categories, _suppliers, selected))
             {
                 if (form.ShowDialog(this.FindForm()) == DialogResult.OK)
                 {
@@ -83,6 +91,7 @@ namespace CHEMLINK.Views
                         Id = form.ProductId,
                         Name = form.ProductName,
                         Category = form.CategoryName,
+                        SupplierId = form.SupplierId,
                         Stock = form.Stock,
                         Price = form.Price,
                         Description = form.Description

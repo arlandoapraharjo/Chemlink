@@ -15,6 +15,8 @@ namespace CHEMLINK.Views
         public new string ProductName => txtNama.Text.Trim();
         public string CategoryName => cbKategori.SelectedItem is Category c ? c.Name : "";
         public int CategoryId => cbKategori.SelectedItem is Category c ? c.Id : 0;
+        public string SupplierName => cbSupplier.SelectedItem is Supplier s ? s.Name : "";
+        public int SupplierId => cbSupplier.SelectedItem is Supplier s ? s.Id : 0;
         public int Stock => int.TryParse(txtStok.Text, out int s) ? s : 0;
         public decimal Price => decimal.TryParse(txtHarga.Text, out decimal p) ? p : 0m;
         public string Description => txtKeterangan.Text.Trim();
@@ -23,7 +25,7 @@ namespace CHEMLINK.Views
         /// Unified Add/Edit product form.
         /// Pass selectedProduct = null for Add mode, or a Product for Edit mode.
         /// </summary>
-        public ProductForm(List<Product> existingProducts, List<Category> categories, Product? selectedProduct)
+        public ProductForm(List<Product> existingProducts, List<Category> categories, List<Supplier> suppliers, Product? selectedProduct)
         {
             InitializeComponent();
 
@@ -38,6 +40,11 @@ namespace CHEMLINK.Views
             cbKategori.DataSource = categories;
             cbKategori.DisplayMember = "Name";
             cbKategori.ValueMember = "Id";
+
+            // Supplier dropdown
+            cbSupplier.DataSource = suppliers;
+            cbSupplier.DisplayMember = "Name";
+            cbSupplier.ValueMember = "Id";
 
             // Reference grid
             dgvReference.DataSource = null;
@@ -81,6 +88,15 @@ namespace CHEMLINK.Views
                     }
                 }
 
+                foreach (var sup in suppliers)
+                {
+                    if (sup.Name == selectedProduct.SupplierName)
+                    {
+                        cbSupplier.SelectedItem = sup;
+                        break;
+                    }
+                }
+
                 dgvReference.SelectionChanged += DgvReference_SelectionChanged;
             }
 
@@ -101,6 +117,14 @@ namespace CHEMLINK.Views
                     if (cat.Name == p.Category)
                     {
                         cbKategori.SelectedItem = cat;
+                        break;
+                    }
+                }
+                foreach (var sup in (cbSupplier.DataSource as List<Supplier>) ?? new List<Supplier>())
+                {
+                    if (sup.Name == p.SupplierName)
+                    {
+                        cbSupplier.SelectedItem = sup;
                         break;
                     }
                 }

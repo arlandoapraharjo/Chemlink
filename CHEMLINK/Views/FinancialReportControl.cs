@@ -116,7 +116,6 @@ namespace CHEMLINK.Views
             lblTransaksiVal.Text = totalTransaksi.ToString("N0");
             lblRataRataVal.Text = $"Rp {rataRata:N0}";
             lblBestMonthVal.Text = bestMonth;
-            lblBestMonthStatus.Text = $"\u25CF  Omzet: Rp {bestOmzet:N0}";
         }
 
         private string FormatMonth(string yyyyMm)

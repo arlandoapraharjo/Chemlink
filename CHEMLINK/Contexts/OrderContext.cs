@@ -16,66 +16,24 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == ConnectionState.Open)
                 {
-                    DateTime today = DateTime.Now;
-
-                    using (var tx = conn.BeginTransaction())
+                    // Build arrays for batch checkout stored procedure
+                    // (trigger fn_trg_selling_detail auto-decrements stock + auto-logs OUT)
+                    int[] productIds = new int[cart.Count];
+                    int[] quantities = new int[cart.Count];
+                    for (int i = 0; i < cart.Count; i++)
                     {
-                        try
-                        {
-                            // Insert selling header
-                            int idSelling;
-                            using (var cmdHead = new NpgsqlCommand(
-                                "INSERT INTO selling (tanggal_selling, keterangan, id_kasir) VALUES (@tgl, @ket, @kasir) RETURNING id_selling",
-                                conn, tx))
-                            {
-                                cmdHead.Parameters.AddWithValue("@tgl", today.Date);
-                                cmdHead.Parameters.AddWithValue("@ket", keterangan);
-                                cmdHead.Parameters.AddWithValue("@kasir", inputByUserId);
-                                idSelling = (int)cmdHead.ExecuteScalar()!;
-                            }
+                        productIds[i] = cart[i].ProductId;
+                        quantities[i] = cart[i].Qty;
+                    }
 
-                            // Insert selling details + update stock + log for each item
-                            foreach (var item in cart)
-                            {
-                                // Insert detail
-                                using (var cmdDet = new NpgsqlCommand(
-                                    "INSERT INTO selling_details (jumlah_keluar, id_selling, id_produk) VALUES (@jml, @idSell, @idProd)",
-                                    conn, tx))
-                                {
-                                    cmdDet.Parameters.AddWithValue("@jml", item.Qty);
-                                    cmdDet.Parameters.AddWithValue("@idSell", idSelling);
-                                    cmdDet.Parameters.AddWithValue("@idProd", item.ProductId);
-                                    cmdDet.ExecuteNonQuery();
-                                }
-
-                                // Decrement stock
-                                using (var cmdStock = new NpgsqlCommand(
-                                    "UPDATE Stocks SET jumlah_stock = jumlah_stock - @jml, timestamp = CURRENT_TIMESTAMP WHERE id_produk = @idProd",
-                                    conn, tx))
-                                {
-                                    cmdStock.Parameters.AddWithValue("@jml", item.Qty);
-                                    cmdStock.Parameters.AddWithValue("@idProd", item.ProductId);
-                                    cmdStock.ExecuteNonQuery();
-                                }
-
-                                // Log stock activity
-                                using (var cmdLog = new NpgsqlCommand(
-                                    "INSERT INTO log_stok (tipe_aktivitas, id_user, nama_user, nama_produk, jumlah) SELECT 'OUT', @idUser, u.username, p.nama_produk, @jml FROM Users u, Produk p WHERE u.id_user = @idUser AND p.id_produk = @idProd",
-                                    conn, tx))
-                                {
-                                    cmdLog.Parameters.AddWithValue("@idUser", inputByUserId);
-                                    cmdLog.Parameters.AddWithValue("@jml", item.Qty);
-                                    cmdLog.Parameters.AddWithValue("@idProd", item.ProductId);
-                                    cmdLog.ExecuteNonQuery();
-                                }
-                            }
-                            tx.Commit();
-                        }
-                        catch
-                        {
-                            tx.Rollback();
-                            throw;
-                        }
+                    using (var cmd = new NpgsqlCommand("CALL sp_checkout(@tgl, @ket, @kasir, @prods, @qtys)", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@tgl", DateOnly.FromDateTime(DateTime.Now));
+                        cmd.Parameters.AddWithValue("@ket", keterangan);
+                        cmd.Parameters.AddWithValue("@kasir", inputByUserId);
+                        cmd.Parameters.AddWithValue("@prods", productIds);
+                        cmd.Parameters.AddWithValue("@qtys", quantities);
+                        cmd.ExecuteNonQuery();
                     }
                 }
             }
@@ -108,15 +66,7 @@ namespace CHEMLINK.Contexts
             {
                 if (conn != null && conn.State == ConnectionState.Open)
                 {
-                    string sql = @"SELECT 
-                        k.nama_kategori AS ""Kategori"",
-                        SUM(sd.jumlah_keluar)::int AS ""Qty Terjual"",
-                        (SUM(sd.jumlah_keluar * p.harga))::int AS ""Total Pendapatan""
-                    FROM selling_details sd
-                    JOIN Produk p ON sd.id_produk = p.id_produk
-                    JOIN Kategori k ON p.id_kategori = k.id_kategori
-                    GROUP BY k.nama_kategori
-                    ORDER BY SUM(sd.jumlah_keluar * p.harga) DESC";
+                    string sql = "SELECT * FROM v_penjualan_per_kategori";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conn))
                     {
                         using (NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd))
